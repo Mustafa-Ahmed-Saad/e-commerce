@@ -1,13 +1,165 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300&display=swap");
+
+:root {
+  --main-color: #0aad0a;
+  --light-color: #f0f3f2;
+  --shadow: rgba(145, 158, 171, 0.2) 0px 2px 4px -1px,
+    rgba(145, 158, 171, 0.14) 0px 4px 5px 0px,
+    rgba(145, 158, 171, 0.12) 0px 1px 10px 0px;
+  --font-family: "Encode Sans Expanded", sans-serif;
+  --rating-color: #ffc908;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: var(--font-family) !important;
+}
+.rating-color {
+  color: var(--rating-color);
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+a,
+a:hover {
+  color: black;
+  text-decoration: none !important;
+}
+.product:hover {
+  box-shadow: var(--shadow);
+  border: solid 1px var(--main-color);
+}
+.product .btn {
+  transition: transform 1s, opacity 1s;
+  transform: translateY(100%);
+  opacity: 0;
+}
+.product:hover .btn {
+  opacity: 1;
+  transform: translateY(0%);
+}
+.font-sm {
+  font-size: 14px;
+}
+.object-position-center {
+  object-position: center;
+}
+
+.text-main {
+  color: var(--main-color) !important;
+}
+.bg-main {
+  background-color: var(--main-color) !important;
+}
+.btn.btn-main {
+  background-color: var(--main-color) !important;
+  color: white !important;
+}
+.btn.btn-main:hover {
+  background-color: #077007 !important;
+}
+
+.btn.btn-outline-main {
+  background-color: transparent !important;
+  border: 1px solid var(--main-color) !important;
+  color: var(--main-color) !important;
+}
+.btn.btn-outline-main:hover {
+  background-color: var(--main-color) !important;
+  color: white !important;
+}
+.bg-main-light {
+  background-color: var(--light-color) !important;
+}
+.transtion-5 {
+  transition: 0.5s;
+}
+
+.offline {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+  color: white;
+}
+
+.forget-password:hover {
+  color: var(--main-color) !important;
+}
+
+.start-75 {
+  left: 75%;
+}
+input#resetCode,
+input#forgetPassword-email {
+  height: 55px !important;
+  font-size: 17px;
+}
+
+input#resetCode.dirty + label.resetCode,
+input#resetCode:focus + label.resetCode,
+input#forgetPassword-email.dirty + label.forgetPasswordEmail,
+input#forgetPassword-email:focus + label.forgetPasswordEmail {
+  top: 10px !important;
+  background-color: white;
+  font-size: 13px;
+}
+
+/* ------------------------------------------------ main slider and home responsive slider */
+/* dots in home slider  */
+.HomeResponsiveSlider .dots,
+.home-slider .dots {
+  width: 17px;
+  height: 8px;
+  background-color: rgb(172, 172, 172);
+}
+.HomeResponsiveSlider li.slick-active .dots,
+.home-slider li.slick-active .dots {
+  background-color: rgb(67, 67, 67);
+}
+/* outline of img and divs */
+.HomeResponsiveSlider div,
+.home-slider div {
+  outline: none;
+}
+.HomeResponsiveSlider img,
+.home-slider img {
+  outline: none;
+}
+
+.HomeResponsiveSlider .slick-arrow.slick-prev,
+.HomeResponsiveSlider .slick-arrow.slick-next {
+  top: 100% !important;
+}
+.HomeResponsiveSlider .slick-arrow.slick-prev {
+  left: 47%;
+}
+.HomeResponsiveSlider .slick-arrow.slick-next {
+  right: 47%;
+}
+
+.HomeResponsiveSlider .slick-arrow.slick-disabledslick-arrow {
+  opacity: 0.5 !important;
+}
+
+/* ---------------- homeProductCart */
+.mainShadow {
+  border: 2px solid transparent !important;
+  transition: 0.7s;
+}
+.mainShadow:hover {
+  box-shadow: 0px 0px 10px var(--main-color);
+}
+
+/* product slider */
+.productSlider .slick-dots {
+  bottom: -50px;
+}
+.productSlider .slick-dots li {
+  width: 45px;
+}
+
+.h-300px {
+  height: 350px;
 }
