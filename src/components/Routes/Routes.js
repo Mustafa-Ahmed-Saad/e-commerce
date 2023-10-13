@@ -15,7 +15,7 @@ import Brands from "../pages/brands/Brands";
 import Product from "../pages/products/product/Product";
 import SubCategory from "../pages/categories/subCategory/SubCategory";
 import WishList from "../pages/wishList/WishList";
-import WishListContextProvider from "../../contexts/WishListContext";
+import Cart from "../pages/cart/Cart";
 
 export const routers = createHashRouter([
   {
@@ -34,24 +34,69 @@ export const routers = createHashRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "brands", element: <Brands /> },
+      {
+        path: "brands",
+        element: (
+          <ProtectedRoute>
+            <Brands />
+          </ProtectedRoute>
+        ),
+      },
 
-      { path: "products", element: <Products /> },
-      { path: "products/:id", element: <Product /> },
+      {
+        path: "products",
+        element: (
+          <ProtectedRoute>
+            <Products />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "products/:id",
+        element: (
+          <ProtectedRoute>
+            <Product />
+          </ProtectedRoute>
+        ),
+      },
 
-      { path: "categories", element: <Categories /> },
-      { path: "categories/:id", element: <SubCategory /> },
+      {
+        path: "categories",
+        element: (
+          <ProtectedRoute>
+            <Categories />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "categories/:id",
+        element: (
+          <ProtectedRoute>
+            <SubCategory />
+          </ProtectedRoute>
+        ),
+      },
 
       {
         path: "wishList",
         element: (
-          <WishListContextProvider>
+          <ProtectedRoute>
             <WishList />
-          </WishListContextProvider>
+          </ProtectedRoute>
         ),
       },
 
-      { path: "forget-password", element: <ForgetPassword /> },
+      {
+        path: "cart",
+        element: (
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>
+        ),
+      },
+
+      // TODO: handel when user pass ForgetPassword can access VerifyCode and when pass ForgetPassword and VerifyCode can access ResetPassword and make context for each state of this three pages
+      // TODO: and setTime out when verify-code send to the email and after this time make state of access this page false and clear this sitTimeout and if pass all three pages successfully and change her password successfully clear all setTime and make all state access of this pages false
       { path: "forget-password", element: <ForgetPassword /> },
       { path: "verify-code", element: <VerifyCode /> },
       { path: "reset-password", element: <ResetPassword /> },

@@ -1,12 +1,13 @@
 import { Navigate } from "react-router-dom";
-import { useContextAuth } from "./../../contexts/AuthContext";
+import { useContextMain } from "../../contexts/MainContext";
+import Login from "../pages/login/Login";
 
 export default function ProtectedRoute({ children }) {
-  const { token } = useContextAuth();
+  const { token } = useContextMain();
 
+  let ui = <Login />;
   if (token) {
-    return children;
-  } else {
-    return <Navigate to={"/login"} />;
+    ui = children;
   }
+  return ui;
 }

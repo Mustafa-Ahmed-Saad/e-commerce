@@ -4,7 +4,6 @@ import HomeResponsiveSlider from "../../homeResponsiveSlider/HomeResponsiveSlide
 import MainSlider from "../../mainSlider/MainSlider";
 import SearchHome from "../../searchHome/SearchHome";
 import { getData } from "../../../helper/api";
-import WishListContextProvider from "../../../contexts/WishListContext";
 
 export default function Home() {
   // TODO: dont forget add load in this project
@@ -23,16 +22,15 @@ export default function Home() {
   }
 
   useEffect(() => {
-    // TODO: uncomment this
-    // getProducts();
+    getProducts();
   }, []);
 
   return (
-    <WishListContextProvider>
+    <>
       <MainSlider />
       <HomeResponsiveSlider />
       <SearchHome />
       <ShowProducts products={products} />
-    </WishListContextProvider>
+    </>
   );
 }

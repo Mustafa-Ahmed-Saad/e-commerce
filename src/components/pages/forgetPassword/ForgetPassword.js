@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import { postData } from "../../../helper/api";
 import { useNavigate } from "react-router-dom";
 import { forgetPasswordValidationSchema } from "../../../validation/validation";
-import { useContextAuth } from "../../../contexts/AuthContext";
+import { useContextMain } from "../../../contexts/MainContext";
 
 export default function ForgetPassword() {
   const navigate = useNavigate();
   const [isInputFocused, setInputFocused] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const { token } = useContextAuth();
+  const { token } = useContextMain();
 
   useEffect(() => {
     if (token) {

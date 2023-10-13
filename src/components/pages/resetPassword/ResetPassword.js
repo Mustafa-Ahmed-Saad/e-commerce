@@ -1,13 +1,14 @@
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useContextAuth } from "../../../contexts/AuthContext";
+
+import { useContextMain } from "../../../contexts/MainContext";
 import { putData } from "../../../helper/api";
 import { resetPasswordSchema } from "../../../validation/validation";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
-  const { token, setToken } = useContextAuth();
+  const { token, setToken } = useContextMain();
 
   useEffect(() => {
     if (token) {

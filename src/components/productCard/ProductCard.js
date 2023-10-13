@@ -7,22 +7,18 @@ import { Link, useNavigate } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { postData } from "../../helper/api";
-import { useContextAuth } from "../../contexts/AuthContext";
-import { useContextWishList } from "../../contexts/WishListContext";
+import { useContextMain } from "../../contexts/MainContext";
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
-  const { token } = useContextAuth();
+  const { token, wishList, setCartProducts, setProductsCounter } =
+    useContextMain();
   const [wishListProductIds, setWishListProductIds] = useState([]);
-  const { wishList } = useContextWishList();
 
-  async function handelLove(id) {
-    // TODO: change hart icon to red and render and call api
-    // TODO: add to wish list
-    console.log(id);
-
+  async function addToCart(id) {
+    // TODO: check if in product card list increase it's countaty by 1 only
     const [data, errorMessage] = await postData(
-      "/api/v1/wishlist",
+      "/api/v1/cart",
       {
         productId: id,
       },
@@ -33,15 +29,47 @@ export default function ProductCard({ product }) {
       }
     );
 
-    // TODO: conteniue
-    if (data?.data) {
-      //   put data?.data in local storage wishList (setState of wishlist context)
-      //   show tost message data?.message
-
-      setWishListProductIds(data?.data);
+    if (data?.data?.products) {
+      console.log(data?.data);
+      // here also return totalprice in (data?.data?.totalCartPrice)
+      setCartProducts(data?.data?.products);
+      setProductsCounter(data?.data?.products.length);
     } else {
-      //   show tost message "sorry something wrong happen please try but product in wishlist later"
       console.log(errorMessage);
+    }
+  }
+
+  async function handelLove(id) {
+    // TODO: change hart icon to red and render and call api
+    // TODO: add to wish list
+    console.log(id);
+
+    if (wishListProductIds.includes(id) || isIdExistInContextWishList(id)) {
+      // TODO: show tost "product already exist in wish list"
+      console.log("product already exist in wish list");
+    } else {
+      const [data, errorMessage] = await postData(
+        "/api/v1/wishlist",
+        {
+          productId: id,
+        },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+
+      // TODO: conteniue
+      if (data?.data) {
+        //   put data?.data in local storage wishList (setState of wishlist context)
+        //   show tost message data?.message
+
+        setWishListProductIds(data?.data);
+      } else {
+        //   show tost message "sorry something wrong happen please try but product in wishlist later"
+        console.log(errorMessage);
+      }
     }
   }
 
@@ -58,13 +86,17 @@ export default function ProductCard({ product }) {
     }
   }
 
-  let isExistInOldWishList = false;
-  wishList.forEach((wishlistProduct) => {
-    if (wishlistProduct.id === product.id) {
-      isExistInOldWishList = true;
-      return;
-    }
-  });
+  function isIdExistInContextWishList(ProductId) {
+    let isExistInOldWishList = false;
+    wishList.forEach((wishlistProduct) => {
+      if (wishlistProduct.id === ProductId) {
+        isExistInOldWishList = true;
+        return;
+      }
+    });
+
+    return isExistInOldWishList;
+  }
 
   return (
     <Link
@@ -108,7 +140,12 @@ export default function ProductCard({ product }) {
           </div>
           {/* <Card.Text>{product.details}</Card.Text> */}
           <div className="d-flex justify-content-between align-items-center">
-            <Button variant="btn btn-main me-auto d-inline-block w-75 me-2 addToCart">
+            <Button
+              variant="btn btn-main me-auto d-inline-block w-75 me-2 addToCart"
+              onClick={() => {
+                addToCart(product.id);
+              }}
+            >
               + add
             </Button>
             {/* TODO:handel whenclick Love icon and handel when show all product to make the product in wish list is hart is red */}
@@ -123,7 +160,7 @@ export default function ProductCard({ product }) {
               <FontAwesomeIcon
                 className={`d-inline-block ms-auto fa-xl heartIcon ${
                   wishListProductIds.includes(product.id) ||
-                  isExistInOldWishList
+                  isIdExistInContextWishList(product.id)
                     ? "text-danger"
                     : null
                 }`}

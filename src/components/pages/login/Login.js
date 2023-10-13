@@ -2,15 +2,14 @@ import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginValidationSchema } from "../../../validation/validation";
-import { useContextAuth } from "./../../../contexts/AuthContext";
 import { postData } from "../../../helper/api";
-import axios from "axios";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
+import { useContextMain } from "../../../contexts/MainContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { token, setToken } = useContextAuth();
+  const { token, setToken } = useContextMain();
 
   useEffect(() => {
     if (token) {

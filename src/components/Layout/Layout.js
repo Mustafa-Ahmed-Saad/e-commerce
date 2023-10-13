@@ -1,12 +1,12 @@
 import React from "react";
 import { Offline } from "react-detect-offline";
 import { Outlet } from "react-router-dom";
+import { useContextMain } from "../../contexts/MainContext";
 import Footer from "../footer/Footer";
 import MainNavbar from "../navbar/Navbar";
-import { useContextAuth } from "./../../contexts/AuthContext";
 
 export default function Layout() {
-  const { token } = useContextAuth();
+  const { token } = useContextMain();
 
   return (
     <>

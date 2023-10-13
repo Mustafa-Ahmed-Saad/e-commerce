@@ -7,10 +7,11 @@ import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
 import Badge from "react-bootstrap/Badge";
 import Cookies from "js-cookie";
-import { useContextAuth } from "./../../contexts/AuthContext";
+import { useContextMain } from "../../contexts/MainContext";
 
 export default function MainNavbar() {
-  const { token, setToken } = useContextAuth();
+  const { productsCounter } = useContextMain();
+  const { token, setToken } = useContextMain();
 
   function handelLogOut() {
     Cookies.remove("token");
@@ -105,7 +106,7 @@ export default function MainNavbar() {
                       bg="main"
                       className="position-absolute start-75 translate-middle badge rounded-pill"
                     >
-                      0
+                      {productsCounter}
                     </Badge>
                   </NavLink>
                   {/* // logout */}

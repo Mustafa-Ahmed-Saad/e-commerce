@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 
 export default function SearchHome() {
   // TODO: when mouse up search after 3 seconds like count in course
+  // TODO: handelSearch in home and product
   return (
     <div className="container mt-4 mb-5">
       <Form.Control

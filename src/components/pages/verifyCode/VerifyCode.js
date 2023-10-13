@@ -1,14 +1,15 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useContextAuth } from "../../../contexts/AuthContext";
+
+import { useContextMain } from "../../../contexts/MainContext";
 import { postData } from "../../../helper/api";
 import { codeValidationSchema } from "../../../validation/validation";
 
 export default function VerifyCode() {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
-  const { token } = useContextAuth();
+  const { token } = useContextMain();
   const [isInputFocused, setInputFocused] = useState(false);
 
   useEffect(() => {
