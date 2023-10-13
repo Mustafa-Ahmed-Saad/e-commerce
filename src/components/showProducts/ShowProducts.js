@@ -7,7 +7,7 @@ export default function ShowProducts({ products }) {
       <div className="row gx-2 gy-4">
         {products.length > 0
           ? products.map((product, index) => (
-              <div className="col-3" key={index}>
+              <div className="col-3" key={product.id}>
                 <ProductCard product={product} />
               </div>
             ))

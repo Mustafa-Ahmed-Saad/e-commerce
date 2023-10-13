@@ -24,7 +24,7 @@ export default function Categories() {
     <div className="container my-5">
       <div className="row g-4">
         {categories?.map((category, index) => (
-          <div className="col-4" key={category._id}>
+          <div key={category._id} className="col-4">
             {/* change thi to categoryCard */}
             <CategoryCard category={category} />
           </div>

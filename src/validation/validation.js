@@ -91,7 +91,27 @@ export const forgetPasswordValidationSchema = Yup.object({
 export const codeValidationSchema = Yup.object({
   resetCode: Yup.string()
     .required("resetCode is required")
-    .test("len", "Must be exactly more than 2 characters", (val) => {
+    .test("len", "Must be more than 2 characters", (val) => {
       return val.length > 2;
     }),
+});
+
+export const checkOutValidationSchema = Yup.object({
+  details: Yup.string()
+    .required("details is required")
+    .test("len", "Must be more than 10 characters", (val) => {
+      return val.length > 10;
+    }),
+  phone: Yup.string()
+    .required("Phone number in required")
+    .matches(
+      /^01[0125][0-9]{8}$/,
+      "Enter valid number phone number should start with 01"
+    ),
+  city: Yup.string()
+    .required("city is required")
+    .test("len", "Must be more than 5 characters", (val) => {
+      return val.length > 5;
+    }),
+  payment: Yup.string().required("city is required"),
 });

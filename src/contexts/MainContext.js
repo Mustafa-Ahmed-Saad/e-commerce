@@ -14,6 +14,10 @@ export default function MainContextProvider({ children }) {
   const [productsCounter, setProductsCounter] = useState(
     getStoredProductsCounter()
   );
+  const [productsQuantity, setProductsQuantity] = useState(
+    getStoredProductsQuantity()
+  );
+  const [userId, setUserId] = useState(getStoredUserId());
 
   // Load token from cookies
   useEffect(() => {
@@ -31,9 +35,27 @@ export default function MainContextProvider({ children }) {
     return storedCounter ? JSON.parse(storedCounter) : 0;
   }
 
+  function getStoredProductsQuantity() {
+    const storedQuantity = localStorage.getItem("productsQuantity");
+    return storedQuantity ? JSON.parse(storedQuantity) : {};
+  }
+
+  function getStoredUserId() {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? JSON.parse(storedUserId) : false;
+  }
+
   useEffect(() => {
     localStorage.setItem("productsCounter", JSON.stringify(productsCounter));
   }, [productsCounter]);
+
+  useEffect(() => {
+    localStorage.setItem("productsQuantity", JSON.stringify(productsQuantity));
+  }, [productsQuantity]);
+
+  useEffect(() => {
+    localStorage.setItem("userId", JSON.stringify(userId));
+  }, [userId]);
 
   async function getWishList() {
     if (token) {
@@ -73,6 +95,10 @@ export default function MainContextProvider({ children }) {
         setCartProducts,
         productsCounter,
         setProductsCounter,
+        productsQuantity,
+        setProductsQuantity,
+        userId,
+        setUserId,
       }}
     >
       {children}

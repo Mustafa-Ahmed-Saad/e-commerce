@@ -29,18 +29,28 @@ export async function postData(endPoint, values, head) {
 }
 
 // put function to put data and return data and errorMessage
-export async function putData(endPoint, values) {
-  let dataOrError = await axios
-    .put(`${BaseUrl}${endPoint}`, values)
-    .then(({ data }) => {
-      return [data, false];
-    })
-    .catch((error) => {
-      const errorMessage = error?.response?.data?.message || error?.message;
-      return [false, errorMessage];
-    });
-
-  return dataOrError;
+export async function putData(endPoint, values, head) {
+  if (head) {
+    return await axios
+      .put(`${BaseUrl}${endPoint}`, values, head)
+      .then(({ data }) => {
+        return [data, false];
+      })
+      .catch((error) => {
+        const errorMessage = error?.response?.data?.message || error?.message;
+        return [false, errorMessage];
+      });
+  } else {
+    return await axios
+      .put(`${BaseUrl}${endPoint}`, values)
+      .then(({ data }) => {
+        return [data, false];
+      })
+      .catch((error) => {
+        const errorMessage = error?.response?.data?.message || error?.message;
+        return [false, errorMessage];
+      });
+  }
 }
 
 // get function to return data and errorMessage

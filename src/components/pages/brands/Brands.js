@@ -35,7 +35,7 @@ export default function Brands() {
         <h2 className="fw-bold text-main text-center my-5">All brands</h2>
         <div className="row g-4">
           {brands.map((brand) => (
-            <div className="col-3" key={brand._id}>
+            <div key={brand._id} className="col-3">
               <BrandCard
                 brandDetails={brand}
                 handleShow={handleShow}

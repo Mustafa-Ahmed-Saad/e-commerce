@@ -1,28 +1,33 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
-import { deleteData, getData } from "../../../helper/api";
+import { deleteData, getData, postData, putData } from "../../../helper/api";
 
 export default function Cart() {
   // TODO: set cartProducts and setCartProducts in context
   // TODO: delete setProductCardCounter and productCardCounter from context and inested them use cartProducts and setCartProducts
   // -----------------------------------------------------------------
 
-  // TODO: i stoped here in this component i want to handel when click + (increase product cuntty by 1) and - (decrease ....)
-
   const {
     token,
     cartProducts,
     setCartProducts,
-    setProductsCounter,
     productsCounter,
+    setProductsCounter,
+    productsQuantity,
+    setProductsQuantity,
+    setUserId,
   } = useContextMain();
 
+  const navigate = useNavigate();
   const [allProductsInCart, setAllProductsInCart] = useState([]);
   const [totalCartPrice, setTotalCartPrice] = useState(0);
+  let [cartId, setCartId] = useState(0);
+  let [reqInterval, setReqInterval] = useState(false);
 
-  async function deleteFromCart(id) {
+  async function deleteFromCart(id, index, oldQuantity) {
     const [data, errorMessage] = await deleteData(`/api/v1/cart/${id}`, {
       headers: { token: token },
     });
@@ -34,6 +39,9 @@ export default function Cart() {
       setProductsCounter((prev) => prev - 1);
       setTotalCartPrice(data?.data?.totalCartPrice);
 
+      const pq = { ...productsQuantity };
+      delete pq[id];
+      setProductsQuantity(pq);
       //   const newAllProductsInCart = oldCartProducts.filter((product) => {
 
       // });
@@ -43,6 +51,12 @@ export default function Cart() {
       //   setProductsCounter(newCartProducts.length);
     } else {
       console.log(errorMessage);
+      if (oldQuantity) {
+        const nProducts = [...allProductsInCart];
+        nProducts[index].count = oldQuantity;
+        setAllProductsInCart(nProducts);
+        // TODO: show toast "soorry somthing rong"
+      }
     }
   }
 
@@ -51,21 +65,22 @@ export default function Cart() {
       headers: { token: token },
     });
 
-    console.log("search on total", data);
-
     if (data?.data?.products) {
       // TODO: setWishlistContext and if wishlist handel
+      setCartId(data?.data?._id);
       setAllProductsInCart(data?.data?.products);
       setCartProducts(data?.data?.products);
       setProductsCounter(data?.data?.products.length);
       setTotalCartPrice(data?.data?.totalCartPrice);
+      setUserId(data?.data?.cartOwner);
     } else {
+      setProductsCounter(0);
       console.log(errorMessage);
     }
   }
 
-  async function handleCheckOut(selectedProducts) {
-    console.log(selectedProducts);
+  function handleCheckOut() {
+    navigate(`/check-out/${cartId}`);
   }
 
   async function clearAllProductsFromCart() {
@@ -86,6 +101,58 @@ export default function Cart() {
     }
   }
 
+  async function updateProductQuantity(productId, count, index) {
+    if (count < 0) {
+      count = 0;
+    }
+
+    const newProducts = [...allProductsInCart];
+    newProducts[index].count = count;
+    setAllProductsInCart(newProducts);
+
+    if (reqInterval) {
+      clearTimeout(reqInterval);
+    }
+
+    setReqInterval(
+      setTimeout(async () => {
+        if (count <= 0) {
+          deleteFromCart(productId, index, productsQuantity[productId]);
+        } else {
+          const [data, errorMessage] = await putData(
+            `/api/v1/cart/${productId}`,
+            {
+              count,
+            },
+            {
+              headers: {
+                token: token,
+              },
+            }
+          );
+
+          if (data?.data) {
+            setTotalCartPrice(data?.data?.totalCartPrice);
+            setAllProductsInCart(data?.data?.products);
+            setProductsCounter(data?.numOfCartItems);
+
+            // TODO: delete local storage of productsQuantity after chick out
+
+            const oldQuantity = { ...productsQuantity };
+            oldQuantity[productId] = count;
+            setProductsQuantity(oldQuantity);
+          } else {
+            console.log(errorMessage);
+            const newProducts = [...allProductsInCart];
+
+            newProducts[index].count = productsQuantity[productId];
+            setAllProductsInCart(newProducts);
+          }
+        }
+      }, 1000)
+    );
+  }
+
   useEffect(() => {
     getCartProducts();
   }, []);
@@ -101,9 +168,7 @@ export default function Cart() {
         <div className="col-3 text-end">
           <button
             className="btn btn-main btn-lg fw-bold"
-            onClick={() => {
-              handleCheckOut(allProductsInCart);
-            }}
+            onClick={handleCheckOut}
           >
             check out
           </button>
@@ -120,8 +185,8 @@ export default function Cart() {
       </div>
 
       {allProductsInCart?.map(
-        ({ product: { title, imageCover, id }, price, count }) => (
-          <div className="row my-4 mainShadow rounded-3 transtion-5" key={id}>
+        ({ product: { title, imageCover, id }, price, count }, index) => (
+          <div key={id} className="row my-4 mainShadow rounded-3 transtion-5">
             <div className="col-2">
               <img className="w-100" src={imageCover} alt="product-img" />
             </div>
@@ -143,7 +208,7 @@ export default function Cart() {
                   <button
                     className="btn btn-outline-main"
                     onClick={() => {
-                      console.log(id);
+                      updateProductQuantity(id, count - 1, index);
                     }}
                   >
                     -
@@ -152,7 +217,7 @@ export default function Cart() {
                   <button
                     className="btn btn-outline-main"
                     onClick={() => {
-                      console.log(id);
+                      updateProductQuantity(id, count + 1, index);
                     }}
                   >
                     +
