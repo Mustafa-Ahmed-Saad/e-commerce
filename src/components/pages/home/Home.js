@@ -19,7 +19,7 @@ export default function Home() {
       setProductsToShow(data?.data);
     } else {
       setProducts([]);
-      productsToShow([]);
+      setProductsToShow([]);
       console.log(errorMessage);
     }
   }

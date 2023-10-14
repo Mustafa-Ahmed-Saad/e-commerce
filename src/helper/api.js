@@ -4,7 +4,7 @@ import axios from "axios";
 export const BaseUrl = "https://ecommerce.routemisr.com";
 
 // post function to post data and return data and errorMessage
-export async function postData(endPoint, values, head) {
+export async function postData(endPoint, values, head, param) {
   if (head) {
     return await axios
       .post(`${BaseUrl}${endPoint}`, values, head)

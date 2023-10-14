@@ -39,10 +39,13 @@ export default function CheckOut() {
       //    card
       delete formData.payment;
       const [data, errorMessage] = await postData(
-        `/api/v1/orders/checkout-session/${id}?url=https://mustafa-ahmed-saad.github.io/e-commerce/#/`,
+        `/api/v1/orders/checkout-session/${id}`,
         formData,
         {
           headers: { token: token },
+          params: {
+            url: "https://mustafa-ahmed-saad.github.io/e-commerce/#",
+          },
         }
       );
 

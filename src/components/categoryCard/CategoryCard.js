@@ -6,11 +6,6 @@ import Card from "react-bootstrap/Card";
 export default function CategoryCard({ category }) {
   const navigate = useNavigate();
 
-  function handelLove(id) {
-    // TODO: change hart icon to red and render and call api
-    console.log(id);
-  }
-
   function goToCategory(id) {
     // TODO: can't pass state to subCategory to change header (h2) title
     navigate(`/categories/${id}`, {
