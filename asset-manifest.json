@@ -1,16 +1,11 @@
 {
   "files": {
     "main.css": "/myapp/static/css/main.bf6c2255.css",
-    "main.js": "/myapp/static/js/main.55182188.js",
+    "main.js": "/myapp/static/js/main.6e5ee361.js",
     "static/js/787.46493d11.chunk.js": "/myapp/static/js/787.46493d11.chunk.js",
     "static/media/slider-image-1.jpeg": "/myapp/static/media/slider-image-1.3c3940ee0f1c3b17ff9a.jpeg",
     "static/media/slider-image-3.jpeg": "/myapp/static/media/slider-image-3.7e5c9f7a513f6db6dd5e.jpeg",
     "static/media/slider-image-2.jpeg": "/myapp/static/media/slider-image-2.e510b0de8a4d96a1d5ad.jpeg",
-    "static/media/amazonPay.png": "/myapp/static/media/amazonPay.f1d7ed8012ba50041d47.png",
-    "static/media/googlePlay.jpg": "/myapp/static/media/googlePlay.533791b36a718c63bbf3.jpg",
-    "static/media/appleAppStore.jpg": "/myapp/static/media/appleAppStore.8f504bbba0059f2d004b.jpg",
-    "static/media/masterCard.png": "/myapp/static/media/masterCard.f773dfa116ae6b85ba8e.png",
-    "static/media/PayPal.png": "/myapp/static/media/PayPal.a61280e0b46895630141.png",
     "static/media/22.jpg": "/myapp/static/media/22.fef14ee6b7c34b851c93.jpg",
     "static/media/11.jpg": "/myapp/static/media/11.8e624113ab0d336e7225.jpg",
     "static/media/slick.svg": "/myapp/static/media/slick.2630a3e3eab21c607e21.svg",
@@ -19,11 +14,11 @@
     "static/media/slick.woff": "/myapp/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/myapp/index.html",
     "main.bf6c2255.css.map": "/myapp/static/css/main.bf6c2255.css.map",
-    "main.55182188.js.map": "/myapp/static/js/main.55182188.js.map",
+    "main.6e5ee361.js.map": "/myapp/static/js/main.6e5ee361.js.map",
     "787.46493d11.chunk.js.map": "/myapp/static/js/787.46493d11.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bf6c2255.css",
-    "static/js/main.55182188.js"
+    "static/js/main.6e5ee361.js"
   ]
 }
