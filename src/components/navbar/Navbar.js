@@ -1,5 +1,9 @@
 import React from "react";
-import { faCartShopping, faBars } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartShopping,
+  faBars,
+  faTruck,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -88,6 +92,14 @@ export default function MainNavbar() {
                   to="/brands"
                 >
                   brands
+                </NavLink>
+                {/* my orders */}
+                <NavLink
+                  className="nav-link fw-bold me-2"
+                  aria-current="page"
+                  to="/allorders"
+                >
+                  my orders
                 </NavLink>
               </Nav>
               <Nav className="align-items-center">

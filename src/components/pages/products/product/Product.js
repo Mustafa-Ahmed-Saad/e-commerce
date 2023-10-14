@@ -2,16 +2,61 @@ import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getData } from "../../../../helper/api";
+import { useContextMain } from "../../../../contexts/MainContext";
+import { getData, postData } from "../../../../helper/api";
 import ProductSlider from "../../../productSlider/ProductSlider";
 
 export default function Product() {
   const [product, setProduct] = useState(null);
+  const [isloved, setIsLoved] = useState(false);
   const { id } = useParams();
+  const { token, wishList } = useContextMain();
 
-  function handelLove(id) {
+  function isIdExistInContextWishList(ProductId) {
+    let isExistInOldWishList = false;
+    wishList.forEach((wishlistProduct) => {
+      if (wishlistProduct.id === ProductId) {
+        isExistInOldWishList = true;
+        return;
+      }
+    });
+
+    return isExistInOldWishList;
+  }
+
+  async function handelLove(id) {
     // TODO: change hart icon to red and render and call api
     console.log(id);
+
+    // TODO: check here on this ((wishListProductIds.includes(id) || isIdExistInContextWishList(id)) )
+    if (isIdExistInContextWishList(id)) {
+      // TODO: show tost "product already exist in wish list"
+      console.log("product already exist in wish list");
+    } else {
+      const [data, errorMessage] = await postData(
+        "/api/v1/wishlist",
+        {
+          productId: id,
+        },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+
+      // TODO: conteniue
+      if (data?.data) {
+        //   put data?.data in local storage wishList (setState of wishlist context)
+        //   show tost message data?.message
+        console.log(data?.data);
+        setIsLoved(true);
+        // TODO: and set setWishListProductIds of localstorage context by data?.data
+      } else {
+        //   show tost message "sorry something wrong happen please try but product in wishlist later"
+        console.log(errorMessage);
+      }
+    }
   }
 
   async function getProduct() {
@@ -26,6 +71,12 @@ export default function Product() {
 
   useEffect(() => {
     getProduct();
+  }, []);
+
+  useEffect(() => {
+    if (isIdExistInContextWishList(id)) {
+      setIsLoved(true);
+    }
   }, []);
 
   return (
@@ -58,9 +109,13 @@ export default function Product() {
             <div>
               {/* TODO:handel whenclick Love icon and handel when show all product to make the product in wish list is hart is red */}
               <FontAwesomeIcon
-                className={`d-inline-block ms-auto fa-xl`}
+                className={`d-inline-block ms-auto fa-xl cursor-pointer ${
+                  isloved ? "text-danger" : null
+                }`}
                 icon={faHeart}
-                onClick={() => handelLove(product?.id)}
+                onClick={() => {
+                  handelLove(product?.id);
+                }}
               />
             </div>
           </div>

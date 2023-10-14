@@ -28,7 +28,7 @@ export default function SubCategory() {
       <h2 className="mb-5 text-center fw-bold text-main">
         {state?.subCategoryName ? state?.subCategoryName : "Sub Categories"}
       </h2>
-      <div className="row align-items-center">
+      <div className="row g-4 align-items-center">
         {subCategories?.map((subcategory) => (
           <div className="col-4" key={subcategory._id}>
             <div className="mainShadow border border-2 border-black p-3 text-center">
