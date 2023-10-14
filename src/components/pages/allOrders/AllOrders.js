@@ -47,7 +47,7 @@ export default function AllOrders() {
           ) => (
             <div
               key={id}
-              className="row border border-2 border-success rounded-5 my-5 pt-3 px-5 bg-light"
+              className="row border border-1 border-success rounded-5 my-5 pt-3 px-5 bg-light"
             >
               {/* `id: {id}
             cartItems: "TODO: i will show all produt in cartItems array
@@ -95,7 +95,10 @@ export default function AllOrders() {
                       </span>
                     </div>
                   </div>
-                  <div className="border border-1 border-success rounded-4 p-3 bg-white">
+                  <div
+                    className="border border-1 border-success rounded-4 p-3 bg-white"
+                    style={{ "--bs-border-opacity": ".5" }}
+                  >
                     <div>name: {user.name}</div>
                     <div>email: {user.email}</div>
                     <div>phone: {user.phone}</div>

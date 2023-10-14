@@ -6,14 +6,21 @@ import { getData } from "../../../helper/api";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [productsToShow, setProductsToShow] = useState([]);
+
+  function changeProduct(newProduct) {
+    setProductsToShow(newProduct);
+  }
 
   async function getProducts() {
     const [data, errorMessage] = await getData("/api/v1/products");
 
     if (data?.data) {
       setProducts(data?.data);
+      setProductsToShow(data?.data);
     } else {
       setProducts([]);
+      setProductsToShow([]);
       console.log(errorMessage);
     }
   }
@@ -24,8 +31,8 @@ export default function Products() {
 
   return (
     <>
-      <SearchHome />
-      <ShowProducts products={products} />
+      <SearchHome products={products} setProductsToShow={changeProduct} />
+      <ShowProducts products={productsToShow} />
     </>
   );
 }

@@ -5,7 +5,7 @@ import CategoryCard from "../../categoryCard/CategoryCard";
 export default function Categories() {
   const [categories, setCategories] = useState([]);
 
-  async function getProducts() {
+  async function getCategories() {
     const [data, errorMessage] = await getData("/api/v1/categories");
 
     if (data?.data) {
@@ -17,7 +17,7 @@ export default function Categories() {
   }
 
   useEffect(() => {
-    getProducts();
+    getCategories();
   }, []);
 
   return (

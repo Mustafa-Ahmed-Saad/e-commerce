@@ -39,7 +39,7 @@ export default function CheckOut() {
       //    card
       delete formData.payment;
       const [data, errorMessage] = await postData(
-        `/api/v1/orders/checkout-session/${id}?url=http://localhost:3000`,
+        `/api/v1/orders/checkout-session/${id}?url=https://mustafa-ahmed-saad.github.io/e-commerce/#/`,
         formData,
         {
           headers: { token: token },

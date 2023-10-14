@@ -130,7 +130,7 @@ input#forgetPassword-email:focus + label.forgetPasswordEmail {
 
 .HomeResponsiveSlider .slick-arrow.slick-prev,
 .HomeResponsiveSlider .slick-arrow.slick-next {
-  top: 100% !important;
+  top: 107% !important;
 }
 .HomeResponsiveSlider .slick-arrow.slick-prev {
   left: 47%;

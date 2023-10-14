@@ -9,16 +9,23 @@ export default function Home() {
   // TODO: dont forget add load in this project
 
   const [products, setProducts] = useState([]);
+  const [productsToShow, setProductsToShow] = useState([]);
 
   async function getProducts() {
     const [data, errorMessage] = await getData("/api/v1/products");
 
     if (data?.data) {
       setProducts(data?.data);
+      setProductsToShow(data?.data);
     } else {
       setProducts([]);
+      productsToShow([]);
       console.log(errorMessage);
     }
+  }
+
+  function changeProduct(newProduct) {
+    setProductsToShow(newProduct);
   }
 
   useEffect(() => {
@@ -29,8 +36,8 @@ export default function Home() {
     <>
       <MainSlider />
       <HomeResponsiveSlider />
-      <SearchHome />
-      <ShowProducts products={products} />
+      <SearchHome products={products} setProductsToShow={changeProduct} />
+      <ShowProducts products={productsToShow} />
     </>
   );
 }
