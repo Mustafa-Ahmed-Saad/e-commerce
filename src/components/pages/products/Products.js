@@ -3,16 +3,20 @@ import SearchHome from "../../searchHome/SearchHome";
 // import { myProducts } from "../../damyData/damyData";
 import ShowProducts from "../../showProducts/ShowProducts";
 import { getData } from "../../../helper/api";
+import { useContextMain } from "../../../contexts/MainContext";
+import Loading from "../../locading/Loading";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [productsToShow, setProductsToShow] = useState([]);
+  const { loading, setLoading } = useContextMain();
 
   function changeProduct(newProduct) {
     setProductsToShow(newProduct);
   }
 
   async function getProducts() {
+    setLoading(true);
     const [data, errorMessage] = await getData("/api/v1/products");
 
     if (data?.data) {
@@ -23,16 +27,23 @@ export default function Products() {
       setProductsToShow([]);
       console.log(errorMessage);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
     getProducts();
   }, []);
 
-  return (
-    <>
-      <SearchHome products={products} setProductsToShow={changeProduct} />
-      <ShowProducts products={productsToShow} />
-    </>
-  );
+  let ui = <Loading />;
+
+  if (!loading) {
+    ui = (
+      <>
+        <SearchHome products={products} setProductsToShow={changeProduct} />
+        <ShowProducts products={productsToShow} />
+      </>
+    );
+  }
+
+  return ui;
 }

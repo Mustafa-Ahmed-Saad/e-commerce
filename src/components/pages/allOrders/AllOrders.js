@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useContextMain } from "../../../contexts/MainContext";
 import { getData } from "../../../helper/api";
+import Loading from "../../locading/Loading";
 
 export default function AllOrders() {
-  const { userId } = useContextMain();
+  const { userId, loading, setLoading } = useContextMain();
   const [orders, setOrders] = useState([]);
 
   async function getAllOrders() {
+    setLoading(true);
     if (userId) {
       console.log("userId", userId);
       const [data, errorMessage] = await getData(
@@ -19,6 +21,7 @@ export default function AllOrders() {
       } else {
         console.log(errorMessage);
       }
+      setLoading(false);
     }
   }
 
@@ -26,8 +29,10 @@ export default function AllOrders() {
     getAllOrders();
   }, []);
 
-  return (
-    <>
+  let ui = <Loading />;
+
+  if (!loading) {
+    ui = (
       <div className="container">
         {orders.map(
           (
@@ -49,17 +54,6 @@ export default function AllOrders() {
               key={id}
               className="row border border-1 border-success rounded-5 my-5 pt-3 px-5 bg-light"
             >
-              {/* `id: {id}
-            cartItems: "TODO: i will show all produt in cartItems array
-            (count,price,product{(imageCover, title)})" user:"TODO: i will show
-            user info (name,emailphone)" isDelivered : {isDelivered}
-            isPaid: {isPaid}
-            paymentMethodType: {paymentMethodType}
-            totalOrderPrice:{totalOrderPrice}
-            taxPrice:{taxPrice}
-            shippingPrice:{shippingPrice}
-            date: {createdAt}
-            ` */}
               <div className="col-12">
                 <div className="fs-2 fw-bold">
                   <p className="d-inline-block text-start w-75">
@@ -137,6 +131,8 @@ export default function AllOrders() {
           )
         )}
       </div>
-    </>
-  );
+    );
+  }
+
+  return ui;
 }

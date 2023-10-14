@@ -4,13 +4,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useContextMain } from "../../../../contexts/MainContext";
 import { getData, postData } from "../../../../helper/api";
+import Loading from "../../../locading/Loading";
 import ProductSlider from "../../../productSlider/ProductSlider";
 
 export default function Product() {
   const [product, setProduct] = useState(null);
   const [isloved, setIsLoved] = useState(false);
   const { id } = useParams();
-  const { token, wishList } = useContextMain();
+  const { token, wishList, loading, setLoading } = useContextMain();
 
   function isIdExistInContextWishList(ProductId) {
     let isExistInOldWishList = false;
@@ -25,7 +26,7 @@ export default function Product() {
   }
 
   async function handelLove(id) {
-    // TODO: change hart icon to red and render and call api
+    // TODO: TOST MESSAGE
     console.log(id);
 
     // TODO: check here on this ((wishListProductIds.includes(id) || isIdExistInContextWishList(id)) )
@@ -60,67 +61,73 @@ export default function Product() {
   }
 
   async function getProduct() {
+    setLoading(true);
+
     const [data, errorMessage] = await getData("/api/v1/products/" + id);
 
     if (data?.data) {
       setProduct(data?.data);
+      if (isIdExistInContextWishList(data?.data?.id)) {
+        setIsLoved(true);
+      }
     } else {
       console.log(errorMessage);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
     getProduct();
   }, []);
 
-  useEffect(() => {
-    if (isIdExistInContextWishList(id)) {
-      setIsLoved(true);
-    }
-  }, []);
+  let ui = <Loading />;
 
-  return (
-    <div className="container my-5">
-      <div className="row align-items-center">
-        <div className="col-4">
-          {/* TODO: product slider here and remove this img*/}
-          {/* <img
+  if (!loading) {
+    ui = (
+      <div className="container my-5 pb-5">
+        <div className="row align-items-center">
+          <div className="col-4">
+            {/* TODO: product slider here and remove this img*/}
+            {/* <img
             className="w-100"
             src={productDetails.imageCover}
             alt="product-img"
           /> */}
-          <ProductSlider imgUrls={product?.images} />
-        </div>
-        <div className="col-8">
-          <h2>{product?.title}</h2>
-          <p>{product?.description}</p>
-
-          <div className="d-flex justify-content-between my-4">
-            <div>{product?.price} EGP</div>
-            <div>
-              <FontAwesomeIcon className="text-warning" icon={faStar} />
-              {product?.ratingsAverage}
-            </div>
+            <ProductSlider imgUrls={product?.images} />
           </div>
+          <div className="col-8">
+            <h2>{product?.title}</h2>
+            <p>{product?.description}</p>
 
-          <div className="d-flex justify-content-between ">
-            <button className="btn btn-main w-75">+ Add</button>
+            <div className="d-flex justify-content-between my-4">
+              <div>{product?.price} EGP</div>
+              <div>
+                <FontAwesomeIcon className="text-warning" icon={faStar} />
+                {product?.ratingsAverage}
+              </div>
+            </div>
 
-            <div>
-              {/* TODO:handel whenclick Love icon and handel when show all product to make the product in wish list is hart is red */}
-              <FontAwesomeIcon
-                className={`d-inline-block ms-auto fa-xl cursor-pointer ${
-                  isloved ? "text-danger" : null
-                }`}
-                icon={faHeart}
-                onClick={() => {
-                  handelLove(product?.id);
-                }}
-              />
+            <div className="d-flex justify-content-between ">
+              <button className="btn btn-main w-75">+ Add</button>
+
+              <div>
+                {/* TODO:handel whenclick Love icon and handel when show all product to make the product in wish list is hart is red */}
+                <FontAwesomeIcon
+                  className={`d-inline-block ms-auto fa-xl cursor-pointer ${
+                    isloved ? "text-danger" : null
+                  }`}
+                  icon={faHeart}
+                  onClick={() => {
+                    handelLove(product?.id);
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return ui;
 }

@@ -27,20 +27,11 @@ export const routers = createHashRouter([
       // redirect
       { path: "", element: <Navigate to={"home"} /> }, // redirect to /home
 
-      // TODO: protect another pages not home only
       {
         path: "home",
         element: (
           <ProtectedRoute>
             <Home />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "brands",
-        element: (
-          <ProtectedRoute>
-            <Brands />
           </ProtectedRoute>
         ),
       },
@@ -84,6 +75,15 @@ export const routers = createHashRouter([
         element: (
           <ProtectedRoute>
             <WishList />
+          </ProtectedRoute>
+        ),
+      },
+
+      {
+        path: "brands",
+        element: (
+          <ProtectedRoute>
+            <Brands />
           </ProtectedRoute>
         ),
       },

@@ -4,12 +4,15 @@ import HomeResponsiveSlider from "../../homeResponsiveSlider/HomeResponsiveSlide
 import MainSlider from "../../mainSlider/MainSlider";
 import SearchHome from "../../searchHome/SearchHome";
 import { getData } from "../../../helper/api";
+import { useContextMain } from "../../../contexts/MainContext";
+import Loading from "../../locading/Loading";
 
 export default function Home() {
   // TODO: dont forget add load in this project
 
   const [products, setProducts] = useState([]);
   const [productsToShow, setProductsToShow] = useState([]);
+  const { loading, setLoading } = useContextMain();
 
   async function getProducts() {
     const [data, errorMessage] = await getData("/api/v1/products");
@@ -22,6 +25,7 @@ export default function Home() {
       setProductsToShow([]);
       console.log(errorMessage);
     }
+    setLoading(false);
   }
 
   function changeProduct(newProduct) {
@@ -29,15 +33,22 @@ export default function Home() {
   }
 
   useEffect(() => {
+    setLoading(true);
     getProducts();
   }, []);
 
-  return (
-    <>
-      <MainSlider />
-      <HomeResponsiveSlider />
-      <SearchHome products={products} setProductsToShow={changeProduct} />
-      <ShowProducts products={productsToShow} />
-    </>
-  );
+  // return
+  let ui = <Loading />;
+  if (!loading) {
+    ui = (
+      <>
+        <MainSlider />
+        <HomeResponsiveSlider />
+        <SearchHome products={products} setProductsToShow={changeProduct} />
+        <ShowProducts products={productsToShow} />
+      </>
+    );
+  }
+
+  return ui;
 }

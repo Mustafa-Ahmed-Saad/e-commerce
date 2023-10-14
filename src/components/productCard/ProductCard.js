@@ -16,7 +16,6 @@ export default function ProductCard({ product }) {
   const [wishListProductIds, setWishListProductIds] = useState([]);
 
   async function addToCart(id) {
-    // TODO: check if in product card list increase it's countaty by 1 only
     const [data, errorMessage] = await postData(
       "/api/v1/cart",
       {
@@ -40,7 +39,6 @@ export default function ProductCard({ product }) {
   }
 
   async function handelLove(id) {
-    // TODO: change hart icon to red and render and call api
     // TODO: add to wish list
     console.log(id);
 
@@ -60,10 +58,9 @@ export default function ProductCard({ product }) {
         }
       );
 
-      // TODO: conteniue
       if (data?.data) {
-        //   put data?.data in local storage wishList (setState of wishlist context)
-        //   show tost message data?.message
+        //  TODO: put data?.data in local storage wishList (setState of wishlist context)
+        //  TODO: show tost message data?.message
 
         setWishListProductIds(data?.data);
       } else {
@@ -75,8 +72,6 @@ export default function ProductCard({ product }) {
 
   function goToProduct(e, id) {
     const targetElement = e.target;
-    // TODO: add to cart
-    // console.log(e.target.classList.contains("addToCart"));
 
     if (
       !targetElement.classList.contains("addToCart") &&
@@ -148,14 +143,6 @@ export default function ProductCard({ product }) {
             >
               + add
             </Button>
-            {/* TODO:handel whenclick Love icon and handel when show all product to make the product in wish list is hart is red */}
-            {/* <FontAwesomeIcon
-              className={`d-inline-block ms-auto fa-xl ${
-                product.loved ? "text-danger" : null
-              }`}
-              icon={faHeart}
-              onClick={() => handelLove(product.id)}
-            /> */}
             <span className="heartIcon" onClick={() => handelLove(product.id)}>
               <FontAwesomeIcon
                 className={`d-inline-block ms-auto fa-xl heartIcon ${

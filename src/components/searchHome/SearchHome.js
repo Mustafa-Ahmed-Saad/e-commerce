@@ -4,14 +4,9 @@ import Form from "react-bootstrap/Form";
 export default function SearchHome({ products, setProductsToShow }) {
   const [searchInterval, setSearchInterval] = useState(false);
 
-  // TODO: when mouse up search after 3 seconds like count in course
-  // TODO: handelSearch in home and product
-
   console.log(products);
 
   function handelSearch(e) {
-    console.log(e.target.value);
-
     if (searchInterval) {
       clearTimeout(searchInterval);
     }

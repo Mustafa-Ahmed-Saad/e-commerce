@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { getData } from "../helper/api";
+import Loading from "./../components/locading/Loading";
 
 const MainContext = createContext();
 export function useContextMain() {
@@ -18,6 +19,7 @@ export default function MainContextProvider({ children }) {
     getStoredProductsQuantity()
   );
   const [userId, setUserId] = useState(getStoredUserId());
+  const [loading, setLoading] = useState(false);
 
   // Load token from cookies
   useEffect(() => {
@@ -59,7 +61,6 @@ export default function MainContextProvider({ children }) {
 
   async function getWishList() {
     if (token) {
-      // TODO: getWishList and call API...
       const [data, errorMessage] = await getData("/api/v1/wishlist/", {
         headers: {
           token: token,
@@ -99,6 +100,8 @@ export default function MainContextProvider({ children }) {
         setProductsQuantity,
         userId,
         setUserId,
+        loading,
+        setLoading,
       }}
     >
       {children}
