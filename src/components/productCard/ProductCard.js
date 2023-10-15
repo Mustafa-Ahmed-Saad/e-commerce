@@ -8,6 +8,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { postData } from "../../helper/api";
 import { useContextMain } from "../../contexts/MainContext";
+import MyToster from "../toster/MyToster";
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
@@ -44,6 +45,8 @@ export default function ProductCard({ product }) {
 
     if (wishListProductIds.includes(id) || isIdExistInContextWishList(id)) {
       // TODO: show tost "product already exist in wish list"
+      <MyToster type="success" message="Successfully" />;
+
       console.log("product already exist in wish list");
     } else {
       const [data, errorMessage] = await postData(
