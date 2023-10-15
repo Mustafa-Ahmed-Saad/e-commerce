@@ -1,0 +1,27 @@
+/******************************* media query *******************************/
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  #mainSlider .home-slider img {
+    height: 242px;
+    /* display: none !important; */
+  }
+}
+
+@media screen and (min-width: 992px) {
+  #mainSlider .home-slider img {
+    height: 430px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  #mainSlider .home-slider img {
+    height: 510px;
+    /* display: none !important; */
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  #mainSlider .home-slider img {
+    height: 590px;
+    /* display: none !important; */
+  }
+}

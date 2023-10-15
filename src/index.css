@@ -128,17 +128,6 @@ input#forgetPassword-email:focus + label.forgetPasswordEmail {
   outline: none;
 }
 
-.HomeResponsiveSlider .slick-arrow.slick-prev,
-.HomeResponsiveSlider .slick-arrow.slick-next {
-  top: 107% !important;
-}
-.HomeResponsiveSlider .slick-arrow.slick-prev {
-  left: 47%;
-}
-.HomeResponsiveSlider .slick-arrow.slick-next {
-  right: 47%;
-}
-
 .HomeResponsiveSlider .slick-arrow.slick-disabledslick-arrow {
   opacity: 0.5 !important;
 }

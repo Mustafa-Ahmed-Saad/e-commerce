@@ -7,6 +7,7 @@ import sliderImg1 from "../../Assets/Images/slider-image-1.jpeg";
 import { getData } from "../../helper/api";
 import SamplePrevArrow from "./../samplePrevArrow/SamplePrevArrow";
 import SampleNextArrow from "./../sampleNextArrow/SampleNextArrow";
+import "./HomeResponsiveSlider.css";
 
 const settings = {
   dots: false,
@@ -26,16 +27,16 @@ const settings = {
       breakpoint: 1024,
       settings: {
         slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToScroll: 1,
         infinite: true,
-        dots: true,
+        dots: false,
       },
     },
     {
       breakpoint: 600,
       settings: {
         slidesToShow: 2,
-        slidesToScroll: 2,
+        slidesToScroll: 1,
         initialSlide: 2,
       },
     },
@@ -73,7 +74,7 @@ export default function HomeResponsiveSlider() {
   }, []);
 
   return (
-    <div className="container-xxl py-5">
+    <div className="container-xxl py-5" id="homeResponsiveSlider">
       <h2 className="text-center mb-2 fw-bold">Categories</h2>
       <Slider {...settings} className="HomeResponsiveSlider">
         {categories.map(({ _id, name, image }) => (
@@ -86,7 +87,7 @@ export default function HomeResponsiveSlider() {
           >
             <img
               className="w-100 object-position-center object-fit-cover"
-              style={{ height: "230px" }}
+              // style={{ height: "230px" }}
               src={image}
               alt="slider-img"
             />

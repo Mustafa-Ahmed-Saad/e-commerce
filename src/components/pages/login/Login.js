@@ -99,14 +99,14 @@ export default function Login() {
             />
           ) : null}
         </div>
+        <p
+          type="button"
+          onClick={handelForgetPassword}
+          className="align-self-start fs-5 fw-bold forget-password transtion-5"
+        >
+          forget your password ?
+        </p>
         <div className="d-flex align-items-center justify-content-between">
-          <p
-            type="button"
-            onClick={handelForgetPassword}
-            className="align-self-start fs-5 fw-bold forget-password transtion-5"
-          >
-            forget your password ?
-          </p>
           {/* submit btn */}
           <button
             className={`btn btn-lg d-block ms-auto ${
