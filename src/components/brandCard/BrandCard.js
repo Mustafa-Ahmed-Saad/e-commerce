@@ -1,10 +1,14 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
+import { useContextMain } from "../../contexts/MainContext";
 import { getData } from "../../helper/api";
 
 export default function BrandCard({ brandDetails, handleShow, handleClose }) {
+  const { loading, setLoading } = useContextMain();
+
   async function getBrand(id) {
+    setLoading(true);
     const [data, errorMessage] = await getData("/api/v1/brands/" + id);
     if (data?.data) {
       handleShow(data?.data);
@@ -12,6 +16,7 @@ export default function BrandCard({ brandDetails, handleShow, handleClose }) {
       console.log(errorMessage);
       handleClose();
     }
+    setLoading(false);
   }
 
   return (

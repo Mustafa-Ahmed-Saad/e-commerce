@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useContextMain } from "../../contexts/MainContext";
 import Login from "../pages/login/Login";
+import MyToster from "../toster/MyToster";
 
 export default function ProtectedRoute({ children }) {
   const { token } = useContextMain();
@@ -12,5 +13,10 @@ export default function ProtectedRoute({ children }) {
   if (token) {
     ui = children;
   }
-  return ui;
+  return (
+    <>
+      {ui}
+      <MyToster />
+    </>
+  );
 }

@@ -1,9 +1,11 @@
 import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useContextMain } from "../../../../contexts/MainContext";
 import { getData, postData } from "../../../../helper/api";
+import { notify } from "../../../../helper/toastFire";
 import Loading from "../../../locading/Loading";
 import ProductSlider from "../../../productSlider/ProductSlider";
 
@@ -11,7 +13,14 @@ export default function Product() {
   const [product, setProduct] = useState(null);
   const [isloved, setIsLoved] = useState(false);
   const { id } = useParams();
-  const { token, wishList, loading, setLoading } = useContextMain();
+  const {
+    token,
+    wishList,
+    loading,
+    setLoading,
+    setCartProducts,
+    setProductsCounter,
+  } = useContextMain();
 
   function isIdExistInContextWishList(ProductId) {
     let isExistInOldWishList = false;
@@ -26,14 +35,11 @@ export default function Product() {
   }
 
   async function handelLove(id) {
-    // TODO: TOST MESSAGE
-    console.log(id);
-
     // TODO: check here on this ((wishListProductIds.includes(id) || isIdExistInContextWishList(id)) )
     if (isIdExistInContextWishList(id)) {
-      // TODO: show tost "product already exist in wish list"
-      console.log("product already exist in wish list");
+      notify("success", "product already exist in wish list");
     } else {
+      let tLoading = notify("loading", `loading...`);
       const [data, errorMessage] = await postData(
         "/api/v1/wishlist",
         {
@@ -49,14 +55,42 @@ export default function Product() {
       // TODO: conteniue
       if (data?.data) {
         //   put data?.data in local storage wishList (setState of wishlist context)
-        //   show tost message data?.message
-        console.log(data?.data);
+        toast.dismiss(tLoading);
+        notify("success", `${data?.message}`);
         setIsLoved(true);
         // TODO: and set setWishListProductIds of localstorage context by data?.data
       } else {
         //   show tost message "sorry something wrong happen please try but product in wishlist later"
-        console.log(errorMessage);
+        toast.dismiss(tLoading);
+        notify("error", `Opps ${errorMessage}`);
       }
+    }
+  }
+
+  async function addToCart(id) {
+    let tLoading = notify("loading", `loading...`);
+    const [data, errorMessage] = await postData(
+      "/api/v1/cart",
+      {
+        productId: id,
+      },
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
+
+    if (data?.data?.products) {
+      // make like wishList an create context for product cart and set this peoduct context from here
+      toast.dismiss(tLoading);
+      notify("success", `${data?.message}`);
+      // here also return totalprice in (data?.data?.totalCartPrice)
+      setCartProducts(data?.data?.products);
+      setProductsCounter(data?.data?.products.length);
+    } else {
+      toast.dismiss(tLoading);
+      notify("error", `Opps ${errorMessage}`);
     }
   }
 
@@ -108,7 +142,14 @@ export default function Product() {
             </div>
 
             <div className="d-flex justify-content-between ">
-              <button className="btn btn-main w-75">+ Add</button>
+              <button
+                className="btn btn-main w-75"
+                onClick={() => {
+                  addToCart(product?.id);
+                }}
+              >
+                + Add
+              </button>
 
               <div>
                 {/* TODO:handel whenclick Love icon and handel when show all product to make the product in wish list is hart is red */}

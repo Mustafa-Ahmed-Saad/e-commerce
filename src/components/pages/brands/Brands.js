@@ -19,6 +19,7 @@ export default function Brands() {
 
   async function getBrands() {
     setLoading(true);
+
     const [data, errorMessage] = await getData("/api/v1/brands");
 
     if (data?.data) {

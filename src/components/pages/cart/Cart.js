@@ -1,9 +1,11 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
 import { deleteData, getData, postData, putData } from "../../../helper/api";
+import { notify } from "../../../helper/toastFire";
 import Loading from "../../locading/Loading";
 
 export default function Cart() {
@@ -30,14 +32,15 @@ export default function Cart() {
   const { loading, setLoading } = useContextMain();
 
   async function deleteFromCart(id, index, oldQuantity) {
-    setLoading(true);
+    let tLoading = notify("loading", `loading...`);
     const [data, errorMessage] = await deleteData(`/api/v1/cart/${id}`, {
       headers: { token: token },
     });
 
     if (data?.data) {
       //     TODO: setWishlistContext and if wishlist handel
-      console.log("delete from cart", data?.data);
+      toast.dismiss(tLoading);
+      notify("success", "product deleted successfully from cart");
       setAllProductsInCart(data?.data?.products);
       setProductsCounter((prev) => prev - 1);
       setTotalCartPrice(data?.data?.totalCartPrice);
@@ -53,7 +56,8 @@ export default function Cart() {
       //   setCartProducts(newCartProducts);
       //   setProductsCounter(newCartProducts.length);
     } else {
-      console.log(errorMessage);
+      toast.dismiss(tLoading);
+      notify("error", `Opps ${errorMessage}`);
       if (oldQuantity) {
         const nProducts = [...allProductsInCart];
         nProducts[index].count = oldQuantity;
@@ -61,7 +65,6 @@ export default function Cart() {
         // TODO: show toast "soorry somthing rong"
       }
     }
-    setLoading(false);
   }
 
   async function getCartProducts() {
@@ -128,6 +131,7 @@ export default function Cart() {
         if (count <= 0) {
           deleteFromCart(productId, index, productsQuantity[productId]);
         } else {
+          let tLoading = notify("loading", `loading...`);
           const [data, errorMessage] = await putData(
             `/api/v1/cart/${productId}`,
             {
@@ -141,6 +145,8 @@ export default function Cart() {
           );
 
           if (data?.data) {
+            toast.dismiss(tLoading);
+            notify("success", "Successfully");
             setTotalCartPrice(data?.data?.totalCartPrice);
             setAllProductsInCart(data?.data?.products);
             setProductsCounter(data?.numOfCartItems);
@@ -151,7 +157,8 @@ export default function Cart() {
             oldQuantity[productId] = count;
             setProductsQuantity(oldQuantity);
           } else {
-            console.log(errorMessage);
+            toast.dismiss(tLoading);
+            notify("error", `Opps ${errorMessage}`);
             const newProducts = [...allProductsInCart];
 
             newProducts[index].count = productsQuantity[productId];
@@ -171,87 +178,98 @@ export default function Cart() {
   let ui = <Loading />;
 
   if (!loading) {
-    ui = (
-      <div className="container bg-body-tertiary p-5 my-5">
-        <div className="row mb-4 justify-content-between align-align-items-start p-3 rounded-3">
-          <div className="col-9">
-            <h2 className="fw-bold mb-4">Cart Shop</h2>
+    ui =
+      allProductsInCart?.length > 0 ? (
+        <div className="container bg-body-tertiary p-5 my-5">
+          <div className="row mb-4 justify-content-between align-align-items-start p-3 rounded-3">
+            <div className="col-9">
+              <h2 className="fw-bold mb-4">Cart Shop</h2>
+            </div>
+            <div className="col-3 text-end">
+              <button
+                className="btn btn-main btn-lg fw-bold"
+                onClick={handleCheckOut}
+              >
+                check out
+              </button>
+            </div>
           </div>
-          <div className="col-3 text-end">
-            <button
-              className="btn btn-main btn-lg fw-bold"
-              onClick={handleCheckOut}
-            >
-              check out
-            </button>
+          <div className="row justify-content-between align-items-center p-3 bg-body-secondary rounded-3">
+            <div className="col-7 fs-4 fw-bold">
+              total price: <span className="text-main">{totalCartPrice}</span>{" "}
+            </div>
+            <div className="col-5 text-end fs-4 fw-bold">
+              total number of items:{" "}
+              <span className="text-main">{productsCounter}</span>
+            </div>
           </div>
-        </div>
-        <div className="row justify-content-between align-items-center p-3 bg-body-secondary rounded-3">
-          <div className="col-7 fs-4 fw-bold">
-            total price: <span className="text-main">{totalCartPrice}</span>{" "}
-          </div>
-          <div className="col-5 text-end fs-4 fw-bold">
-            total number of items:{" "}
-            <span className="text-main">{productsCounter}</span>
-          </div>
-        </div>
 
-        {allProductsInCart?.map(
-          ({ product: { title, imageCover, id }, price, count }, index) => (
-            <div key={id} className="row my-4 mainShadow rounded-3 transtion-5">
-              <div className="col-2">
-                <img className="w-100" src={imageCover} alt="product-img" />
-              </div>
-              <div className="col-10">
-                <div className="row h-100 align-items-center justify-content-between">
-                  <div className="col-10">
-                    <h3 className="fs-5 fw-bold mb-2">{title}</h3>
-                    <div className="text-main fw-bold mb-1">{price} EGP</div>
-                    <button
-                      className="btn border-0 ps-0 text-danger"
-                      onClick={() => {
-                        deleteFromCart(id);
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faTrash} /> remove
-                    </button>
-                  </div>
-                  <div className="col-2">
-                    <button
-                      className="btn btn-outline-main"
-                      onClick={() => {
-                        updateProductQuantity(id, count - 1, index);
-                      }}
-                    >
-                      -
-                    </button>
-                    <span className="mx-3">{count}</span>
-                    <button
-                      className="btn btn-outline-main"
-                      onClick={() => {
-                        updateProductQuantity(id, count + 1, index);
-                      }}
-                    >
-                      +
-                    </button>
+          {allProductsInCart?.map(
+            ({ product: { title, imageCover, id }, price, count }, index) => (
+              <div
+                key={id}
+                className="row my-4 mainShadow rounded-3 transtion-5"
+              >
+                <div className="col-2">
+                  <img className="w-100" src={imageCover} alt="product-img" />
+                </div>
+                <div className="col-10">
+                  <div className="row h-100 align-items-center justify-content-between">
+                    <div className="col-10">
+                      <h3 className="fs-5 fw-bold mb-2">{title}</h3>
+                      <div className="text-main fw-bold mb-1">{price} EGP</div>
+                      <button
+                        className="btn border-0 ps-0 text-danger"
+                        onClick={() => {
+                          deleteFromCart(id);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTrash} /> remove
+                      </button>
+                    </div>
+                    <div className="col-2">
+                      <button
+                        className="btn btn-outline-main"
+                        onClick={() => {
+                          updateProductQuantity(id, count - 1, index);
+                        }}
+                      >
+                        -
+                      </button>
+                      <span className="mx-3">{count}</span>
+                      <button
+                        className="btn btn-outline-main"
+                        onClick={() => {
+                          updateProductQuantity(id, count + 1, index);
+                        }}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )
-        )}
+            )
+          )}
 
-        <div className="text-center mt-5">
-          <button
-            className="btn btn-outline-danger btn-lg fw-bold"
-            onClick={clearAllProductsFromCart}
-          >
-            <span className="me-2">clear all</span>{" "}
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
+          <div className="text-center mt-5">
+            <button
+              className="btn btn-outline-danger btn-lg fw-bold"
+              onClick={clearAllProductsFromCart}
+            >
+              <span className="me-2">clear all</span>{" "}
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
+          </div>
         </div>
-      </div>
-    );
+      ) : (
+        <div className="container text-center my-5">
+          <p className="fw-bold fs-5">
+            sorry you do not add any product to your cart{" "}
+            <Link to="/products">go to products</Link>
+          </p>
+        </div>
+      );
   }
 
   return ui;

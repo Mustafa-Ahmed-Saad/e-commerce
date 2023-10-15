@@ -124,8 +124,15 @@ export const routers = createHashRouter([
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
 
-      { path: "test", element: <Test /> },
-      { path: "*", element: <NotFound /> },
+      // { path: "test", element: <Test /> },
+      {
+        path: "*",
+        element: (
+          <ProtectedRoute>
+            <NotFound />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
