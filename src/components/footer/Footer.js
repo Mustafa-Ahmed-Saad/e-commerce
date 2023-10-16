@@ -26,7 +26,7 @@ export default function Footer() {
         <div className="row border border-1 border-start-0 border-end-0 border-top-0 pb-4">
           <div className="col-12 col-lg-9">
             <input
-              className="form-control"
+              className="form-control mb-2"
               type="email"
               placeholder="Email..."
               onChange={(e) => {
