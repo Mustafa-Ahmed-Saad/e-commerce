@@ -40,7 +40,10 @@ export default function SubCategory() {
         </h2>
         <div className="row g-4 align-items-center">
           {subCategories?.map((subcategory) => (
-            <div className="col-4" key={subcategory._id}>
+            <div
+              className="col-12 col-sm-6 col-md-4 col-xl-3"
+              key={subcategory._id}
+            >
               <div className="mainShadow border border-2 border-black p-3 text-center cursor-pointer">
                 <h3>{subcategory?.name}</h3>
               </div>
