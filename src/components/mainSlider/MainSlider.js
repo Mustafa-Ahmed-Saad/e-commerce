@@ -62,12 +62,12 @@ export default function MainSlider() {
         <div className="col-12 ps-0 pe-0 col-md-3 col-lg-4">
           <div className="row g-0">
             <div className="col-12 col-sm-6 col-md-12">
-              <div className="bg-main w-100">
+              <div className="w-100">
                 <img width="100%" src={asideImg1} alt="aside-img1" />
               </div>
             </div>
             <div className="col-12 col-sm-6 col-md-12">
-              <div className="bg-main w-100">
+              <div className="w-100">
                 <img width="100%" src={asideImg2} alt="aside-img2" />
               </div>
             </div>
