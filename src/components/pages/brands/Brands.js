@@ -44,7 +44,10 @@ export default function Brands() {
           <h2 className="fw-bold text-main text-center my-5">All brands</h2>
           <div className="row g-4">
             {brands.map((brand) => (
-              <div key={brand._id} className="col-3">
+              <div
+                key={brand._id}
+                className="col-12 col-md-6 col-lg-4 col-xl-3"
+              >
                 <BrandCard
                   brandDetails={brand}
                   handleShow={handleShow}

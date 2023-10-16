@@ -1,4 +1,4 @@
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -100,13 +100,16 @@ export default function WishList() {
           <h2 className="fw-bold mb-4">My wish List</h2>
 
           {allProductInWishList?.map(({ title, price, imageCover, id }) => (
-            <div className="row my-4 mainShadow rounded-3 transtion-5" key={id}>
-              <div className="col-2">
+            <div
+              className="row my-4 mainShadow rounded-3 transtion-5 flex-column flex-sm-row"
+              key={id}
+            >
+              <div className="col-12 col-sm-2">
                 <img className="w-100" src={imageCover} alt="product-img" />
               </div>
-              <div className="col-10">
-                <div className="row h-100 align-items-center justify-content-between">
-                  <div className="col-10">
+              <div className="col-12 col-sm-10">
+                <div className="row h-100 align-items-center justify-content-between flex-column flex-sm-row">
+                  <div className="col-12 col-sm-10">
                     <h3 className="fs-5 fw-bold mb-2">{title}</h3>
                     <div className="text-main fw-bold mb-1">{price} EGP</div>
                     <button
@@ -118,14 +121,24 @@ export default function WishList() {
                       <FontAwesomeIcon icon={faTrash} /> remove
                     </button>
                   </div>
-                  <div className="col-2">
+                  <div className="col-12 col-sm-2 text-end">
                     <button
+                      style={{ minWidth: "64px" }}
                       className="btn btn-outline-main"
                       onClick={() => {
                         addToCart(id);
                       }}
                     >
-                      add to cart
+                      <span className="d-none d-lg-inline-block text-nowrap">
+                        add to cart
+                      </span>
+                      <span className="d-lg-none">
+                        <span className="fs-3">+</span>
+                        <FontAwesomeIcon
+                          icon={faCartShopping}
+                          className="text-main fa-lg"
+                        />
+                      </span>
                     </button>
                   </div>
                 </div>

@@ -120,7 +120,7 @@ export default function Product() {
     ui = (
       <div className="container my-5 pb-5">
         <div className="row align-items-center">
-          <div className="col-4">
+          <div className="col-12 col-md-6 col-lg-4">
             {/* TODO: product slider here and remove this img*/}
             {/* <img
             className="w-100"
@@ -129,7 +129,7 @@ export default function Product() {
           /> */}
             <ProductSlider imgUrls={product?.images} />
           </div>
-          <div className="col-8">
+          <div className="col-12 col-md-6 col-lg-8">
             <h2>{product?.title}</h2>
             <p>{product?.description}</p>
 

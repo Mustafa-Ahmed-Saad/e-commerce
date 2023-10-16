@@ -182,10 +182,10 @@ export default function Cart() {
       allProductsInCart?.length > 0 ? (
         <div className="container bg-body-tertiary p-5 my-5">
           <div className="row mb-4 justify-content-between align-align-items-start p-3 rounded-3">
-            <div className="col-9">
+            <div className="col-12 col-sm-6">
               <h2 className="fw-bold mb-4">Cart Shop</h2>
             </div>
-            <div className="col-3 text-end">
+            <div className="col-12 text-start col-sm-6 text-sm-end">
               <button
                 className="btn btn-main btn-lg fw-bold"
                 onClick={handleCheckOut}
@@ -195,12 +195,12 @@ export default function Cart() {
             </div>
           </div>
           <div className="row justify-content-between align-items-center p-3 bg-body-secondary rounded-3">
-            <div className="col-7 fs-4 fw-bold">
+            <div className="col-12 col-sm-6 fs-4 fw-bold">
               total price: <span className="text-main">{totalCartPrice}</span>{" "}
             </div>
-            <div className="col-5 text-end fs-4 fw-bold">
-              total number of items:{" "}
-              <span className="text-main">{productsCounter}</span>
+            <div className="col-12 col-sm-6 text-sm-end fs-4 fw-bold">
+              <span className="d-none d-md-inline-block">total number of</span>{" "}
+              items: <span className="text-main">{productsCounter}</span>
             </div>
           </div>
 
@@ -208,14 +208,14 @@ export default function Cart() {
             ({ product: { title, imageCover, id }, price, count }, index) => (
               <div
                 key={id}
-                className="row my-4 mainShadow rounded-3 transtion-5"
+                className="row my-4 mainShadow rounded-3 transtion-5 flex-column flex-md-row"
               >
-                <div className="col-2">
+                <div className="col-12 col-md-2">
                   <img className="w-100" src={imageCover} alt="product-img" />
                 </div>
-                <div className="col-10">
-                  <div className="row h-100 align-items-center justify-content-between">
-                    <div className="col-10">
+                <div className="col-12 col-md-10">
+                  <div className="row h-100 align-items-center justify-content-between flex-column flex-sm-row">
+                    <div className="col-12 col-sm-11  col-md-10">
                       <h3 className="fs-5 fw-bold mb-2">{title}</h3>
                       <div className="text-main fw-bold mb-1">{price} EGP</div>
                       <button
@@ -227,7 +227,7 @@ export default function Cart() {
                         <FontAwesomeIcon icon={faTrash} /> remove
                       </button>
                     </div>
-                    <div className="col-2">
+                    <div className="col-12 col-sm-1 col-md-2 d-flex align-items-center justify-content-center flex-row flex-sm-column-reverse flex-lg-row">
                       <button
                         className="btn btn-outline-main"
                         onClick={() => {

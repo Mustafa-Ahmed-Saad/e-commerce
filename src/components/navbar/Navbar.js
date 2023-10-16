@@ -25,6 +25,7 @@ export default function MainNavbar() {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
+        {/* logo */}
         <div>
           <FontAwesomeIcon
             icon={faCartShopping}
@@ -103,7 +104,7 @@ export default function MainNavbar() {
                 </NavLink>
               </Nav>
               <Nav className="align-items-center">
-                <div className="d-flex flex-sm-column flex-lg-row">
+                <div className="d-flex flex-column flex-lg-row align-items-center">
                   {/* // cart icon */}
                   <NavLink
                     className="nav-link fw-bold position-relative mb-sm-4 mb-lg-0 me-2 "

@@ -54,22 +54,26 @@ export default function AllOrders() {
             ) => (
               <div
                 key={id}
-                className="row border border-1 border-success rounded-5 my-5 pt-3 px-5 bg-light"
+                className="border border-1 border-success rounded-5 my-5 pt-3 px-5 bg-light"
               >
-                <div className="col-12">
-                  <div className="fs-2 fw-bold">
-                    <p className="d-inline-block text-start w-75">
-                      order id: {id}{" "}
-                    </p>
+                <div>
+                  <div className="row fs-2 fw-bold flex-column-reverse flex-sm-row">
+                    <div className="col-12 col-sm-8">
+                      <p className="d-inline-block text-start">
+                        order id: {id}
+                      </p>
+                    </div>
 
-                    <p className="d-inline-block text-end w-25">
-                      <span className="text-main"> {index + 1}</span>
-                      {" / "}
-                      {orders.length}
-                    </p>
+                    <div className="col-12 col-sm-4">
+                      <p className="d-inline-block text-end">
+                        <span className="text-main"> {index + 1}</span>
+                        {" / "}
+                        {orders.length}
+                      </p>
+                    </div>
                   </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <div>
+                  <div className="row flex-column-reverse flex-md-row">
+                    <div className="col-12 col-md-8">
                       <div>date: {createdAt}</div>
                       <div>paymentMethodType: {paymentMethodType}</div>
                       <div>isPaid: {isPaid ? "yes" : "no"}</div>
@@ -94,12 +98,22 @@ export default function AllOrders() {
                       </div>
                     </div>
                     <div
-                      className="border border-1 border-success rounded-4 p-3 bg-white"
+                      className="col-12 col-md-4 border border-1 border-success rounded-4 p-3 bg-white align-self-baseline mb-4 mb-md-0"
                       style={{ "--bs-border-opacity": ".5" }}
                     >
-                      <div>name: {user.name}</div>
-                      <div>email: {user.email}</div>
-                      <div>phone: {user.phone}</div>
+                      <div>
+                        <span className="fw-bold">name:</span>
+                        <span className="text-break"> {user.name}</span>
+                      </div>
+                      <div>
+                        <span className="fw-bold">email:</span>
+
+                        <span className="text-break"> {user.email}</span>
+                      </div>
+                      <div>
+                        <span className="fw-bold">phone:</span>
+                        <span className="text-break"> {user.phone}</span>
+                      </div>
                     </div>
                   </div>
                   <div className="border border-2 border-secondary border-start-0 border-end-0 border-bottom-0 py-4 my-2">
@@ -112,9 +126,8 @@ export default function AllOrders() {
                         <div
                           key={id}
                           className="row bg-body-secondary rounded-4 p-3 mb-2 align-items-center"
-                          style={{ height: "160px" }}
                         >
-                          <div className="col-2">
+                          <div className="col-12 col-lg-2">
                             <img
                               className="w-100 object-fit-contain object-position-center"
                               height={"100px"}
@@ -122,13 +135,22 @@ export default function AllOrders() {
                               alt="product-img"
                             />
                           </div>
-                          <div className="col-7">
+                          <div className="col-12 col-lg-7">
                             <div className="fw-bold">{title}</div>
-                            <div className="text-secondary">id: {id}</div>
+                            <div className="text-secondary mx-2">
+                              <span className="fw-bold">id:</span>
+                              <span className="text-break">{id}</span>
+                            </div>
                           </div>
-                          <div className="col-3 text-end">
-                            <div className="text-main fw-bold">{price} EGP</div>
-                            <div className="text-secondary">Qty: {count}</div>
+                          <div className="row align-items-center px-0 col-12 col-lg-3 text-end flex-column-reverse flex-sm-row-reverse flex-lg-column">
+                            <div className="col-12 col-sm-6 col-lg-12 text-start text-sm-end text-main fw-bold">
+                              {price} EGP
+                            </div>
+                            <div className="col-12 col-sm-6 col-lg-12 text-start text-lg-end text-secondary my-2">
+                              <span className="bg-dark-subtle py-1 px-2 rounded-3">
+                                Qty: {count}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       )

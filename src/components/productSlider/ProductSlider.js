@@ -12,7 +12,7 @@ export default function ProductSlider({ imgUrls }) {
     },
     dots: true,
     arrows: false,
-    dotsClass: "slick-dots slick-thumb",
+    dotsClass: "slick-dots slick-thumb d-none d-md-block",
     infinite: true,
     speed: 500,
     slidesToShow: 1,
