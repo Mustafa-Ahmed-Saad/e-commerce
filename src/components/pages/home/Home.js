@@ -6,13 +6,19 @@ import SearchHome from "../../searchHome/SearchHome";
 import { getData } from "../../../helper/api";
 import { useContextMain } from "../../../contexts/MainContext";
 import Loading from "../../locading/Loading";
+import SearchLoading from "../../searchLoading/SearchLoading";
 
 export default function Home() {
   // TODO: dont forget add load in this project
 
+  const [searchLoading, setSearchLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [productsToShow, setProductsToShow] = useState([]);
-  const { loading, setLoading } = useContextMain();
+  const { loading, setLoading, setAllAppProducts } = useContextMain();
+
+  const toggleSearchLoading = (value) => {
+    setSearchLoading(value);
+  };
 
   async function getProducts() {
     const [data, errorMessage] = await getData("/api/v1/products");
@@ -20,6 +26,7 @@ export default function Home() {
     if (data?.data) {
       setProducts(data?.data);
       setProductsToShow(data?.data);
+      setAllAppProducts(data?.data);
     } else {
       setProducts([]);
       setProductsToShow([]);
@@ -44,8 +51,20 @@ export default function Home() {
       <>
         <MainSlider />
         <HomeResponsiveSlider />
-        <SearchHome products={products} setProductsToShow={changeProduct} />
-        <ShowProducts products={productsToShow} />
+        <SearchHome
+          products={products}
+          setProductsToShow={changeProduct}
+          toggleSearchLoading={toggleSearchLoading}
+        />
+        {searchLoading ? (
+          <SearchLoading />
+        ) : productsToShow.length > 0 ? (
+          <ShowProducts products={productsToShow} />
+        ) : (
+          <div className="container text-center fw-bold">
+            no product to show
+          </div>
+        )}
       </>
     );
   }

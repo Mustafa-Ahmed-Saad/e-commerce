@@ -8,7 +8,7 @@ import { resetPasswordSchema } from "../../../validation/validation";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
-  const { token, setToken } = useContextMain();
+  const { token } = useContextMain();
 
   useEffect(() => {
     if (token) {

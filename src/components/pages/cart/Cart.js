@@ -4,19 +4,13 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
-import { deleteData, getData, postData, putData } from "../../../helper/api";
+import { deleteData, getData, putData } from "../../../helper/api";
 import { notify } from "../../../helper/toastFire";
 import Loading from "../../locading/Loading";
 
 export default function Cart() {
-  // TODO: set cartProducts and setCartProducts in context
-  // TODO: delete setProductCardCounter and productCardCounter from context and inested them use cartProducts and setCartProducts
-  // -----------------------------------------------------------------
-
   const {
     token,
-    cartProducts,
-    setCartProducts,
     productsCounter,
     setProductsCounter,
     productsQuantity,
@@ -38,7 +32,6 @@ export default function Cart() {
     });
 
     if (data?.data) {
-      //     TODO: setWishlistContext and if wishlist handel
       toast.dismiss(tLoading);
       notify("success", "product deleted successfully from cart");
       setAllProductsInCart(data?.data?.products);
@@ -48,13 +41,6 @@ export default function Cart() {
       const pq = { ...productsQuantity };
       delete pq[id];
       setProductsQuantity(pq);
-      //   const newAllProductsInCart = oldCartProducts.filter((product) => {
-
-      // });
-      //   console.log(newCartProducts);
-      //   setAllProductsInCart(newCartProducts);
-      //   setCartProducts(newCartProducts);
-      //   setProductsCounter(newCartProducts.length);
     } else {
       toast.dismiss(tLoading);
       notify("error", `Opps ${errorMessage}`);
@@ -74,15 +60,13 @@ export default function Cart() {
     });
 
     if (data?.data?.products) {
-      // TODO: setWishlistContext and if wishlist handel
       setCartId(data?.data?._id);
       setAllProductsInCart(data?.data?.products);
-      setCartProducts(data?.data?.products);
-      setProductsCounter(data?.data?.products.length);
+      setProductsCounter(data?.data?.products.length || 0);
       setTotalCartPrice(data?.data?.totalCartPrice);
       setUserId(data?.data?.cartOwner);
     } else {
-      setProductsCounter(0);
+      // TODO: show tost
       console.log(errorMessage);
     }
     setLoading(false);
@@ -101,9 +85,7 @@ export default function Cart() {
     console.log("delete all cart products", data);
 
     if (data?.message === "success") {
-      // TODO: setWishlistContext and if wishlist handel
       setAllProductsInCart([]);
-      setCartProducts([]);
       setProductsCounter(0);
       setTotalCartPrice(0);
     } else {
@@ -149,7 +131,8 @@ export default function Cart() {
             notify("success", "Successfully");
             setTotalCartPrice(data?.data?.totalCartPrice);
             setAllProductsInCart(data?.data?.products);
-            setProductsCounter(data?.numOfCartItems);
+            // TODO: check it ishow setProductsCounter here or not
+            // setProductsCounter(data?.numOfCartItems);
 
             // TODO: delete local storage of productsQuantity after chick out
 

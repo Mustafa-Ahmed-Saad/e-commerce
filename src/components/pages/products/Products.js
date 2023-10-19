@@ -9,7 +9,7 @@ import Loading from "../../locading/Loading";
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [productsToShow, setProductsToShow] = useState([]);
-  const { loading, setLoading } = useContextMain();
+  const { loading, setLoading, setAllAppProducts } = useContextMain();
 
   function changeProduct(newProduct) {
     setProductsToShow(newProduct);
@@ -22,6 +22,7 @@ export default function Products() {
     if (data?.data) {
       setProducts(data?.data);
       setProductsToShow(data?.data);
+      setAllAppProducts(data?.data);
     } else {
       setProducts([]);
       setProductsToShow([]);

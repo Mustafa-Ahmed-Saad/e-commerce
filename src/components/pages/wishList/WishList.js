@@ -11,14 +11,10 @@ import { notify } from "../../../helper/toastFire";
 import Loading from "../../locading/Loading";
 
 export default function WishList() {
-  const { loading, setLoading } = useContextMain();
+  const [products, setProducts] = useState([]);
 
-  // TODO: set wishList of context
-
-  const { token, wishList, setWishList, setCartProducts, setProductsCounter } =
+  const { token, loading, setLoading, setWishList, setProductsCounter } =
     useContextMain();
-
-  const [allProductInWishList, setAllProductInWishList] = useState([]);
 
   async function addToCart(id) {
     let tLoading = notify("loading", `loading...`);
@@ -39,7 +35,6 @@ export default function WishList() {
       toast.dismiss(tLoading);
       notify("success", `${data?.message}`);
       // here also return totalprice in (data?.data?.totalCartPrice)
-      setCartProducts(data?.data?.products);
       setProductsCounter(data?.data?.products.length);
     } else {
       toast.dismiss(tLoading);
@@ -54,18 +49,17 @@ export default function WishList() {
     });
 
     if (data?.data) {
-      //     TODO: setWishlistContext and if wishlist handel
-      let oldWishlist = [...wishList];
-      const newWishlist = oldWishlist.filter((product) => {
+      // TODONOW: id data?.data is array of wishlist ids delete the 7 line and setWishlist(data?.data)
+
+      const newProducts = products.filter((product) => {
         if (data?.data.includes(product.id)) {
           return product;
         }
       });
-      console.log(newWishlist);
+      setProducts(newProducts);
+      setWishList(data?.data);
       toast.dismiss(tLoading);
       notify("success", `${data?.message}`);
-      setAllProductInWishList(newWishlist);
-      setWishList(newWishlist);
     } else {
       toast.dismiss(tLoading);
       notify("error", `Opps ${errorMessage}`);
@@ -79,9 +73,12 @@ export default function WishList() {
     });
 
     if (data?.data) {
-      //     TODO: setWishlistContext and if wishlist handel
-      setAllProductInWishList(data?.data);
-      setWishList(data?.data);
+      console.log(data);
+      const newWishlist = data?.data.map(({ id }) => {
+        return id;
+      });
+      setProducts(data?.data);
+      setWishList(newWishlist);
     } else {
       console.log(errorMessage);
     }
@@ -95,11 +92,11 @@ export default function WishList() {
   let ui = <Loading />;
   if (!loading) {
     ui =
-      allProductInWishList?.length > 0 ? (
+      products?.length > 0 ? (
         <div className="container bg-body-tertiary p-5 my-5">
           <h2 className="fw-bold mb-4">My wish List</h2>
 
-          {allProductInWishList?.map(({ title, price, imageCover, id }) => (
+          {products?.map(({ title, price, imageCover, id }) => (
             <div
               className="row my-4 mainShadow rounded-3 transtion-5 flex-column flex-sm-row"
               key={id}

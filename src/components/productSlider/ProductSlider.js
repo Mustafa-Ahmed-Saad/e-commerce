@@ -1,13 +1,13 @@
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
-// import { baseUrl } from "./config";
 
 export default function ProductSlider({ imgUrls }) {
   const settings = {
     customPaging: function (i) {
       return (
-        <a>
+        <Link>
           <img className="w-100" src={imgUrls[i]} alt="product-img" />
-        </a>
+        </Link>
       );
     },
     dots: true,

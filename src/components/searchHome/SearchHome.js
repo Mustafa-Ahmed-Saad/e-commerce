@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 
-export default function SearchHome({ products, setProductsToShow }) {
+export default function SearchHome({
+  products,
+  setProductsToShow,
+  toggleSearchLoading,
+}) {
   const [searchInterval, setSearchInterval] = useState(false);
 
   console.log(products);
 
+  // write code that sum two function
+
   function handelSearch(e) {
+    toggleSearchLoading(true);
     if (searchInterval) {
       clearTimeout(searchInterval);
     }
 
     setSearchInterval(
       setTimeout(() => {
-        console.log("cascas");
         const searchProducts = products.filter(({ id, title }) => {
           let searchValue = e.target.value.toLowerCase();
           id = id.toLowerCase();
@@ -25,6 +31,9 @@ export default function SearchHome({ products, setProductsToShow }) {
         });
 
         setProductsToShow(searchProducts);
+        // TPDONOW: uncomment toggleSearchLoading(false);
+        toggleSearchLoading(false);
+        // end loading
         // console.log("search products", searchProducts);
         // search inproducts and if founded setProducts state with this product that match
       }, 1000)

@@ -9,7 +9,6 @@ import ResetPassword from "../pages/resetPassword/ResetPassword";
 import VerifyCode from "../pages/verifyCode/VerifyCode";
 import Products from "../pages/products/Products";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
-import Test from "../test/Test";
 import Categories from "../pages/categories/Categories";
 import Brands from "../pages/brands/Brands";
 import Product from "../pages/products/product/Product";
@@ -18,6 +17,7 @@ import WishList from "../pages/wishList/WishList";
 import Cart from "../pages/cart/Cart";
 import CheckOut from "../pages/checkOut/CheckOut";
 import AllOrders from "../pages/allOrders/AllOrders";
+import SubCategoryProducts from "./../pages/subCategoryProducts/SubCategoryProducts";
 
 export const routers = createHashRouter([
   {
@@ -66,6 +66,15 @@ export const routers = createHashRouter([
         element: (
           <ProtectedRoute>
             <SubCategory />
+          </ProtectedRoute>
+        ),
+      },
+
+      {
+        path: "subcategory/:id",
+        element: (
+          <ProtectedRoute>
+            <SubCategoryProducts />
           </ProtectedRoute>
         ),
       },

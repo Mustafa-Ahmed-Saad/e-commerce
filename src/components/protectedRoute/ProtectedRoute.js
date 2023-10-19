@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useContextMain } from "../../contexts/MainContext";
 import Login from "../pages/login/Login";
 import MyToster from "../toster/MyToster";

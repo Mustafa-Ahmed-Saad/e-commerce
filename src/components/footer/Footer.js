@@ -8,10 +8,12 @@ import masterCard from "../../Assets/Images/masterCard.png";
 export default function Footer() {
   const [inputValue, setInputValue] = useState("");
 
+  // handel submit function
   function handelSubmit() {
     console.log(inputValue);
   }
 
+  // write handelChange function to handle input change
   function handelChange(e) {
     setInputValue(e.target.value);
   }

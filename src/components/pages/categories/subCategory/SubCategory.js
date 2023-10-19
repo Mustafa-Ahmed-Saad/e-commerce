@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useContextMain } from "../../../../contexts/MainContext";
 import { getData } from "../../../../helper/api";
 import Loading from "../../../locading/Loading";
@@ -39,16 +39,28 @@ export default function SubCategory() {
           {state?.subCategoryName ? state?.subCategoryName : "Sub Categories"}
         </h2>
         <div className="row g-4 align-items-center">
-          {subCategories?.map((subcategory) => (
-            <div
-              className="col-12 col-sm-6 col-md-4 col-xl-3"
-              key={subcategory._id}
-            >
-              <div className="mainShadow border border-2 border-black p-3 text-center cursor-pointer">
-                <h3>{subcategory?.name}</h3>
+          {subCategories?.length > 0 ? (
+            subCategories?.map((subcategory) => (
+              <div
+                className="col-12 col-sm-6 col-md-4 col-xl-3"
+                key={subcategory._id}
+              >
+                <Link
+                  to={`/subcategory/${subcategory._id}`}
+                  className="text-black"
+                >
+                  <div className="mainShadow border border-2 border-black p-3 text-center cursor-pointer">
+                    <h3>{subcategory?.name}</h3>
+                  </div>
+                </Link>
               </div>
+            ))
+          ) : (
+            <div className="col-12 text-center fw-bold">
+              No Sub Categories in this category{" "}
+              <Link to={"/categories"}>all categories</Link>
             </div>
-          ))}
+          )}
         </div>
       </div>
     );

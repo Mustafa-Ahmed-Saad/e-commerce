@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,9 +12,7 @@ import toast from "react-hot-toast";
 
 export default function ProductCard({ product, notify }) {
   const navigate = useNavigate();
-  const { token, wishList, setCartProducts, setProductsCounter } =
-    useContextMain();
-  const [wishListProductIds, setWishListProductIds] = useState([]);
+  const { token, wishList, setWishList, setProductsCounter } = useContextMain();
 
   async function addToCart(id) {
     let tLoading = notify("loading", `loading...`);
@@ -33,10 +31,11 @@ export default function ProductCard({ product, notify }) {
     if (data?.data?.products) {
       console.log(data?.data);
       // here also return totalprice in (data?.data?.totalCartPrice)
-      setCartProducts(data?.data?.products);
       setProductsCounter(data?.data?.products.length);
       toast.dismiss(tLoading);
       notify("success", `${data?.message}`);
+      // TODONow: add it of this product in wishList if it is not exest
+      // setWishList(data?.data);
     } else {
       toast.dismiss(tLoading);
       notify("error", `Opps ${errorMessage}`);
@@ -47,7 +46,7 @@ export default function ProductCard({ product, notify }) {
   async function handelLove(id) {
     // TODO: add to wish list
 
-    if (wishListProductIds.includes(id) || isIdExistInContextWishList(id)) {
+    if (wishList.includes(id)) {
       notify("success", "Product already exist in wish list");
     } else {
       let tLoading = notify("loading", `loading...`);
@@ -67,7 +66,8 @@ export default function ProductCard({ product, notify }) {
         //  TODO: put data?.data in local storage wishList (setState of wishlist context)
         toast.dismiss(tLoading);
         notify("success", `${data?.message}`);
-        setWishListProductIds(data?.data);
+        // TODONOW: check if data?data is array of wishlistids
+        setWishList(data?.data);
       } else {
         toast.dismiss(tLoading);
         notify("error", `Opps ${errorMessage}`);
@@ -85,18 +85,6 @@ export default function ProductCard({ product, notify }) {
     ) {
       navigate("/products/" + id);
     }
-  }
-
-  function isIdExistInContextWishList(ProductId) {
-    let isExistInOldWishList = false;
-    wishList.forEach((wishlistProduct) => {
-      if (wishlistProduct.id === ProductId) {
-        isExistInOldWishList = true;
-        return;
-      }
-    });
-
-    return isExistInOldWishList;
   }
 
   return (
@@ -158,10 +146,7 @@ export default function ProductCard({ product, notify }) {
               >
                 <FontAwesomeIcon
                   className={`d-inline-block ms-auto fa-xl heartIcon ${
-                    wishListProductIds.includes(product.id) ||
-                    isIdExistInContextWishList(product.id)
-                      ? "text-danger"
-                      : null
+                    wishList.includes(product.id) ? "text-danger" : null
                   }`}
                   icon={faHeart}
                 />

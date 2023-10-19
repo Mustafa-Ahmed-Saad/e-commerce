@@ -60,7 +60,6 @@ export default function Brands() {
 
         <PopUp
           show={showPopUp}
-          handleShow={handleShow}
           handleClose={handleClose}
           poPupBrand={poPupBrand}
         />

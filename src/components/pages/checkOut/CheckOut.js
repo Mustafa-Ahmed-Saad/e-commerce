@@ -25,13 +25,8 @@ export default function CheckOut() {
         }
       );
 
-      console.log("cash data", data);
-      navigate("/allorders");
-
-      if (data?.session) {
-        // window.location.href = data?.session?.url;
-        // or use
-        // window.open(data?.session?.url, '_blank');
+      if (data?.status === "success") {
+        navigate("/allorders");
       } else {
         console.log(errorMessage);
       }

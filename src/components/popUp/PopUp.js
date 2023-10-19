@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-export default function PopUp({ show, handleShow, handleClose, poPupBrand }) {
+export default function PopUp({ show, handleClose, poPupBrand }) {
   return (
     <>
       <Modal show={show} onHide={handleClose}>

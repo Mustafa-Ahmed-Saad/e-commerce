@@ -3,8 +3,6 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginValidationSchema } from "../../../validation/validation";
 import { postData } from "../../../helper/api";
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
 import { useContextMain } from "../../../contexts/MainContext";
 
 export default function Login() {
@@ -21,17 +19,6 @@ export default function Login() {
     const [data, errorMessage] = await postData("/api/v1/auth/signin", values);
 
     if (data?.token) {
-      //  decode token
-      const decoded = jwt_decode(data.token);
-      // Get the current timestamp in seconds
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-      // Calculate the difference between expiration and current timestamps
-      const timeDifferenceSeconds = decoded.exp - currentTimestamp;
-      // Calculate the time difference in days
-      const timeDifferenceDays = Math.ceil(
-        timeDifferenceSeconds / (60 * 60 * 24)
-      );
-      Cookies.set("token", data.token, { expires: timeDifferenceDays }); // Expires in ... days
       setToken(data.token);
       navigate("/home");
     } else {

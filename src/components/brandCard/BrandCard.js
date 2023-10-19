@@ -5,7 +5,7 @@ import { useContextMain } from "../../contexts/MainContext";
 import { getData } from "../../helper/api";
 
 export default function BrandCard({ brandDetails, handleShow, handleClose }) {
-  const { loading, setLoading } = useContextMain();
+  const { setLoading } = useContextMain();
 
   async function getBrand(id) {
     setLoading(true);

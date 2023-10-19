@@ -2,7 +2,7 @@ import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useContextMain } from "../../../../contexts/MainContext";
 import { getData, postData } from "../../../../helper/api";
 import { notify } from "../../../../helper/toastFire";
@@ -11,32 +11,19 @@ import ProductSlider from "../../../productSlider/ProductSlider";
 
 export default function Product() {
   const [product, setProduct] = useState(null);
-  const [isloved, setIsLoved] = useState(false);
   const { id } = useParams();
   const {
     token,
     wishList,
+    setWishList,
     loading,
     setLoading,
-    setCartProducts,
     setProductsCounter,
   } = useContextMain();
 
-  function isIdExistInContextWishList(ProductId) {
-    let isExistInOldWishList = false;
-    wishList.forEach((wishlistProduct) => {
-      if (wishlistProduct.id === ProductId) {
-        isExistInOldWishList = true;
-        return;
-      }
-    });
-
-    return isExistInOldWishList;
-  }
-
   async function handelLove(id) {
     // TODO: check here on this ((wishListProductIds.includes(id) || isIdExistInContextWishList(id)) )
-    if (isIdExistInContextWishList(id)) {
+    if (wishList.includes(id)) {
       notify("success", "product already exist in wish list");
     } else {
       let tLoading = notify("loading", `loading...`);
@@ -57,8 +44,7 @@ export default function Product() {
         //   put data?.data in local storage wishList (setState of wishlist context)
         toast.dismiss(tLoading);
         notify("success", `${data?.message}`);
-        setIsLoved(true);
-        // TODO: and set setWishListProductIds of localstorage context by data?.data
+        setWishList(data?.data);
       } else {
         //   show tost message "sorry something wrong happen please try but product in wishlist later"
         toast.dismiss(tLoading);
@@ -86,7 +72,6 @@ export default function Product() {
       toast.dismiss(tLoading);
       notify("success", `${data?.message}`);
       // here also return totalprice in (data?.data?.totalCartPrice)
-      setCartProducts(data?.data?.products);
       setProductsCounter(data?.data?.products.length);
     } else {
       toast.dismiss(tLoading);
@@ -101,9 +86,6 @@ export default function Product() {
 
     if (data?.data) {
       setProduct(data?.data);
-      if (isIdExistInContextWishList(data?.data?.id)) {
-        setIsLoved(true);
-      }
     } else {
       console.log(errorMessage);
     }
@@ -117,16 +99,10 @@ export default function Product() {
   let ui = <Loading />;
 
   if (!loading) {
-    ui = (
+    ui = product ? (
       <div className="container my-5 pb-5">
         <div className="row align-items-center">
           <div className="col-12 col-md-6 col-lg-4">
-            {/* TODO: product slider here and remove this img*/}
-            {/* <img
-            className="w-100"
-            src={productDetails.imageCover}
-            alt="product-img"
-          /> */}
             <ProductSlider imgUrls={product?.images} />
           </div>
           <div className="col-12 col-md-6 col-lg-8">
@@ -155,7 +131,7 @@ export default function Product() {
                 {/* TODO:handel whenclick Love icon and handel when show all product to make the product in wish list is hart is red */}
                 <FontAwesomeIcon
                   className={`d-inline-block ms-auto fa-xl cursor-pointer ${
-                    isloved ? "text-danger" : null
+                    wishList.includes(product?.id) ? "text-danger" : null
                   }`}
                   icon={faHeart}
                   onClick={() => {
@@ -166,6 +142,10 @@ export default function Product() {
             </div>
           </div>
         </div>
+      </div>
+    ) : (
+      <div className="container text-center mt-5 fw-bold">
+        sorry product not found see <Link to={"/home"}>All Product</Link>
       </div>
     );
   }

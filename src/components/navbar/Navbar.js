@@ -14,8 +14,7 @@ import Cookies from "js-cookie";
 import { useContextMain } from "../../contexts/MainContext";
 
 export default function MainNavbar() {
-  const { productsCounter } = useContextMain();
-  const { token, setToken } = useContextMain();
+  const { token, setToken, productsCounter } = useContextMain();
 
   function handelLogOut() {
     Cookies.remove("token");
