@@ -22,7 +22,6 @@ const settings = {
 export default function MainSlider() {
   return (
     <div className="container mt-1 mb-5" id="mainSlider">
-      {/* hight in md 280px in lg unsit */}
       <div className="row">
         <div className="col-12 ps-0 mb-5 pe-0 col-md-9 col-lg-8">
           {/* main slider */}
@@ -31,7 +30,6 @@ export default function MainSlider() {
             <div>
               <img
                 width="100%"
-                // style={{ height: "495px" }}
                 className="object-fit-cover object-position-center"
                 src={sliderImg1}
                 alt="slider-img1"
@@ -41,7 +39,6 @@ export default function MainSlider() {
             <div>
               <img
                 width="100%"
-                // style={{ height: "495px" }}
                 className="object-fit-cover object-position-center"
                 src={sliderImg2}
                 alt="slider-img2"
@@ -51,7 +48,6 @@ export default function MainSlider() {
             <div>
               <img
                 width="100%"
-                // style={{ height: "495px" }}
                 className="object-fit-cover object-position-center"
                 src={sliderImg3}
                 alt="slider-img3"

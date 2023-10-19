@@ -130,7 +130,6 @@ export default function ProductCard({ product, notify }) {
                 <span>{product.ratingsAverage}</span>
               </div>
             </div>
-            {/* <Card.Text>{product.details}</Card.Text> */}
             <div className="d-flex justify-content-between align-items-center">
               <Button
                 variant="btn btn-main me-auto d-inline-block w-75 me-2 addToCart"

@@ -1,0 +1,25 @@
+/* @media screen and (min-width: 50px) {
+  .mode-check-container {
+    right: 0px !important;
+  }
+}
+
+@media screen and (min-width: 150px) {
+  .mode-check-container {
+    right: 10px !important;
+  }
+}
+
+@media screen and (min-width: 200px) {
+  .mode-check-container {
+    right: 60px !important;
+  }
+}
+
+@media screen and (min-width: 570px) {
+  .mode-check-container {
+    right: 100px !important;
+  }
+} */
+
+/* display: none !important; */

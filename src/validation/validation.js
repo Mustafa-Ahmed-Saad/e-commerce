@@ -7,9 +7,9 @@ export const registerValidationSchema = Yup.object({
     .min(3, "Min Length must be greater than 3 letters")
     .max(20, "Max Length must be less than 20 letters")
     .matches(/^[a-z].*$/i, "name should start with 1 letter at least"),
+  // email .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, "Enter valid email"),
   email: Yup.string()
     .required("Email is required")
-    // .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, "Enter valid email"),
     .matches(
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       "Enter valid email"

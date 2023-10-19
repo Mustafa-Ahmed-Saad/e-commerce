@@ -36,7 +36,6 @@ export default function Categories() {
               key={category._id}
               className="col-12 col-md-6 col-lg-4 col-xl-3"
             >
-              {/* change thi to categoryCard */}
               <CategoryCard category={category} />
             </div>
           ))}

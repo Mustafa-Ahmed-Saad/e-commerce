@@ -1,9 +1,7 @@
-import React from "react";
-import {
-  faCartShopping,
-  faBars,
-  faTruck,
-} from "@fortawesome/free-solid-svg-icons";
+import "./Navbar.css";
+
+import React, { useEffect, useState } from "react";
+import { faCartShopping, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -12,17 +10,63 @@ import { NavLink } from "react-router-dom";
 import Badge from "react-bootstrap/Badge";
 import Cookies from "js-cookie";
 import { useContextMain } from "../../contexts/MainContext";
+import ToggleModeCheck from "../toggleModeCheck/ToggleModeCheck";
+import { useRef } from "react";
 
 export default function MainNavbar() {
-  const { token, setToken, productsCounter } = useContextMain();
+  const { token, setToken, productsCounter, mode, setMode } = useContextMain();
+
+  const inputRef = useRef(); // Step 1: Create a ref
 
   function handelLogOut() {
     Cookies.remove("token");
     setToken(false);
   }
 
+  function toggleMode(isChicked) {
+    const htmlTag = document.documentElement;
+
+    if (isChicked) {
+      // isChecked = true = dark
+      htmlTag.setAttribute("data-bs-theme", "dark");
+      setMode("dark");
+    } else {
+      // isChecked = false = light
+      htmlTag.setAttribute("data-bs-theme", "light");
+      setMode("light");
+    }
+  }
+
+  useEffect(() => {
+    if (mode) {
+      if (mode === "light") {
+        // set mode light = false
+        if (inputRef.current.checked === true) {
+          inputRef.current.checked = false;
+        }
+        toggleMode(false);
+      } else {
+        // set mode dark = true
+        if (inputRef.current.checked === false) {
+          inputRef.current.checked = true;
+        }
+        toggleMode(true);
+      }
+    } else {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        // dark = true;
+        inputRef.current.checked = true;
+        toggleMode(true);
+      } else {
+        // light = false
+        inputRef.current.checked = false;
+        toggleMode(false);
+      }
+    }
+  }, []);
+
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="xl" className="bg-body-tertiary position-relative">
       <Container>
         {/* logo */}
         <div>
@@ -35,6 +79,16 @@ export default function MainNavbar() {
           </NavLink>
         </div>
 
+        {/* toggle mode and collapce icon*/}
+        <div className="mode-check-container ms-auto me-2 ms-xl-3 d-block d-xl-none">
+          <ToggleModeCheck toggleMode={toggleMode} inputRef={inputRef} />
+          {/* <Toggle
+                  checked={isDark}
+                  onChange={({ target }) => toggleMode(target.checked)}
+                  icons={{ checked: "🌙", unchecked: "🔆" }}
+                  aria-label="Dark mode toggle"
+                /> */}
+        </div>
         {/* toggle btn */}
         <Navbar.Toggle aria-controls="basic-navbar-nav">
           <FontAwesomeIcon icon={faBars} className="text-main" />
@@ -156,6 +210,16 @@ export default function MainNavbar() {
             </>
           )}
         </Navbar.Collapse>
+
+        <div className="mode-check-container ms-auto me-2 ms-xl-3 d-none d-xl-block">
+          <ToggleModeCheck toggleMode={toggleMode} inputRef={inputRef} />
+          {/* <Toggle
+                  checked={isDark}
+                  onChange={({ target }) => toggleMode(target.checked)}
+                  icons={{ checked: "🌙", unchecked: "🔆" }}
+                  aria-label="Dark mode toggle"
+                /> */}
+        </div>
       </Container>
     </Navbar>
   );

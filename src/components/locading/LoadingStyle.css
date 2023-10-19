@@ -2,7 +2,7 @@
   --loading-hue: 223;
   --loading-bg: hsl(var(--loading-hue), 10%, 90%);
   --loading-fg: hsl(var(--loading-hue), 10%, 10%);
-  --loading-primary: hsl(var(--loading-hue), 90%, 55%);
+  /* --loading-primary: hsl(var(--loading-hue), 90%, 55%); */
   --loading-trans-dur: 0.3s;
   /* font-size: calc(16px + (20 - 16) * (100vw - 320px) / (1280 - 320)); */
 }
@@ -40,7 +40,7 @@
   animation: cartLines 2s ease-in-out infinite;
 }
 .cart__lines {
-  stroke: var(--loading-primary);
+  stroke: var(--main-color);
 }
 .cart__top {
   animation-name: cartTop;

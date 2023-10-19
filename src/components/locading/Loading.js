@@ -5,7 +5,7 @@ export default function Loading() {
   return (
     <>
       <div className="d-flex align-items-center justify-content-center position-fixed w-100 h-100">
-        <div className="bg-secondary w-100 h-100 position-absolute z-1"></div>
+        <div className="loading-bg w-100 h-100 position-absolute z-1"></div>
         <div className="bg-black opacity-75 w-100 h-100 position-absolute z-2"></div>
         <div className="preloader z-3">
           <svg
@@ -59,8 +59,8 @@ export default function Loading() {
             </g>
           </svg>
           <div className="preloader__text">
-            <p className="preloader__msg">Bringing you the goods</p>
-            <p className="preloader__msg preloader__msg--last text-main">
+            <p className="preloader__msg text-white">please wait...</p>
+            <p className="preloader__msg preloader__msg--last text-white">
               please wait...
             </p>
           </div>

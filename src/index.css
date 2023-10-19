@@ -2,21 +2,40 @@
 @import url("https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300&display=swap");
 
 :root {
-  --main-color: #0aad0a;
-  --light-color: #f0f3f2;
-  --shadow: rgba(145, 158, 171, 0.2) 0px 2px 4px -1px,
-    rgba(145, 158, 171, 0.14) 0px 4px 5px 0px,
-    rgba(145, 158, 171, 0.12) 0px 1px 10px 0px;
   --font-family: "Encode Sans Expanded", sans-serif;
-  --rating-color: #ffc908;
+}
+
+:root[data-bs-theme="light"] {
+  --main-color: #0dba0d;
+  /* --order-bg-color: red; */
+  --order-bg-color: #f8f9fa;
+  --loading-bg: #fff;
+}
+
+:root[data-bs-theme="dark"] {
+  --order-bg-color: #000;
+  --main-color: #09a009;
+  --loading-bg: #000;
+}
+
+.loading-bg {
+  background-color: var(--loading-bg);
+}
+
+.bg-order-owner {
+  background-color: var(--bs-body-bg) !important;
+}
+
+.order-bg-color {
+  background-color: var(--order-bg-color) !important;
 }
 
 body {
   font-family: var(--font-family) !important;
+  background-color: var(--bs-body-bg);
+  transition: background 0.2s linear;
 }
-.rating-color {
-  color: var(--rating-color);
-}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -69,9 +88,7 @@ a:hover {
   background-color: var(--main-color) !important;
   color: white !important;
 }
-.bg-main-light {
-  background-color: var(--light-color) !important;
-}
+
 .transtion-5 {
   transition: 0.5s;
 }
@@ -153,10 +170,3 @@ input#forgetPassword-email:focus + label.forgetPasswordEmail {
 .h-300px {
   height: 350px;
 }
-
-/* if user used dark mode in use device make body dark (when dark color scheme is preferred) */
-/* @media (prefers-color-scheme: dark) {
-  body {
-    background-color: black !important;
-  }
-} */

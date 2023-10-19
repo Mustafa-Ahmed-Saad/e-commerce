@@ -54,7 +54,7 @@ export default function AllOrders() {
             ) => (
               <div
                 key={id}
-                className="border border-1 border-success rounded-5 my-5 pt-3 px-5 bg-light"
+                className="border border-1 border-success rounded-5 my-5 pt-3 px-5 order-bg-color"
               >
                 <div>
                   <div className="row fs-2 fw-bold flex-column-reverse flex-sm-row">
@@ -98,7 +98,7 @@ export default function AllOrders() {
                       </div>
                     </div>
                     <div
-                      className="col-12 col-md-4 border border-1 border-success rounded-4 p-3 bg-white align-self-baseline mb-4 mb-md-0"
+                      className="col-12 col-md-4 border border-1 border-success rounded-4 p-3 bg-order-owner align-self-baseline mb-4 mb-md-0"
                       style={{ "--bs-border-opacity": ".5" }}
                     >
                       <div>

@@ -11,6 +11,7 @@ export function useContextMain() {
 export default function MainContextProvider({ children }) {
   const [token, setToken] = useState(getStoredToken());
   const [wishList, setWishList] = useState(getStoredWishList());
+  const [mode, setMode] = useState(getStoredMode());
   const [productsCounter, setProductsCounter] = useState(
     getStoredProductsCounter()
   );
@@ -32,6 +33,11 @@ export default function MainContextProvider({ children }) {
   function getStoredAllAppProducts() {
     const storedAllAppProducts = localStorage.getItem("allAppProducts");
     return storedAllAppProducts ? JSON.parse(storedAllAppProducts) : [];
+  }
+
+  function getStoredMode() {
+    const storedMode = localStorage.getItem("mode");
+    return storedMode ? JSON.parse(storedMode) : false;
   }
 
   function getStoredWishList() {
@@ -93,6 +99,10 @@ export default function MainContextProvider({ children }) {
     localStorage.setItem("userId", JSON.stringify(userId));
   }, [userId]);
 
+  useEffect(() => {
+    localStorage.setItem("mode", JSON.stringify(mode));
+  }, [mode]);
+
   async function getWishList(token) {
     if (!(wishList.length > 0)) {
       const [data, errorMessage] = await getData("/api/v1/wishlist/", {
@@ -129,6 +139,8 @@ export default function MainContextProvider({ children }) {
         setLoading,
         allAppProducts,
         setAllAppProducts,
+        mode,
+        setMode,
       }}
     >
       {children}
