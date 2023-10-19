@@ -1,11 +1,12 @@
 {
   "files": {
-    "main.css": "/e-commerce/static/css/main.3b163701.css",
-    "main.js": "/e-commerce/static/js/main.72bc0561.js",
+    "main.css": "/e-commerce/static/css/main.004185de.css",
+    "main.js": "/e-commerce/static/js/main.a9991f80.js",
     "static/js/787.46493d11.chunk.js": "/e-commerce/static/js/787.46493d11.chunk.js",
     "static/media/slider-image-1.jpeg": "/e-commerce/static/media/slider-image-1.3c3940ee0f1c3b17ff9a.jpeg",
     "static/media/slider-image-3.jpeg": "/e-commerce/static/media/slider-image-3.7e5c9f7a513f6db6dd5e.jpeg",
     "static/media/slider-image-2.jpeg": "/e-commerce/static/media/slider-image-2.e510b0de8a4d96a1d5ad.jpeg",
+    "static/media/404.png": "/e-commerce/static/media/404.fa4ee42bf54ac3605279.png",
     "static/media/amazonPay.png": "/e-commerce/static/media/amazonPay.f1d7ed8012ba50041d47.png",
     "static/media/googlePlay.jpg": "/e-commerce/static/media/googlePlay.533791b36a718c63bbf3.jpg",
     "static/media/appleAppStore.jpg": "/e-commerce/static/media/appleAppStore.8f504bbba0059f2d004b.jpg",
@@ -18,12 +19,12 @@
     "static/media/slick.ttf": "/e-commerce/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/e-commerce/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/e-commerce/index.html",
-    "main.3b163701.css.map": "/e-commerce/static/css/main.3b163701.css.map",
-    "main.72bc0561.js.map": "/e-commerce/static/js/main.72bc0561.js.map",
+    "main.004185de.css.map": "/e-commerce/static/css/main.004185de.css.map",
+    "main.a9991f80.js.map": "/e-commerce/static/js/main.a9991f80.js.map",
     "787.46493d11.chunk.js.map": "/e-commerce/static/js/787.46493d11.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3b163701.css",
-    "static/js/main.72bc0561.js"
+    "static/css/main.004185de.css",
+    "static/js/main.a9991f80.js"
   ]
 }
