@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
 import { getData } from "../../../helper/api";
+import SEO from "../../../helper/SEO";
 import Loading from "../../locading/Loading";
 
 export default function AllOrders() {
@@ -171,5 +172,15 @@ export default function AllOrders() {
       );
   }
 
-  return ui;
+  return (
+    <>
+      <SEO
+        title="Orders"
+        description="All Orders"
+        facebookType="article"
+        twitterType="summary"
+      />
+      {ui}
+    </>
+  );
 }

@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 import { useContextMain } from "../../../../contexts/MainContext";
 import { getData, postData } from "../../../../helper/api";
+import SEO from "../../../../helper/SEO";
 import { notify } from "../../../../helper/toastFire";
 import Loading from "../../../locading/Loading";
 import ProductSlider from "../../../productSlider/ProductSlider";
@@ -150,5 +151,15 @@ export default function Product() {
     );
   }
 
-  return ui;
+  return (
+    <>
+      <SEO
+        title={product?.title || "product"}
+        description={`Product ${product?.description}`}
+        facebookType="product"
+        twitterType="summary"
+      />
+      {ui};
+    </>
+  );
 }

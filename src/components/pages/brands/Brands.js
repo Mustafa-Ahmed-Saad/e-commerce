@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useContextMain } from "../../../contexts/MainContext";
 import { getData } from "../../../helper/api";
+import SEO from "../../../helper/SEO";
 import BrandCard from "../../brandCard/BrandCard";
 import Loading from "../../locading/Loading";
 import PopUp from "../../popUp/PopUp";
@@ -67,5 +68,15 @@ export default function Brands() {
     );
   }
 
-  return ui;
+  return (
+    <>
+      <SEO
+        title="Brands"
+        description="All Brands"
+        facebookType="website"
+        twitterType="summary"
+      />
+      {ui}
+    </>
+  );
 }

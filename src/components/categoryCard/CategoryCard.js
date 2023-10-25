@@ -9,13 +9,13 @@ export default function CategoryCard({ category }) {
   function goToCategory(id) {
     // TODO: can't pass state to subCategory to change header (h2) title
     navigate(`/categories/${id}`, {
-      replace: true,
+      // replace: true,
       state: { subCategoryName: category.name },
     });
   }
 
   return (
-    <Link to={"#"} onClick={() => goToCategory(category._id)}>
+    <div onClick={() => goToCategory(category._id)}>
       <Card className="mainShadow">
         <Card.Img
           className="object-fit-cover object-position-center"
@@ -29,6 +29,6 @@ export default function CategoryCard({ category }) {
           </Card.Title>
         </Card.Body>
       </Card>
-    </Link>
+    </div>
   );
 }

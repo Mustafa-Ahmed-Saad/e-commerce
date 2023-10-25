@@ -4,7 +4,7 @@ import "./LoadingStyle.css";
 export default function Loading() {
   return (
     <>
-      <div className="d-flex align-items-center justify-content-center position-fixed w-100 h-100">
+      <div className="d-flex align-items-center justify-content-center position-fixed w-100 h-100 z-1">
         <div className="loading-bg w-100 h-100 position-absolute z-1"></div>
         <div className="bg-black opacity-75 w-100 h-100 position-absolute z-2"></div>
         <div className="preloader z-3">

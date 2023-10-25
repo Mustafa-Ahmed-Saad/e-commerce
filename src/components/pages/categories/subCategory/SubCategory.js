@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useContextMain } from "../../../../contexts/MainContext";
 import { getData } from "../../../../helper/api";
+import SEO from "../../../../helper/SEO";
 import Loading from "../../../locading/Loading";
 
 export default function SubCategory() {
@@ -9,8 +10,6 @@ export default function SubCategory() {
   const { id } = useParams();
   const { state } = useLocation();
   const { loading, setLoading } = useContextMain();
-
-  console.log("state.............", state);
 
   async function getSubCategory() {
     setLoading(true);
@@ -66,5 +65,15 @@ export default function SubCategory() {
     );
   }
 
-  return ui;
+  return (
+    <>
+      <SEO
+        title={state?.subCategoryName || "Sub Categories"}
+        description="Sub Category"
+        facebookType="wishlist"
+        twitterType="summary"
+      />
+      {ui}
+    </>
+  );
 }

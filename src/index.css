@@ -7,15 +7,23 @@
 
 :root[data-bs-theme="light"] {
   --main-color: #0dba0d;
-  /* --order-bg-color: red; */
   --order-bg-color: #f8f9fa;
   --loading-bg: #fff;
+  --image-grayscale: 0;
+  --image-opacity: 100%;
 }
 
 :root[data-bs-theme="dark"] {
   --order-bg-color: #000;
   --main-color: #09a009;
   --loading-bg: #000;
+  --image-grayscale: 15%;
+  --image-opacity: 90%;
+}
+
+img,
+video {
+  filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
 }
 
 .loading-bg {
@@ -169,4 +177,12 @@ input#forgetPassword-email:focus + label.forgetPasswordEmail {
 
 .h-300px {
   height: 350px;
+}
+
+.h-3px {
+  height: 3px;
+}
+
+.start-n10 {
+  left: -120px;
 }

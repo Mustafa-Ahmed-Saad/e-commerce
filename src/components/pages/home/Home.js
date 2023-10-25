@@ -7,6 +7,7 @@ import { getData } from "../../../helper/api";
 import { useContextMain } from "../../../contexts/MainContext";
 import Loading from "../../locading/Loading";
 import SearchLoading from "../../searchLoading/SearchLoading";
+import SEO from "../../../helper/SEO";
 
 export default function Home() {
   // TODO: dont forget add load in this project
@@ -49,6 +50,12 @@ export default function Home() {
   if (!loading) {
     ui = (
       <>
+        <SEO
+          title="Home"
+          description="Ecommerce App For View And Purchase Products"
+          facebookType="website"
+          twitterType="summary"
+        />
         <MainSlider />
         <HomeResponsiveSlider />
         <SearchHome

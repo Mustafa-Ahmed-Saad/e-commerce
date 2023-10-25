@@ -5,6 +5,7 @@ import ShowProducts from "../../showProducts/ShowProducts";
 import { getData } from "../../../helper/api";
 import { useContextMain } from "../../../contexts/MainContext";
 import Loading from "../../locading/Loading";
+import SEO from "../../../helper/SEO";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -40,6 +41,12 @@ export default function Products() {
   if (!loading) {
     ui = (
       <>
+        <SEO
+          title="Products"
+          description="All Products"
+          facebookType="website"
+          twitterType="summary"
+        />
         <SearchHome products={products} setProductsToShow={changeProduct} />
         <ShowProducts products={productsToShow} />
       </>

@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
 import { deleteData, getData, putData } from "../../../helper/api";
+import SEO from "../../../helper/SEO";
 import { notify } from "../../../helper/toastFire";
 import Loading from "../../locading/Loading";
 
@@ -255,5 +256,15 @@ export default function Cart() {
       );
   }
 
-  return ui;
+  return (
+    <>
+      <SEO
+        title="Cart"
+        description="Cart Products"
+        facebookType="product.group"
+        twitterType="summary"
+      />
+      {ui}
+    </>
+  );
 }

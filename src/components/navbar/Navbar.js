@@ -1,7 +1,7 @@
 import "./Navbar.css";
 
 import React, { useEffect, useState } from "react";
-import { faCartShopping, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -14,7 +14,19 @@ import ToggleModeCheck from "../toggleModeCheck/ToggleModeCheck";
 import { useRef } from "react";
 
 export default function MainNavbar() {
-  const { token, setToken, productsCounter, mode, setMode } = useContextMain();
+  const {
+    token,
+    setToken,
+    productsCounter,
+    mode,
+    setMode,
+    mainColor,
+    setMainColor,
+  } = useContextMain();
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrollDown, setIsScrollDown] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const inputRef = useRef(); // Step 1: Create a ref
 
@@ -36,6 +48,25 @@ export default function MainNavbar() {
       setMode("light");
     }
   }
+
+  let scrollOffset = 0;
+  const handleScroll = (e) => {
+    if (scrollOffset > window.pageYOffset) {
+      // remove class scroll up
+      setIsScrollDown(false);
+    } else {
+      console.log("scroll Down ............");
+      // add class scroll down
+      setIsScrollDown(true);
+    }
+    scrollOffset = window.pageYOffset;
+
+    if (window.scrollY > 0) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  };
 
   useEffect(() => {
     if (mode) {
@@ -63,10 +94,25 @@ export default function MainNavbar() {
         toggleMode(false);
       }
     }
+
+    if (mainColor) {
+      // change value of mainColor variable in html tag
+      document.documentElement.style.setProperty("--main-color", mainColor);
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
-    <Navbar expand="xl" className="bg-body-tertiary position-relative">
+    <Navbar
+      expand="xl"
+      className={`main-navbar bg-body-tertiary position-fixed w-100 top-0 z-2 ${
+        isScrolled ? "scrolled" : ""
+      } ${isScrollDown ? "top-n65" : ""}`}
+    >
       <Container>
         {/* logo */}
         <div>
@@ -74,7 +120,7 @@ export default function MainNavbar() {
             icon={faCartShopping}
             className="text-main fa-2x me-2"
           />
-          <NavLink className="navbar-brand fw-bold fs-2" to="#">
+          <NavLink className="navbar-brand fw-bold fs-2" to="/home">
             fresh cart
           </NavLink>
         </div>
@@ -82,16 +128,19 @@ export default function MainNavbar() {
         {/* toggle mode and collapce icon*/}
         <div className="mode-check-container ms-auto me-2 ms-xl-3 d-block d-xl-none">
           <ToggleModeCheck toggleMode={toggleMode} inputRef={inputRef} />
-          {/* <Toggle
-                  checked={isDark}
-                  onChange={({ target }) => toggleMode(target.checked)}
-                  icons={{ checked: "🌙", unchecked: "🔆" }}
-                  aria-label="Dark mode toggle"
-                /> */}
         </div>
         {/* toggle btn */}
-        <Navbar.Toggle aria-controls="basic-navbar-nav">
-          <FontAwesomeIcon icon={faBars} className="text-main" />
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          onClick={() => {
+            setIsMenuOpen(!isMenuOpen);
+          }}
+        >
+          {isMenuOpen ? (
+            <FontAwesomeIcon icon={faX} className="text-main" />
+          ) : (
+            <FontAwesomeIcon icon={faBars} className="text-main" />
+          )}
         </Navbar.Toggle>
 
         {/* Collapse */}

@@ -21,7 +21,7 @@ const settings = {
 
 export default function MainSlider() {
   return (
-    <div className="container mt-1 mb-5" id="mainSlider">
+    <div className="container mt-4 mb-5" id="mainSlider">
       <div className="row">
         <div className="col-12 ps-0 mb-5 pe-0 col-md-9 col-lg-8">
           {/* main slider */}

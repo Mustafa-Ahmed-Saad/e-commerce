@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
 
 import { deleteData, getData, postData } from "../../../helper/api";
+import SEO from "../../../helper/SEO";
 import { notify } from "../../../helper/toastFire";
 import Loading from "../../locading/Loading";
 
@@ -152,5 +153,15 @@ export default function WishList() {
         </div>
       );
   }
-  return ui;
+  return (
+    <>
+      <SEO
+        title="Wish List"
+        description="Wishlist Products"
+        facebookType="wishlist"
+        twitterType="summary"
+      />
+      {ui}
+    </>
+  );
 }
