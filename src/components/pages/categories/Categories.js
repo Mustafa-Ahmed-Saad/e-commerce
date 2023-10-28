@@ -4,6 +4,7 @@ import { getData } from "../../../helper/api";
 import SEO from "../../../helper/SEO";
 import CategoryCard from "../../categoryCard/CategoryCard";
 import Loading from "../../locading/Loading";
+import WOW from "wow.js";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -38,7 +39,12 @@ export default function Categories() {
           twitterType="summary"
         />
         <div className="container my-5">
-          <div className="row g-4">
+          <div
+            className="row g-4 wow fadeInDown"
+            data-wow-offset="10"
+            data-wow-delay="0.2s"
+            data-wow-iteration="1"
+          >
             {categories?.map((category, index) => (
               <div
                 key={category._id}

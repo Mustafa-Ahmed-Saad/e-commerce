@@ -10,7 +10,7 @@ import { postData } from "../../helper/api";
 import { useContextMain } from "../../contexts/MainContext";
 import toast from "react-hot-toast";
 
-export default function ProductCard({ product, notify }) {
+export default function ProductCard({ product, notify, index }) {
   const navigate = useNavigate();
   const { token, wishList, setWishList, setProductsCounter } = useContextMain();
 
@@ -87,15 +87,30 @@ export default function ProductCard({ product, notify }) {
     }
   }
 
+  let wowDelay = "0.1s";
+  if (index % 4 === 0) {
+    wowDelay = "0.2s";
+  } else if (index % 4 === 1) {
+    wowDelay = "0.4s";
+  } else if (index % 4 === 2) {
+    wowDelay = "0.6s";
+  } else if (index % 4 === 3) {
+    wowDelay = "0.8s";
+  }
+
   return (
     <>
-      <Link
-        to={"#"}
+      <div
         onClick={(e) => {
           goToProduct(e, product.id);
         }}
       >
-        <Card className="p-2 mainShadow">
+        <Card
+          className="p-2 mainShadow wow fadeInUp"
+          data-wow-offset="10"
+          data-wow-delay={wowDelay}
+          data-wow-iteration="1"
+        >
           <Card.Img
             className="object-fit-cover object-position-center"
             style={{ height: "250px" }}
@@ -153,7 +168,7 @@ export default function ProductCard({ product, notify }) {
             </div>
           </Card.Body>
         </Card>
-      </Link>
+      </div>
     </>
   );
 }

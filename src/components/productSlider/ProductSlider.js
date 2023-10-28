@@ -5,9 +5,13 @@ export default function ProductSlider({ imgUrls }) {
   const settings = {
     customPaging: function (i) {
       return (
-        <Link>
-          <img className="w-100" src={imgUrls[i]} alt="product-img" />
-        </Link>
+        <span className="d-inline-block h-100">
+          <img
+            className="w-100 h-100 object-fit-cover object-position-center"
+            src={imgUrls[i]}
+            alt="product-img"
+          />
+        </span>
       );
     },
     dots: true,
@@ -20,12 +24,12 @@ export default function ProductSlider({ imgUrls }) {
   };
 
   return (
-    <div>
+    <div className="productSluder-un">
       <Slider {...settings} className="productSlider">
         {imgUrls?.map((imgUrl, index) => (
           <div className="overflow-hidden h-300px" key={index}>
             <img
-              className="w-100 h-100 object-fit-cover object-position-center"
+              className="w-100 h-100 object-fit-contain object-position-center"
               src={imgUrl}
               alt="product-img"
             />

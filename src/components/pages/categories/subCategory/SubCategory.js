@@ -37,7 +37,12 @@ export default function SubCategory() {
         <h2 className="mb-5 text-center fw-bold text-main">
           {state?.subCategoryName ? state?.subCategoryName : "Sub Categories"}
         </h2>
-        <div className="row g-4 align-items-center">
+        <div
+          className="row g-4 align-items-center wow fadeInUp"
+          data-wow-offset="10"
+          data-wow-delay="0.2s"
+          data-wow-iteration="1"
+        >
           {subCategories?.length > 0 ? (
             subCategories?.map((subcategory) => (
               <div
@@ -48,7 +53,7 @@ export default function SubCategory() {
                   to={`/subcategory/${subcategory._id}`}
                   className="text-black"
                 >
-                  <div className="mainShadow border border-2 border-black p-3 text-center cursor-pointer">
+                  <div className="mainShadow border border-2 border-dark-subtle p-3 text-center cursor-pointer text-body rounded-3">
                     <h3>{subcategory?.name}</h3>
                   </div>
                 </Link>

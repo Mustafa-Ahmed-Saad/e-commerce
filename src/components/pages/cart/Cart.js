@@ -192,7 +192,10 @@ export default function Cart() {
             ({ product: { title, imageCover, id }, price, count }, index) => (
               <div
                 key={id}
-                className="row my-4 mainShadow rounded-3 transtion-5 flex-column flex-md-row"
+                className="row bg-body-tertiary my-4 mainShadow rounded-3 transtion-5 flex-column flex-md-row wow fadeInLeft"
+                data-wow-offset="200"
+                data-wow-delay="0.2s"
+                data-wow-iteration="1"
               >
                 <div className="col-12 col-md-2">
                   <img className="w-100" src={imageCover} alt="product-img" />

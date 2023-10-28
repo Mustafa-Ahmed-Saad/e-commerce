@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 
 // change this component to categoryCard and move it in component

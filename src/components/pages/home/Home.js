@@ -56,6 +56,7 @@ export default function Home() {
           facebookType="website"
           twitterType="summary"
         />
+
         <MainSlider />
         <HomeResponsiveSlider />
         <SearchHome

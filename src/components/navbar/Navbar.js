@@ -55,7 +55,6 @@ export default function MainNavbar() {
       // remove class scroll up
       setIsScrollDown(false);
     } else {
-      console.log("scroll Down ............");
       // add class scroll down
       setIsScrollDown(true);
     }

@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { notify } from "../../helper/toastFire";
-
 import ProductCard from "../productCard/ProductCard";
 
 export default function ShowProducts({ products }) {
@@ -14,7 +13,11 @@ export default function ShowProducts({ products }) {
                   className="col-12 col-md-6 col-lg-4 col-xl-3"
                   key={product.id}
                 >
-                  <ProductCard product={product} notify={notify} />
+                  <ProductCard
+                    product={product}
+                    notify={notify}
+                    index={index}
+                  />
                 </div>
               ))
             : null}

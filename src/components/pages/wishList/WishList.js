@@ -94,13 +94,18 @@ export default function WishList() {
   if (!loading) {
     ui =
       products?.length > 0 ? (
-        <div className="container bg-body-tertiary p-5 my-5">
+        <div
+          className="container bg-body-tertiary p-5 my-5 wow fadeInLeft"
+          data-wow-offset="10"
+          data-wow-delay="0.2s"
+          data-wow-iteration="1"
+        >
           <h2 className="fw-bold mb-4">My wish List</h2>
 
           {products?.map(({ title, price, imageCover, id }) => (
             <div
-              className="row my-4 mainShadow rounded-3 transtion-5 flex-column flex-sm-row"
               key={id}
+              className="row my-4 bg-body-tertiary mainShadow rounded-3 transtion-5 flex-column flex-sm-row"
             >
               <div className="col-12 col-sm-2">
                 <img className="w-100" src={imageCover} alt="product-img" />

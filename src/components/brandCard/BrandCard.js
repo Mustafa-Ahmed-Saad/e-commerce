@@ -1,39 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import { useContextMain } from "../../contexts/MainContext";
 import { getData } from "../../helper/api";
 
-export default function BrandCard({ brandDetails, handleShow, handleClose }) {
+export default function BrandCard({
+  brandDetails,
+  handleShow,
+  handleClose,
+  setBrandCardLoading,
+}) {
   const { setLoading } = useContextMain();
 
   async function getBrand(id) {
-    setLoading(true);
+    setBrandCardLoading(true);
     const [data, errorMessage] = await getData("/api/v1/brands/" + id);
     if (data?.data) {
       handleShow(data?.data);
     } else {
-      console.log(errorMessage);
       handleClose();
+      console.log(errorMessage);
     }
-    setLoading(false);
+    setBrandCardLoading(false);
   }
 
   return (
-    <>
-      <Link
-        to={"#"}
-        onClick={() => {
-          getBrand(brandDetails._id);
-        }}
-      >
-        <Card className="mainShadow">
-          <Card.Img variant="top" src={brandDetails.image} />
-          <Card.Body>
-            <Card.Title className="text-center">{brandDetails.name}</Card.Title>
-          </Card.Body>
-        </Card>
-      </Link>
-    </>
+    <div
+      onClick={() => {
+        getBrand(brandDetails._id);
+      }}
+    >
+      <Card className="mainShadow">
+        <Card.Img variant="top" src={brandDetails.image} />
+        <Card.Body>
+          <Card.Title className="text-center">{brandDetails.name}</Card.Title>
+        </Card.Body>
+      </Card>
+    </div>
   );
 }

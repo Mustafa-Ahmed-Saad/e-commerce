@@ -4,6 +4,7 @@ import { useContextMain } from "../../../contexts/MainContext";
 import { getData } from "../../../helper/api";
 import SEO from "../../../helper/SEO";
 import Loading from "../../locading/Loading";
+import WOW from "wow.js";
 
 export default function AllOrders() {
   const { userId, loading, setLoading } = useContextMain();
@@ -55,7 +56,10 @@ export default function AllOrders() {
             ) => (
               <div
                 key={id}
-                className="border border-1 border-success rounded-5 my-5 pt-3 px-5 order-bg-color"
+                className="border border-1 border-success rounded-5 my-5 pt-3 px-5 order-bg-color wow slideInUp"
+                data-wow-offset="10"
+                data-wow-delay="0.3s"
+                data-wow-iteration="1"
               >
                 <div>
                   <div className="row fs-2 fw-bold flex-column-reverse flex-sm-row">

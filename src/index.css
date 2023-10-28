@@ -169,8 +169,15 @@ input#forgetPassword-email:focus + label.forgetPasswordEmail {
 
 /* product slider */
 .productSlider .slick-dots {
-  bottom: -50px;
+  position: relative;
+  top: 10px;
 }
+
+.productSlider .slick-dots li {
+  height: 50px;
+  margin: 0 0px 4px 0;
+}
+
 .productSlider .slick-dots li {
   width: 45px;
 }
