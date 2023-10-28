@@ -24,7 +24,7 @@ export default function Product() {
 
   async function handelLove(id) {
     // TODO: check here on this ((wishListProductIds.includes(id) || isIdExistInContextWishList(id)) )
-    if (wishList.includes(id)) {
+    if (wishList?.includes(id)) {
       notify("success", "product already exist in wish list");
     } else {
       let tLoading = notify("loading", `loading...`);
@@ -45,6 +45,10 @@ export default function Product() {
         //   put data?.data in local storage wishList (setState of wishlist context)
         toast.dismiss(tLoading);
         notify("success", `${data?.message}`);
+        console.log(
+          "handel Love in product wish list will be this",
+          data?.data
+        );
         setWishList(data?.data);
       } else {
         //   show tost message "sorry something wrong happen please try but product in wishlist later"
@@ -144,7 +148,7 @@ export default function Product() {
                   {/* TODO:handel whenclick Love icon and handel when show all product to make the product in wish list is hart is red */}
                   <FontAwesomeIcon
                     className={`d-inline-block ms-auto fa-xl cursor-pointer ${
-                      wishList.includes(product?.id) ? "text-danger" : null
+                      wishList?.includes(product?.id) ? "text-danger" : null
                     }`}
                     icon={faHeart}
                     onClick={() => {

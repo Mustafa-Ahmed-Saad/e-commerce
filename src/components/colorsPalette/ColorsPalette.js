@@ -52,7 +52,7 @@ export default function ColorsPalette() {
       </form>
       <button
         type="button"
-        class="btn btn-secondary mt-2 d-block w-100"
+        className="btn btn-secondary mt-2 d-block w-100"
         onClick={() => {
           if (mode === "dark") {
             changeMainColorOfContext("#09a009");

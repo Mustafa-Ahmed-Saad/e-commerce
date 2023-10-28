@@ -15,7 +15,14 @@ export default function Home() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [productsToShow, setProductsToShow] = useState([]);
-  const { loading, setLoading, setAllAppProducts } = useContextMain();
+  const {
+    loading,
+    setLoading,
+    setAllAppProducts,
+    token,
+    setWishList,
+    wishList,
+  } = useContextMain();
 
   const toggleSearchLoading = (value) => {
     setSearchLoading(value);
@@ -39,10 +46,34 @@ export default function Home() {
   function changeProduct(newProduct) {
     setProductsToShow(newProduct);
   }
+  async function getWishList(token) {
+    if (!(wishList?.length > 0)) {
+      // if no wish list
+      const [data, errorMessage] = await getData("/api/v1/wishlist/", {
+        headers: {
+          token: token,
+        },
+      });
+
+      if (data?.data) {
+        const newWishlist = data?.data.map(({ id }) => {
+          return id;
+        });
+        console.log("home.js getWishkist", newWishlist);
+        setWishList(newWishlist);
+      } else {
+        console.log(errorMessage);
+      }
+    }
+  }
 
   useEffect(() => {
     setLoading(true);
     getProducts();
+
+    if (token) {
+      getWishList(token);
+    }
   }, []);
 
   // return

@@ -184,7 +184,10 @@ export default function Cart() {
             </div>
             <div className="col-12 col-sm-6 text-sm-end fs-4 fw-bold">
               <span className="d-none d-md-inline-block">total number of</span>{" "}
-              items: <span className="text-main">{productsCounter}</span>
+              items:{" "}
+              <span className="text-main">
+                {productsCounter >= 0 ? productsCounter : 0}
+              </span>
             </div>
           </div>
 

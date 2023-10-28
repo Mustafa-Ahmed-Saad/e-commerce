@@ -14,15 +14,8 @@ import ToggleModeCheck from "../toggleModeCheck/ToggleModeCheck";
 import { useRef } from "react";
 
 export default function MainNavbar() {
-  const {
-    token,
-    setToken,
-    productsCounter,
-    mode,
-    setMode,
-    mainColor,
-    setMainColor,
-  } = useContextMain();
+  const { token, setToken, productsCounter, mode, setMode, mainColor } =
+    useContextMain();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrollDown, setIsScrollDown] = useState(false);
@@ -33,6 +26,7 @@ export default function MainNavbar() {
   function handelLogOut() {
     Cookies.remove("token");
     setToken(false);
+    localStorage.clear();
   }
 
   function toggleMode(isChicked) {
@@ -220,7 +214,7 @@ export default function MainNavbar() {
                       bg="main"
                       className="position-absolute start-75 translate-middle badge rounded-pill"
                     >
-                      {productsCounter}
+                      {productsCounter >= 0 ? productsCounter : 0}
                     </Badge>
                   </NavLink>
                   {/* // logout */}

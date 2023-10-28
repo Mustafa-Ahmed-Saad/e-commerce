@@ -14,16 +14,16 @@ export default function ToggleModeCheck({ toggleMode, inputRef }) {
         type="checkbox"
         checked={mode === "dark" ? true : false}
         ref={inputRef}
-        class="checkboxM"
+        className="checkboxM"
         id="checkboxMode"
         onChange={(e) => {
           toggleMode(e.target.checked);
         }}
       />
-      <label for="checkboxMode" class="checkboxM-label">
+      <label htmlFor="checkboxMode" className="checkboxM-label">
         <FontAwesomeIcon icon={faSun} />
         <FontAwesomeIcon icon={faMoon} />
-        <span class="ball"></span>
+        <span className="ball"></span>
       </label>
     </div>
   );

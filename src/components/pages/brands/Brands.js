@@ -6,6 +6,7 @@ import BrandCard from "../../brandCard/BrandCard";
 import BrandCardLoading from "../../brandCardLoading/BrandCardLoading";
 import Loading from "../../locading/Loading";
 import PopUp from "../../popUp/PopUp";
+import WOW from "wow.js";
 
 export default function Brands() {
   const [brands, setBrands] = useState([]);
@@ -41,10 +42,6 @@ export default function Brands() {
 
     setLoading(false);
   }
-
-  // useEffect(() => {
-  //   getBrands();
-  // }, []);
 
   useEffect(() => {
     if (!pageOpened) {

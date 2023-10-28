@@ -46,7 +46,7 @@ export default function ProductCard({ product, notify, index }) {
   async function handelLove(id) {
     // TODO: add to wish list
 
-    if (wishList.includes(id)) {
+    if (wishList?.includes(id)) {
       notify("success", "Product already exist in wish list");
     } else {
       let tLoading = notify("loading", `loading...`);
@@ -160,7 +160,7 @@ export default function ProductCard({ product, notify, index }) {
               >
                 <FontAwesomeIcon
                   className={`d-inline-block ms-auto fa-xl heartIcon ${
-                    wishList.includes(product.id) ? "text-danger" : null
+                    wishList?.includes(product.id) ? "text-danger" : null
                   }`}
                   icon={faHeart}
                 />

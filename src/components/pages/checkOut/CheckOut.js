@@ -133,7 +133,7 @@ export default function CheckOut() {
             name="payment"
             value={formik.values.payment}
             onChange={formik.handleChange}
-            class="form-select form-select-lg mb-3"
+            className="form-select form-select-lg mb-3"
             aria-label=".form-select-lg example"
           >
             <option value="cash" selected>

@@ -58,6 +58,10 @@ export default function WishList() {
         }
       });
       setProducts(newProducts);
+      console.log(
+        "in Wishlist.js deleteFromWishlistwishlist will be like this ",
+        data?.data
+      );
       setWishList(data?.data);
       toast.dismiss(tLoading);
       notify("success", `${data?.message}`);
@@ -74,11 +78,12 @@ export default function WishList() {
     });
 
     if (data?.data) {
-      console.log(data);
+      setProducts(data?.data);
+
       const newWishlist = data?.data.map(({ id }) => {
         return id;
       });
-      setProducts(data?.data);
+
       setWishList(newWishlist);
     } else {
       console.log(errorMessage);
