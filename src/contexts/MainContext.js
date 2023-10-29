@@ -36,7 +36,7 @@ export default function MainContextProvider({ children }) {
 
   async function getWishList(token) {
     if (!(wishList?.length > 0)) {
-      // if no wish list
+      // if no wish list in localStorage
       const [data, errorMessage] = await getData("/api/v1/wishlist/", {
         headers: {
           token: token,
@@ -49,7 +49,7 @@ export default function MainContextProvider({ children }) {
         });
         setWishList(newWishlist);
       } else {
-        console.log(errorMessage);
+        console.error(errorMessage);
       }
     }
   }

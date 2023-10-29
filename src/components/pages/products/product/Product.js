@@ -5,6 +5,11 @@ import { toast } from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 import { useContextMain } from "../../../../contexts/MainContext";
 import { getData, postData } from "../../../../helper/api";
+import {
+  useAddToCardHook,
+  useFetchProduct,
+  useHandelLoveHook,
+} from "../../../../helper/hooks/asyncFunction";
 import SEO from "../../../../helper/SEO";
 import { notify } from "../../../../helper/toastFire";
 import Loading from "../../../locading/Loading";
@@ -22,78 +27,26 @@ export default function Product() {
     setProductsCounter,
   } = useContextMain();
 
-  async function handelLove(id) {
-    // TODO: check here on this ((wishListProductIds.includes(id) || isIdExistInContextWishList(id)) )
-    if (wishList?.includes(id)) {
-      notify("success", "product already exist in wish list");
-    } else {
-      let tLoading = notify("loading", `loading...`);
-      const [data, errorMessage] = await postData(
-        "/api/v1/wishlist",
-        {
-          productId: id,
-        },
-        {
-          headers: {
-            token: token,
-          },
-        }
-      );
+  const { handelLoveHook } = useHandelLoveHook();
+  const { addToCardHook } = useAddToCardHook();
+  const { fetchProduct } = useFetchProduct();
 
-      // TODO: conteniue
-      if (data?.data) {
-        //   put data?.data in local storage wishList (setState of wishlist context)
-        toast.dismiss(tLoading);
-        notify("success", `${data?.message}`);
-        console.log(
-          "handel Love in product wish list will be this",
-          data?.data
-        );
-        setWishList(data?.data);
-      } else {
-        //   show tost message "sorry something wrong happen please try but product in wishlist later"
-        toast.dismiss(tLoading);
-        notify("error", `Opps ${errorMessage}`);
-      }
-    }
+  async function handelLove(id) {
+    const data = await handelLoveHook(id);
+    console.log(data); // "done"
   }
 
   async function addToCart(id) {
-    let tLoading = notify("loading", `loading...`);
-    const [data, errorMessage] = await postData(
-      "/api/v1/cart",
-      {
-        productId: id,
-      },
-      {
-        headers: {
-          token: token,
-        },
-      }
-    );
-
-    if (data?.data?.products) {
-      // make like wishList an create context for product cart and set this peoduct context from here
-      toast.dismiss(tLoading);
-      notify("success", `${data?.message}`);
-      // here also return totalprice in (data?.data?.totalCartPrice)
-      setProductsCounter(data?.data?.products.length);
-    } else {
-      toast.dismiss(tLoading);
-      notify("error", `Opps ${errorMessage}`);
-    }
+    const data = await addToCardHook(id);
+    console.log(data); // "done"
   }
 
   async function getProduct() {
     setLoading(true);
 
-    const [data, errorMessage] = await getData("/api/v1/products/" + id);
+    const data = await fetchProduct(id);
+    setProduct(data);
 
-    if (data?.data) {
-      setProduct(data?.data);
-    } else {
-      console.log(errorMessage);
-    }
     setLoading(false);
   }
 

@@ -6,10 +6,12 @@ import { postData } from "../../../helper/api";
 import { useContextMain } from "../../../contexts/MainContext";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
+import { useLoginHook } from "../../../helper/hooks/asyncFunction";
 
 export default function Login() {
   const navigate = useNavigate();
   const { token, setToken } = useContextMain();
+  const { loginHook } = useLoginHook();
 
   useEffect(() => {
     if (token) {
@@ -18,25 +20,8 @@ export default function Login() {
   }, []);
 
   async function submit(values) {
-    const [data, errorMessage] = await postData("/api/v1/auth/signin", values);
-
-    if (data?.token) {
-      //  decode token
-      const decoded = jwt_decode(data.token);
-      // Get the current timestamp in seconds
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-      // Calculate the difference between expiration and current timestamps
-      const timeDifferenceSeconds = decoded.exp - currentTimestamp;
-      // Calculate the time difference in days
-      const timeDifferenceDays = Math.ceil(
-        timeDifferenceSeconds / (60 * 60 * 24)
-      );
-      Cookies.set("token", data.token, { expires: timeDifferenceDays }); // Expires in ... days
-      setToken(data.token);
-      navigate("/home");
-    } else {
-      console.log(errorMessage);
-    }
+    const data = await loginHook(values);
+    console.log(data); // "done"
   }
 
   function handelForgetPassword(e) {

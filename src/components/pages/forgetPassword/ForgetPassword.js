@@ -4,12 +4,15 @@ import { postData } from "../../../helper/api";
 import { useNavigate } from "react-router-dom";
 import { forgetPasswordValidationSchema } from "../../../validation/validation";
 import { useContextMain } from "../../../contexts/MainContext";
+import { useForgetPassword } from "../../../helper/hooks/asyncFunction";
 
 export default function ForgetPassword() {
   const navigate = useNavigate();
   const [isInputFocused, setInputFocused] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const { token } = useContextMain();
+  const { forgetPassword } = useForgetPassword();
+  let [alertInterval, setAlertInterval] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -17,29 +20,23 @@ export default function ForgetPassword() {
     }
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 7000);
-  }, [showAlert]);
-
   async function submit(value) {
-    const [data, errorMessage] = await postData(
-      "/api/v1/auth/forgotPasswords",
-      value
-    );
+    if (alertInterval) {
+      clearTimeout(alertInterval);
+    }
+
+    const data = await forgetPassword(value);
 
     if (data?.statusMsg === "success") {
       setShowAlert(false);
       navigate("/verify-code");
     } else {
-      if (errorMessage) {
-        console.log(errorMessage);
-        setShowAlert(errorMessage);
-      } else {
-        console.log(data?.message);
-        setShowAlert(data?.message);
-      }
+      setShowAlert(data.errorMessage);
+      setAlertInterval(
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 7000)
+      );
     }
   }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useContextMain } from "../../../../contexts/MainContext";
 import { getData } from "../../../../helper/api";
+import { useFetchCategory } from "../../../../helper/hooks/asyncFunction";
 import SEO from "../../../../helper/SEO";
 import Loading from "../../../locading/Loading";
 
@@ -10,18 +11,14 @@ export default function SubCategory() {
   const { id } = useParams();
   const { state } = useLocation();
   const { loading, setLoading } = useContextMain();
+  const { fetchCategory } = useFetchCategory();
 
   async function getSubCategory() {
     setLoading(true);
-    const [data, errorMessage] = await getData(
-      "/api/v1/categories/" + id + "/subcategories"
-    );
-    if (data?.data) {
-      setSubCategories(data?.data);
-    } else {
-      setSubCategories([]);
-      console.log(errorMessage);
-    }
+
+    const data = await fetchCategory(id);
+    setSubCategories(data);
+
     setLoading(false);
   }
 

@@ -25,7 +25,7 @@ export default function ResetPassword() {
     if (data?.token) {
       navigate("/login");
     } else {
-      console.log(errorMessage);
+      console.error(errorMessage);
     }
   }
 

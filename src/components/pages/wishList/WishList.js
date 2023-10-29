@@ -7,6 +7,11 @@ import { Link } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
 
 import { deleteData, getData, postData } from "../../../helper/api";
+import {
+  useAddToCardHook,
+  useDeleteFromWishlistHook,
+  useGetWishListHook,
+} from "../../../helper/hooks/asyncFunction";
 import SEO from "../../../helper/SEO";
 import { notify } from "../../../helper/toastFire";
 import Loading from "../../locading/Loading";
@@ -17,77 +22,36 @@ export default function WishList() {
   const { token, loading, setLoading, setWishList, setProductsCounter } =
     useContextMain();
 
-  async function addToCart(id) {
-    let tLoading = notify("loading", `loading...`);
-    const [data, errorMessage] = await postData(
-      "/api/v1/cart",
-      {
-        productId: id,
-      },
-      {
-        headers: {
-          token: token,
-        },
-      }
-    );
+  const { addToCardHook } = useAddToCardHook();
+  const { deleteFromWishlistHook } = useDeleteFromWishlistHook();
+  const { getWishListHook } = useGetWishListHook();
 
-    if (data?.data?.products) {
-      // make like wishList an create context for product cart and set this peoduct context from here
-      toast.dismiss(tLoading);
-      notify("success", `${data?.message}`);
-      // here also return totalprice in (data?.data?.totalCartPrice)
-      setProductsCounter(data?.data?.products.length);
-    } else {
-      toast.dismiss(tLoading);
-      notify("error", `Opps ${errorMessage}`);
-    }
+  async function addToCart(id) {
+    const data = await addToCardHook(id);
+    console.log(data); // "done"
   }
 
   async function deleteFromWishList(id) {
-    let tLoading = notify("loading", `loading...`);
-    const [data, errorMessage] = await deleteData(`/api/v1/wishlist/${id}`, {
-      headers: { token: token },
-    });
+    const data = await deleteFromWishlistHook(id);
 
-    if (data?.data) {
-      // TODONOW: id data?.data is array of wishlist ids delete the 7 line and setWishlist(data?.data)
-
+    if (data) {
       const newProducts = products.filter((product) => {
-        if (data?.data.includes(product.id)) {
+        if (data.includes(product.id)) {
           return product;
         }
       });
       setProducts(newProducts);
-      console.log(
-        "in Wishlist.js deleteFromWishlistwishlist will be like this ",
-        data?.data
-      );
-      setWishList(data?.data);
-      toast.dismiss(tLoading);
-      notify("success", `${data?.message}`);
-    } else {
-      toast.dismiss(tLoading);
-      notify("error", `Opps ${errorMessage}`);
     }
   }
 
   async function getWishList(id) {
     setLoading(true);
-    const [data, errorMessage] = await getData(`/api/v1/wishlist`, {
-      headers: { token: token },
-    });
 
-    if (data?.data) {
-      setProducts(data?.data);
-
-      const newWishlist = data?.data.map(({ id }) => {
-        return id;
-      });
-
-      setWishList(newWishlist);
-    } else {
-      console.log(errorMessage);
+    const data = await getWishListHook();
+    if (data) {
+      setProducts(data);
     }
+
     setLoading(false);
   }
 

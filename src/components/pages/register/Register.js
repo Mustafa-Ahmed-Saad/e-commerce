@@ -20,10 +20,10 @@ export default function Register() {
     const [data, errorMessage] = await postData("/api/v1/auth/signup", values);
 
     if (data?.token) {
-      // we can go directly to home if we want
+      // we can go directly to home if we want but uou should handle and save token in cookies
       navigate("/login");
     } else {
-      console.log(errorMessage);
+      console.error(errorMessage);
     }
   }
 

@@ -9,71 +9,25 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { postData } from "../../helper/api";
 import { useContextMain } from "../../contexts/MainContext";
 import toast from "react-hot-toast";
+import {
+  useAddToCardHook,
+  useHandelLoveHook,
+} from "../../helper/hooks/asyncFunction";
 
 export default function ProductCard({ product, notify, index }) {
   const navigate = useNavigate();
   const { token, wishList, setWishList, setProductsCounter } = useContextMain();
+  const { handelLoveHook } = useHandelLoveHook();
+  const { addToCardHook } = useAddToCardHook();
 
   async function addToCart(id) {
-    let tLoading = notify("loading", `loading...`);
-    const [data, errorMessage] = await postData(
-      "/api/v1/cart",
-      {
-        productId: id,
-      },
-      {
-        headers: {
-          token: token,
-        },
-      }
-    );
-
-    if (data?.data?.products) {
-      console.log(data?.data);
-      // here also return totalprice in (data?.data?.totalCartPrice)
-      setProductsCounter(data?.data?.products.length);
-      toast.dismiss(tLoading);
-      notify("success", `${data?.message}`);
-      // TODONow: add it of this product in wishList if it is not exest
-      // setWishList(data?.data);
-    } else {
-      toast.dismiss(tLoading);
-      notify("error", `Opps ${errorMessage}`);
-      console.log(errorMessage);
-    }
+    const data = await addToCardHook(id);
+    console.log(data); // "done"
   }
 
   async function handelLove(id) {
-    // TODO: add to wish list
-
-    if (wishList?.includes(id)) {
-      notify("success", "Product already exist in wish list");
-    } else {
-      let tLoading = notify("loading", `loading...`);
-      const [data, errorMessage] = await postData(
-        "/api/v1/wishlist",
-        {
-          productId: id,
-        },
-        {
-          headers: {
-            token: token,
-          },
-        }
-      );
-
-      if (data?.data) {
-        //  TODO: put data?.data in local storage wishList (setState of wishlist context)
-        toast.dismiss(tLoading);
-        notify("success", `${data?.message}`);
-        // TODONOW: check if data?data is array of wishlistids
-        setWishList(data?.data);
-      } else {
-        toast.dismiss(tLoading);
-        notify("error", `Opps ${errorMessage}`);
-        console.log(errorMessage);
-      }
-    }
+    const data = await handelLoveHook(id);
+    console.log(data); // "done"
   }
 
   function goToProduct(e, id) {

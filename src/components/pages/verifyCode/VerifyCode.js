@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useContextMain } from "../../../contexts/MainContext";
 import { postData } from "../../../helper/api";
+import { useVerifyCodeHook } from "../../../helper/hooks/asyncFunction";
 import { codeValidationSchema } from "../../../validation/validation";
 
 export default function VerifyCode() {
@@ -11,6 +12,8 @@ export default function VerifyCode() {
   const [showAlert, setShowAlert] = useState(false);
   const { token } = useContextMain();
   const [isInputFocused, setInputFocused] = useState(false);
+
+  const { verifyCodeHook } = useVerifyCodeHook();
 
   useEffect(() => {
     if (token) {
@@ -25,22 +28,12 @@ export default function VerifyCode() {
   }, [showAlert]);
 
   async function submit(value) {
-    const [data, errorMessage] = await postData(
-      "/api/v1/auth/verifyResetCode",
-      value
-    );
+    const data = await verifyCodeHook(value);
 
-    if (data?.status === "Success") {
+    if (data.status === "Success") {
       setShowAlert(false);
-      navigate("/reset-password");
     } else {
-      if (errorMessage) {
-        console.log(errorMessage);
-        setShowAlert(errorMessage);
-      } else {
-        console.log(data?.message);
-        setShowAlert(data?.message);
-      }
+      setShowAlert(data.errorMessage);
     }
   }
 

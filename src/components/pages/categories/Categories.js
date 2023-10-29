@@ -5,21 +5,27 @@ import SEO from "../../../helper/SEO";
 import CategoryCard from "../../categoryCard/CategoryCard";
 import Loading from "../../locading/Loading";
 import WOW from "wow.js";
+import { useFetchCategories } from "../../../helper/hooks/asyncFunction";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const { loading, setLoading } = useContextMain();
 
+  const { fetchCategories } = useFetchCategories();
+
   async function getCategories() {
     setLoading(true);
-    const [data, errorMessage] = await getData("/api/v1/categories");
+    // const [data, errorMessage] = await getData("/api/v1/categories");
 
-    if (data?.data) {
-      setCategories(data?.data);
-    } else {
-      setCategories([]);
-      console.log(errorMessage);
-    }
+    // if (data?.data) {
+    //   setCategories(data?.data);
+    // } else {
+    //   setCategories([]);
+    //   console.log(errorMessage);
+    // }
+    const data = await fetchCategories();
+    setCategories(data);
+
     setLoading(false);
   }
 

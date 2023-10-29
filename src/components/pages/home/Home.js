@@ -8,6 +8,10 @@ import { useContextMain } from "../../../contexts/MainContext";
 import Loading from "../../locading/Loading";
 import SearchLoading from "../../searchLoading/SearchLoading";
 import SEO from "../../../helper/SEO";
+import {
+  useFetchProducts,
+  useGetWishListHook,
+} from "../../../helper/hooks/asyncFunction";
 
 export default function Home() {
   // TODO: dont forget add load in this project
@@ -24,22 +28,18 @@ export default function Home() {
     wishList,
   } = useContextMain();
 
+  const { fetchProducts } = useFetchProducts();
+  const { getWishListHook } = useGetWishListHook();
+
   const toggleSearchLoading = (value) => {
     setSearchLoading(value);
   };
 
   async function getProducts() {
-    const [data, errorMessage] = await getData("/api/v1/products");
-
-    if (data?.data) {
-      setProducts(data?.data);
-      setProductsToShow(data?.data);
-      setAllAppProducts(data?.data);
-    } else {
-      setProducts([]);
-      setProductsToShow([]);
-      console.log(errorMessage);
-    }
+    setLoading(true);
+    const products = await fetchProducts();
+    setProducts(products);
+    setProductsToShow(products);
     setLoading(false);
   }
 
@@ -49,26 +49,12 @@ export default function Home() {
   async function getWishList(token) {
     if (!(wishList?.length > 0)) {
       // if no wish list
-      const [data, errorMessage] = await getData("/api/v1/wishlist/", {
-        headers: {
-          token: token,
-        },
-      });
-
-      if (data?.data) {
-        const newWishlist = data?.data.map(({ id }) => {
-          return id;
-        });
-        console.log("home.js getWishkist", newWishlist);
-        setWishList(newWishlist);
-      } else {
-        console.log(errorMessage);
-      }
+      const data = await getWishListHook();
+      console.log(data); // data?.data
     }
   }
 
   useEffect(() => {
-    setLoading(true);
     getProducts();
 
     if (token) {

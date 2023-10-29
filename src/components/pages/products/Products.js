@@ -7,10 +7,13 @@ import { useContextMain } from "../../../contexts/MainContext";
 import Loading from "../../locading/Loading";
 import SEO from "../../../helper/SEO";
 
+import { useFetchProducts } from "../../../helper/hooks/asyncFunction";
+
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [productsToShow, setProductsToShow] = useState([]);
-  const { loading, setLoading, setAllAppProducts } = useContextMain();
+  const { loading, setLoading } = useContextMain();
+  const { fetchProducts } = useFetchProducts();
 
   function changeProduct(newProduct) {
     setProductsToShow(newProduct);
@@ -18,18 +21,24 @@ export default function Products() {
 
   async function getProducts() {
     setLoading(true);
-    const [data, errorMessage] = await getData("/api/v1/products");
-
-    if (data?.data) {
-      setProducts(data?.data);
-      setProductsToShow(data?.data);
-      setAllAppProducts(data?.data);
-    } else {
-      setProducts([]);
-      setProductsToShow([]);
-      console.log(errorMessage);
-    }
+    const products = await fetchProducts();
+    setProducts(products);
+    setProductsToShow(products);
     setLoading(false);
+
+    // setLoading(true);
+    // const [data, errorMessage] = await getData("/api/v1/products");
+
+    // if (data?.data) {
+    //   setProducts(data?.data);
+    //   setProductsToShow(data?.data);
+    //   setAllAppProducts(data?.data);
+    // } else {
+    //   setProducts([]);
+    //   setProductsToShow([]);
+    //   console.log(errorMessage);
+    // }
+    // setLoading(false);
   }
 
   useEffect(() => {

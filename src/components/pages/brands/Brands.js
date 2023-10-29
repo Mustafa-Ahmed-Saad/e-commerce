@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useContextMain } from "../../../contexts/MainContext";
 import { getData } from "../../../helper/api";
+import { useFetchBrands } from "../../../helper/hooks/asyncFunction";
 import SEO from "../../../helper/SEO";
 import BrandCard from "../../brandCard/BrandCard";
 import BrandCardLoading from "../../brandCardLoading/BrandCardLoading";
 import Loading from "../../locading/Loading";
 import PopUp from "../../popUp/PopUp";
-import WOW from "wow.js";
 
 export default function Brands() {
   const [brands, setBrands] = useState([]);
   const [showPopUp, setShowPopUp] = useState(false);
   const [poPupBrand, setPoPupBrand] = useState(null);
   const { loading, setLoading } = useContextMain();
-  const [pageOpened, setPageOpened] = useState(false);
   const [brandCardLoading, setBrandCardLoading] = useState(false);
+  const { fetchCategories } = useFetchBrands();
 
   const handleClose = () => {
     setShowPopUp(false);
@@ -31,27 +31,15 @@ export default function Brands() {
   async function getBrands() {
     setLoading(true);
 
-    const [data, errorMessage] = await getData("/api/v1/brands");
-
-    if (data?.data) {
-      setBrands(data?.data);
-    } else {
-      setBrands([]);
-      console.log(errorMessage);
-    }
+    const data = await fetchCategories("/api/v1/brands");
+    setBrands(data);
 
     setLoading(false);
   }
 
   useEffect(() => {
-    if (!pageOpened) {
-      // هذا يتحقق من أن الصفحة لم تتم فتحها بعد
-      setPageOpened(true);
-      // يمكنك هنا تنفيذ الانيميشن wow
-    }
-
     getBrands();
-  }, [pageOpened]);
+  }, []);
 
   let ui = <Loading />;
 

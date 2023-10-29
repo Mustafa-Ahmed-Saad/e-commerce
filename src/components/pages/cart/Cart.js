@@ -5,6 +5,12 @@ import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
 import { deleteData, getData, putData } from "../../../helper/api";
+import {
+  useClearAllProductsCart,
+  useDeleteFromCartHook,
+  useFetchCartProducts,
+  useUpdateQuantity,
+} from "../../../helper/hooks/asyncFunction";
 import SEO from "../../../helper/SEO";
 import { notify } from "../../../helper/toastFire";
 import Loading from "../../locading/Loading";
@@ -19,57 +25,67 @@ export default function Cart() {
     setUserId,
   } = useContextMain();
 
+  const { clearAllProductsCart } = useClearAllProductsCart();
+
+  const { updateQuantity } = useUpdateQuantity();
+
   const navigate = useNavigate();
   const [allProductsInCart, setAllProductsInCart] = useState([]);
   const [totalCartPrice, setTotalCartPrice] = useState(0);
   let [cartId, setCartId] = useState(0);
   let [reqInterval, setReqInterval] = useState(false);
   const { loading, setLoading } = useContextMain();
+  const { deleteFromCartHook } = useDeleteFromCartHook();
+  const { fetchCartProducts } = useFetchCartProducts();
 
   async function deleteFromCart(id, index, oldQuantity) {
-    let tLoading = notify("loading", `loading...`);
-    const [data, errorMessage] = await deleteData(`/api/v1/cart/${id}`, {
-      headers: { token: token },
-    });
+    const data = await deleteFromCartHook(id);
 
-    if (data?.data) {
-      toast.dismiss(tLoading);
-      notify("success", "product deleted successfully from cart");
-      setAllProductsInCart(data?.data?.products);
-      setProductsCounter((prev) => prev - 1);
-      setTotalCartPrice(data?.data?.totalCartPrice);
+    setAllProductsInCart(data.products);
+    setTotalCartPrice(data.totalCartPrice);
 
-      const pq = { ...productsQuantity };
-      delete pq[id];
-      setProductsQuantity(pq);
-    } else {
-      toast.dismiss(tLoading);
-      notify("error", `Opps ${errorMessage}`);
-      if (oldQuantity) {
-        const nProducts = [...allProductsInCart];
-        nProducts[index].count = oldQuantity;
-        setAllProductsInCart(nProducts);
-        // TODO: show toast "soorry somthing rong"
-      }
+    // if error
+    if (data.myError && oldQuantity) {
+      const nProducts = [...allProductsInCart];
+      nProducts[index].count = oldQuantity;
+      setAllProductsInCart(nProducts);
     }
+
+    // let tLoading = notify("loading", `loading...`);
+    // const [data, errorMessage] = await deleteData(`/api/v1/cart/${id}`, {
+    //   headers: { token: token },
+    // });
+
+    // if (data?.data) {
+    //   toast.dismiss(tLoading);
+    //   notify("success", "product deleted successfully from cart");
+    //   setAllProductsInCart(data?.data?.products);
+    //   setProductsCounter((prev) => prev - 1);
+    //   setTotalCartPrice(data?.data?.totalCartPrice);
+
+    //   const pq = { ...productsQuantity };
+    //   delete pq[id];
+    //   setProductsQuantity(pq);
+    // } else {
+    //   toast.dismiss(tLoading);
+    //   notify("error", `Opps ${errorMessage}`);
+    //   if (oldQuantity) {
+    //     const nProducts = [...allProductsInCart];
+    //     nProducts[index].count = oldQuantity;
+    //     setAllProductsInCart(nProducts);
+    //     // TODO: show toast "soorry somthing rong"
+    //   }
+    // }
   }
 
   async function getCartProducts() {
     setLoading(true);
-    const [data, errorMessage] = await getData(`/api/v1/cart`, {
-      headers: { token: token },
-    });
 
-    if (data?.data?.products) {
-      setCartId(data?.data?._id);
-      setAllProductsInCart(data?.data?.products);
-      setProductsCounter(data?.data?.products.length || 0);
-      setTotalCartPrice(data?.data?.totalCartPrice);
-      setUserId(data?.data?.cartOwner);
-    } else {
-      // TODO: show tost
-      console.log(errorMessage);
-    }
+    const data = await fetchCartProducts();
+    setCartId(data._id);
+    setAllProductsInCart(data.products);
+    setTotalCartPrice(data.totalCartPrice);
+
     setLoading(false);
   }
 
@@ -79,19 +95,14 @@ export default function Cart() {
 
   async function clearAllProductsFromCart() {
     setLoading(true);
-    const [data, errorMessage] = await deleteData(`/api/v1/cart`, {
-      headers: { token: token },
-    });
 
-    console.log("delete all cart products", data);
+    const data = await clearAllProductsCart();
 
-    if (data?.message === "success") {
+    if (data) {
       setAllProductsInCart([]);
-      setProductsCounter(0);
       setTotalCartPrice(0);
-    } else {
-      console.log(errorMessage);
     }
+
     setLoading(false);
   }
 
@@ -114,37 +125,19 @@ export default function Cart() {
         if (count <= 0) {
           deleteFromCart(productId, index, productsQuantity[productId]);
         } else {
-          let tLoading = notify("loading", `loading...`);
-          const [data, errorMessage] = await putData(
-            `/api/v1/cart/${productId}`,
-            {
-              count,
-            },
-            {
-              headers: {
-                token: token,
-              },
-            }
-          );
+          const data = await updateQuantity(productId, count);
 
-          if (data?.data) {
-            toast.dismiss(tLoading);
-            notify("success", "Successfully");
-            setTotalCartPrice(data?.data?.totalCartPrice);
-            setAllProductsInCart(data?.data?.products);
+          if (data) {
+            setTotalCartPrice(data.totalCartPrice);
+            setAllProductsInCart(data.products);
             // TODO: check it ishow setProductsCounter here or not
             // setProductsCounter(data?.numOfCartItems);
-
             // TODO: delete local storage of productsQuantity after chick out
-
             const oldQuantity = { ...productsQuantity };
             oldQuantity[productId] = count;
             setProductsQuantity(oldQuantity);
           } else {
-            toast.dismiss(tLoading);
-            notify("error", `Opps ${errorMessage}`);
             const newProducts = [...allProductsInCart];
-
             newProducts[index].count = productsQuantity[productId];
             setAllProductsInCart(newProducts);
           }

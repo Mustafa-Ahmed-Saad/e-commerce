@@ -5,25 +5,19 @@ import { getData } from "../../../helper/api";
 import SEO from "../../../helper/SEO";
 import Loading from "../../locading/Loading";
 import WOW from "wow.js";
+import { useFetchAllOrders } from "../../../helper/hooks/asyncFunction";
 
 export default function AllOrders() {
   const { userId, loading, setLoading } = useContextMain();
   const [orders, setOrders] = useState([]);
+  const { fetchAllOrders } = useFetchAllOrders();
 
   async function getAllOrders() {
-    setLoading(true);
     if (userId) {
+      setLoading(true);
       console.log("userId", userId);
-      const [data, errorMessage] = await getData(
-        `/api/v1/orders/user/${userId}`
-      );
-
-      if (data) {
-        console.log(data);
-        setOrders(data);
-      } else {
-        console.log(errorMessage);
-      }
+      const data = await fetchAllOrders(userId);
+      setOrders(data);
       setLoading(false);
     }
   }

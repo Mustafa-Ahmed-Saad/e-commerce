@@ -5,6 +5,7 @@ import { getData } from "../../helper/api";
 import SamplePrevArrow from "./../samplePrevArrow/SamplePrevArrow";
 import SampleNextArrow from "./../sampleNextArrow/SampleNextArrow";
 import "./HomeResponsiveSlider.css";
+import { useFetchCategories } from "../../helper/hooks/asyncFunction";
 
 const settings = {
   dots: false,
@@ -50,6 +51,8 @@ const settings = {
 
 export default function HomeResponsiveSlider() {
   const [categories, setCategories] = useState([]);
+  const { fetchCategories } = useFetchCategories();
+
   const navigate = useNavigate();
 
   function goToCategory(id) {
@@ -57,14 +60,8 @@ export default function HomeResponsiveSlider() {
   }
 
   async function getCategories() {
-    const [data, errorMessage] = await getData("/api/v1/categories");
-
-    if (data?.data) {
-      setCategories(data?.data);
-    } else {
-      setCategories([]);
-      console.log(errorMessage);
-    }
+    const data = await fetchCategories();
+    setCategories(data);
   }
 
   useEffect(() => {

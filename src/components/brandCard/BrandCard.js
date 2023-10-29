@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import { useContextMain } from "../../contexts/MainContext";
-import { getData } from "../../helper/api";
+import { useFetchBrand } from "../../helper/hooks/asyncFunction";
 
 export default function BrandCard({
   brandDetails,
@@ -10,17 +8,14 @@ export default function BrandCard({
   handleClose,
   setBrandCardLoading,
 }) {
-  const { setLoading } = useContextMain();
+  const { fetchBrand } = useFetchBrand();
 
   async function getBrand(id) {
     setBrandCardLoading(true);
-    const [data, errorMessage] = await getData("/api/v1/brands/" + id);
-    if (data?.data) {
-      handleShow(data?.data);
-    } else {
-      handleClose();
-      console.log(errorMessage);
-    }
+
+    const data = await fetchBrand(id);
+    handleShow(data);
+
     setBrandCardLoading(false);
   }
 

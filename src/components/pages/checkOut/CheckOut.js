@@ -2,6 +2,10 @@ import { useFormik } from "formik";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { postData } from "../../../helper/api";
+import {
+  useCardPayment,
+  useCashPayment,
+} from "../../../helper/hooks/asyncFunction";
 import { checkOutValidationSchema } from "../../../validation/validation";
 import { useContextMain } from "./../../../contexts/MainContext";
 
@@ -11,46 +15,20 @@ export default function CheckOut() {
   const { token } = useContextMain();
   const navigate = useNavigate();
 
+  const { cashPayment } = useCashPayment();
+  const { cardPayment } = useCardPayment();
+
   async function submit(formData) {
     console.log(formData);
 
     if (formData.payment === "cash") {
-      //    cash
-      delete formData.payment;
-      const [data, errorMessage] = await postData(
-        `/api/v1/orders/${id}`,
-        formData,
-        {
-          headers: { token: token },
-        }
-      );
-
-      if (data?.status === "success") {
-        navigate("/allorders");
-      } else {
-        console.log(errorMessage);
-      }
+      // cash payment
+      const data = await cashPayment(id, formData);
+      console.log(data); // "done"
     } else {
-      //    card
-      delete formData.payment;
-      const [data, errorMessage] = await postData(
-        `/api/v1/orders/checkout-session/${id}`,
-        formData,
-        {
-          headers: { token: token },
-          params: {
-            url: "https://mustafa-ahmed-saad.github.io/e-commerce/#",
-          },
-        }
-      );
-
-      if (data?.session) {
-        window.location.href = data?.session?.url;
-        // or use
-        // window.open(data?.session?.url, '_blank');
-      } else {
-        console.log(errorMessage);
-      }
+      // card payment
+      const data = await cardPayment(id, formData);
+      console.log(data); // "done"
     }
   }
 
