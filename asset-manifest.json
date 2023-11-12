@@ -1,30 +1,30 @@
 {
   "files": {
-    "main.css": "/e-commerce/static/css/main.ac862c5e.css",
-    "main.js": "/e-commerce/static/js/main.a5e15ec3.js",
+    "main.css": "/e-commerce/static/css/main.5a8d76ef.css",
+    "main.js": "/e-commerce/static/js/main.fd35f175.js",
     "static/js/787.46493d11.chunk.js": "/e-commerce/static/js/787.46493d11.chunk.js",
-    "static/media/slider-image-1.jpeg": "/e-commerce/static/media/slider-image-1.3c3940ee0f1c3b17ff9a.jpeg",
-    "static/media/slider-image-3.jpeg": "/e-commerce/static/media/slider-image-3.7e5c9f7a513f6db6dd5e.jpeg",
-    "static/media/slider-image-2.jpeg": "/e-commerce/static/media/slider-image-2.e510b0de8a4d96a1d5ad.jpeg",
-    "static/media/404.png": "/e-commerce/static/media/404.fa4ee42bf54ac3605279.png",
-    "static/media/amazonPay.png": "/e-commerce/static/media/amazonPay.f1d7ed8012ba50041d47.png",
-    "static/media/googlePlay.jpg": "/e-commerce/static/media/googlePlay.533791b36a718c63bbf3.jpg",
-    "static/media/appleAppStore.jpg": "/e-commerce/static/media/appleAppStore.8f504bbba0059f2d004b.jpg",
-    "static/media/masterCard.png": "/e-commerce/static/media/masterCard.f773dfa116ae6b85ba8e.png",
-    "static/media/PayPal.png": "/e-commerce/static/media/PayPal.a61280e0b46895630141.png",
-    "static/media/22.jpg": "/e-commerce/static/media/22.fef14ee6b7c34b851c93.jpg",
-    "static/media/11.jpg": "/e-commerce/static/media/11.8e624113ab0d336e7225.jpg",
+    "static/media/slider-image-1.webp": "/e-commerce/static/media/slider-image-1.8e7c8fb6784218e42352.webp",
+    "static/media/masterCard.webp": "/e-commerce/static/media/masterCard.560c258e385ddadb4450.webp",
+    "static/media/404.webp": "/e-commerce/static/media/404.21e22162eb63f57fdfc1.webp",
+    "static/media/amazonPay.webp": "/e-commerce/static/media/amazonPay.5ada5ed0dbc688cd42dc.webp",
+    "static/media/appleAppStore.webp": "/e-commerce/static/media/appleAppStore.6edb559ad1b68d183531.webp",
+    "static/media/googlePlay.webp": "/e-commerce/static/media/googlePlay.0063e8d0a64fb966da8c.webp",
+    "static/media/slider-image-2.webp": "/e-commerce/static/media/slider-image-2.d150daaf312449df0fbf.webp",
+    "static/media/22.webp": "/e-commerce/static/media/22.94d74080711e2141ea09.webp",
+    "static/media/slider-image-3.webp": "/e-commerce/static/media/slider-image-3.b977acf7f9bbea9bf681.webp",
+    "static/media/11.webp": "/e-commerce/static/media/11.d798a229eaddf24afd35.webp",
+    "static/media/PayPal.webp": "/e-commerce/static/media/PayPal.dafbea70b9fa5caa9448.webp",
     "static/media/slick.svg": "/e-commerce/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/e-commerce/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/e-commerce/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/e-commerce/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/e-commerce/index.html",
-    "main.ac862c5e.css.map": "/e-commerce/static/css/main.ac862c5e.css.map",
-    "main.a5e15ec3.js.map": "/e-commerce/static/js/main.a5e15ec3.js.map",
+    "main.5a8d76ef.css.map": "/e-commerce/static/css/main.5a8d76ef.css.map",
+    "main.fd35f175.js.map": "/e-commerce/static/js/main.fd35f175.js.map",
     "787.46493d11.chunk.js.map": "/e-commerce/static/js/787.46493d11.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ac862c5e.css",
-    "static/js/main.a5e15ec3.js"
+    "static/css/main.5a8d76ef.css",
+    "static/js/main.fd35f175.js"
   ]
 }
