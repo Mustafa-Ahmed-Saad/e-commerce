@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import Slider from "react-slick";
 
 export default function ProductSlider({ imgUrls }) {
@@ -6,7 +6,8 @@ export default function ProductSlider({ imgUrls }) {
     customPaging: function (i) {
       return (
         <span className="d-inline-block h-100">
-          <img
+          <LazyLoadImage
+            effect="blur"
             className="w-100 h-100 object-fit-cover object-position-center"
             src={imgUrls[i]}
             alt="product-img"
@@ -28,7 +29,8 @@ export default function ProductSlider({ imgUrls }) {
       <Slider {...settings} className="productSlider">
         {imgUrls?.map((imgUrl, index) => (
           <div className="overflow-hidden h-300px" key={index}>
-            <img
+            <LazyLoadImage
+              effect="blur"
               className="w-100 h-100 object-fit-contain object-position-center"
               src={imgUrl}
               alt="product-img"

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useContextMain } from "../../../contexts/MainContext";
-import { getData } from "../../../helper/api";
-import { useFetchBrands } from "../../../helper/hooks/asyncFunction";
+import { useGetBrands } from "../../../helper/hooks/asyncFunction";
 import SEO from "../../../helper/SEO";
 import BrandCard from "../../brandCard/BrandCard";
 import BrandCardLoading from "../../brandCardLoading/BrandCardLoading";
@@ -9,12 +8,11 @@ import Loading from "../../locading/Loading";
 import PopUp from "../../popUp/PopUp";
 
 export default function Brands() {
-  const [brands, setBrands] = useState([]);
   const [showPopUp, setShowPopUp] = useState(false);
   const [poPupBrand, setPoPupBrand] = useState(null);
-  const { loading, setLoading } = useContextMain();
+  const { loading } = useContextMain();
   const [brandCardLoading, setBrandCardLoading] = useState(false);
-  const { fetchCategories } = useFetchBrands();
+  const { brands } = useGetBrands();
 
   const handleClose = () => {
     setShowPopUp(false);
@@ -27,19 +25,6 @@ export default function Brands() {
     setPoPupBrand(brand);
     setShowPopUp(true);
   };
-
-  async function getBrands() {
-    setLoading(true);
-
-    const data = await fetchCategories("/api/v1/brands");
-    setBrands(data);
-
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    getBrands();
-  }, []);
 
   let ui = <Loading />;
 
@@ -62,7 +47,6 @@ export default function Brands() {
                 <BrandCard
                   brandDetails={brand}
                   handleShow={handleShow}
-                  handleClose={handleClose}
                   setBrandCardLoading={setBrandCardLoadingFromChild}
                 />
               </div>

@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { postData } from "../../../helper/api";
 import {
   useCardPayment,
   useCashPayment,
@@ -12,23 +11,16 @@ import { useContextMain } from "./../../../contexts/MainContext";
 export default function CheckOut() {
   //   get cart id
   const { id } = useParams();
-  const { token } = useContextMain();
-  const navigate = useNavigate();
-
   const { cashPayment } = useCashPayment();
   const { cardPayment } = useCardPayment();
 
   async function submit(formData) {
-    console.log(formData);
-
     if (formData.payment === "cash") {
       // cash payment
-      const data = await cashPayment(id, formData);
-      console.log(data); // "done"
+      await cashPayment(id, formData);
     } else {
       // card payment
-      const data = await cardPayment(id, formData);
-      console.log(data); // "done"
+      await cardPayment(id, formData);
     }
   }
 

@@ -1,49 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SearchHome from "../../searchHome/SearchHome";
-// import { myProducts } from "../../damyData/damyData";
 import ShowProducts from "../../showProducts/ShowProducts";
-import { getData } from "../../../helper/api";
 import { useContextMain } from "../../../contexts/MainContext";
 import Loading from "../../locading/Loading";
 import SEO from "../../../helper/SEO";
 
-import { useFetchProducts } from "../../../helper/hooks/asyncFunction";
+import { useGetProducts } from "../../../helper/hooks/asyncFunction";
+import SearchLoading from "../../searchLoading/SearchLoading";
 
 export default function Products() {
-  const [products, setProducts] = useState([]);
-  const [productsToShow, setProductsToShow] = useState([]);
-  const { loading, setLoading } = useContextMain();
-  const { fetchProducts } = useFetchProducts();
+  const [searchLoading, setSearchLoading] = useState(false);
+  const { loading } = useContextMain();
+  const { products, productsToShow, setProductsToShow } = useGetProducts();
 
   function changeProduct(newProduct) {
     setProductsToShow(newProduct);
   }
 
-  async function getProducts() {
-    setLoading(true);
-    const products = await fetchProducts();
-    setProducts(products);
-    setProductsToShow(products);
-    setLoading(false);
-
-    // setLoading(true);
-    // const [data, errorMessage] = await getData("/api/v1/products");
-
-    // if (data?.data) {
-    //   setProducts(data?.data);
-    //   setProductsToShow(data?.data);
-    //   setAllAppProducts(data?.data);
-    // } else {
-    //   setProducts([]);
-    //   setProductsToShow([]);
-    //   console.log(errorMessage);
-    // }
-    // setLoading(false);
-  }
-
-  useEffect(() => {
-    getProducts();
-  }, []);
+  const toggleSearchLoading = (value) => {
+    setSearchLoading(value);
+  };
 
   let ui = <Loading />;
 
@@ -56,8 +32,16 @@ export default function Products() {
           facebookType="website"
           twitterType="summary"
         />
-        <SearchHome products={products} setProductsToShow={changeProduct} />
-        <ShowProducts products={productsToShow} />
+        <SearchHome
+          products={products}
+          setProductsToShow={changeProduct}
+          toggleSearchLoading={toggleSearchLoading}
+        />
+        {searchLoading ? (
+          <SearchLoading />
+        ) : (
+          <ShowProducts products={productsToShow} />
+        )}
       </>
     );
   }

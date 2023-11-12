@@ -1,11 +1,12 @@
 import "./MainSlider.css";
 import React from "react";
 import Slider from "react-slick";
-import sliderImg1 from "../../Assets/Images/slider-image-1.jpeg";
-import sliderImg2 from "../../Assets/Images/slider-image-2.jpeg";
-import sliderImg3 from "../../Assets/Images/slider-image-3.jpeg";
-import asideImg1 from "../../Assets/Images/11.jpg";
-import asideImg2 from "../../Assets/Images/22.jpg";
+import sliderImg1 from "../../Assets/Images/slider-image-1.webp";
+import sliderImg2 from "../../Assets/Images/slider-image-2.webp";
+import sliderImg3 from "../../Assets/Images/slider-image-3.webp";
+import asideImg1 from "../../Assets/Images/11.webp";
+import asideImg2 from "../../Assets/Images/22.webp";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const settings = {
   dots: true,
@@ -28,16 +29,20 @@ export default function MainSlider() {
           <Slider {...settings} className="home-slider">
             {/* img1 */}
             <div>
-              <img
+              <LazyLoadImage
+                effect="blur"
+                alt="slider-img1"
+                // height={image.height}
+                src={sliderImg1}
                 width="100%"
                 className="object-fit-cover object-position-center"
-                src={sliderImg1}
-                alt="slider-img1"
               />
             </div>
             {/* img2 */}
             <div>
-              <img
+              <LazyLoadImage
+                effect="blur"
+                // height={image.height}
                 width="100%"
                 className="object-fit-cover object-position-center"
                 src={sliderImg2}
@@ -46,7 +51,8 @@ export default function MainSlider() {
             </div>
             {/* img3 */}
             <div>
-              <img
+              <LazyLoadImage
+                effect="blur"
                 width="100%"
                 className="object-fit-cover object-position-center"
                 src={sliderImg3}
@@ -59,12 +65,24 @@ export default function MainSlider() {
           <div className="row g-0">
             <div className="col-12 col-sm-6 col-md-12">
               <div className="w-100">
-                <img width="100%" src={asideImg1} alt="aside-img1" />
+                <LazyLoadImage
+                  effect="blur"
+                  // height={image.height}
+                  width="100%"
+                  src={asideImg1}
+                  alt="aside-img1"
+                />
               </div>
             </div>
             <div className="col-12 col-sm-6 col-md-12">
               <div className="w-100">
-                <img width="100%" src={asideImg2} alt="aside-img2" />
+                <LazyLoadImage
+                  effect="blur"
+                  // height={image.height}
+                  width="100%"
+                  src={asideImg2}
+                  alt="aside-img2"
+                />
               </div>
             </div>
           </div>

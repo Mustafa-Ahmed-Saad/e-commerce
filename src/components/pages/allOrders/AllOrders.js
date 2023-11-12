@@ -1,30 +1,14 @@
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
-import { getData } from "../../../helper/api";
 import SEO from "../../../helper/SEO";
 import Loading from "../../locading/Loading";
-import WOW from "wow.js";
-import { useFetchAllOrders } from "../../../helper/hooks/asyncFunction";
+import { useGetAllOrders } from "../../../helper/hooks/asyncFunction";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function AllOrders() {
-  const { userId, loading, setLoading } = useContextMain();
-  const [orders, setOrders] = useState([]);
-  const { fetchAllOrders } = useFetchAllOrders();
+  const { loading } = useContextMain();
 
-  async function getAllOrders() {
-    if (userId) {
-      setLoading(true);
-      console.log("userId", userId);
-      const data = await fetchAllOrders(userId);
-      setOrders(data);
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    getAllOrders();
-  }, []);
+  const { orders } = useGetAllOrders();
 
   let ui = <Loading />;
 
@@ -127,7 +111,8 @@ export default function AllOrders() {
                           className="row bg-body-secondary rounded-4 p-3 mb-2 align-items-center"
                         >
                           <div className="col-12 col-lg-2">
-                            <img
+                            <LazyLoadImage
+                              effect="blur"
                               className="w-100 object-fit-contain object-position-center"
                               height={"100px"}
                               src={imageCover}

@@ -1,83 +1,63 @@
 import { faCartShopping, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
-
 import { useContextMain } from "../../../contexts/MainContext";
-
-import { deleteData, getData, postData } from "../../../helper/api";
 import {
   useAddToCardHook,
-  useDeleteFromWishlistHook,
-  useGetWishListHook,
+  useDeleteFromWishList,
+  useGetWishListProducts,
 } from "../../../helper/hooks/asyncFunction";
 import SEO from "../../../helper/SEO";
-import { notify } from "../../../helper/toastFire";
 import Loading from "../../locading/Loading";
 
 export default function WishList() {
-  const [products, setProducts] = useState([]);
-
-  const { token, loading, setLoading, setWishList, setProductsCounter } =
-    useContextMain();
-
+  const { loading } = useContextMain();
   const { addToCardHook } = useAddToCardHook();
-  const { deleteFromWishlistHook } = useDeleteFromWishlistHook();
-  const { getWishListHook } = useGetWishListHook();
+  const { deleteFromWishList } = useDeleteFromWishList();
+  const { wishListProducts, setWishListProducts } = useGetWishListProducts();
 
   async function addToCart(id) {
-    const data = await addToCardHook(id);
-    console.log(data); // "done"
+    await addToCardHook(id);
   }
 
-  async function deleteFromWishList(id) {
-    const data = await deleteFromWishlistHook(id);
+  async function deleteProductFromWishList(id) {
+    const data = await deleteFromWishList(id);
 
     if (data) {
-      const newProducts = products.filter((product) => {
+      const newProducts = wishListProducts.filter((product) => {
         if (data.includes(product.id)) {
           return product;
         }
       });
-      setProducts(newProducts);
+      setWishListProducts(newProducts);
     }
   }
-
-  async function getWishList(id) {
-    setLoading(true);
-
-    const data = await getWishListHook();
-    if (data) {
-      setProducts(data);
-    }
-
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    getWishList();
-  }, []);
 
   let ui = <Loading />;
   if (!loading) {
     ui =
-      products?.length > 0 ? (
+      wishListProducts?.length > 0 ? (
         <div
-          className="container bg-body-tertiary p-5 my-5 wow fadeInLeft"
+          className="container bg-body-tertiary p-5 my-5 wow fadeInLeft rounded-4"
           data-wow-offset="10"
           data-wow-delay="0.2s"
           data-wow-iteration="1"
         >
           <h2 className="fw-bold mb-4">My wish List</h2>
 
-          {products?.map(({ title, price, imageCover, id }) => (
+          {wishListProducts?.map(({ title, price, imageCover, id }) => (
             <div
               key={id}
               className="row my-4 bg-body-tertiary mainShadow rounded-3 transtion-5 flex-column flex-sm-row"
             >
               <div className="col-12 col-sm-2">
-                <img className="w-100" src={imageCover} alt="product-img" />
+                <LazyLoadImage
+                  effect="blur"
+                  className="w-100"
+                  src={imageCover}
+                  alt="product-img"
+                />
               </div>
               <div className="col-12 col-sm-10">
                 <div className="row h-100 align-items-center justify-content-between flex-column flex-sm-row">
@@ -87,7 +67,7 @@ export default function WishList() {
                     <button
                       className="btn border-0 ps-0 text-danger"
                       onClick={() => {
-                        deleteFromWishList(id);
+                        deleteProductFromWishList(id);
                       }}
                     >
                       <FontAwesomeIcon icon={faTrash} /> remove

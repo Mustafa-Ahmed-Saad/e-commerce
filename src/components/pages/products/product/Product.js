@@ -1,58 +1,31 @@
 import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 import { useContextMain } from "../../../../contexts/MainContext";
-import { getData, postData } from "../../../../helper/api";
 import {
   useAddToCardHook,
-  useFetchProduct,
+  useGetProduct,
   useHandelLoveHook,
 } from "../../../../helper/hooks/asyncFunction";
 import SEO from "../../../../helper/SEO";
-import { notify } from "../../../../helper/toastFire";
 import Loading from "../../../locading/Loading";
 import ProductSlider from "../../../productSlider/ProductSlider";
 
 export default function Product() {
-  const [product, setProduct] = useState(null);
   const { id } = useParams();
-  const {
-    token,
-    wishList,
-    setWishList,
-    loading,
-    setLoading,
-    setProductsCounter,
-  } = useContextMain();
+  const { wishList, loading, setLoading } = useContextMain();
 
   const { handelLoveHook } = useHandelLoveHook();
   const { addToCardHook } = useAddToCardHook();
-  const { fetchProduct } = useFetchProduct();
+  const { product } = useGetProduct(id);
 
   async function handelLove(id) {
-    const data = await handelLoveHook(id);
-    console.log(data); // "done"
+    await handelLoveHook(id);
   }
 
   async function addToCart(id) {
-    const data = await addToCardHook(id);
-    console.log(data); // "done"
+    await addToCardHook(id);
   }
-
-  async function getProduct() {
-    setLoading(true);
-
-    const data = await fetchProduct(id);
-    setProduct(data);
-
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    getProduct();
-  }, []);
 
   let ui = <Loading />;
 

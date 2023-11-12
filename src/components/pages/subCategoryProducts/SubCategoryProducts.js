@@ -25,11 +25,9 @@ export default function SubCategoryProducts() {
       productSubCategoriesIds = [];
     });
 
-    // setProducts(selectedProducts);
-    console.log("selectedProducts", selectedProducts);
-
     setProducts(selectedProducts);
   }
+
   useEffect(() => {
     getProducts();
   }, []);

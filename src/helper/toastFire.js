@@ -1,5 +1,4 @@
 import { toast } from "react-hot-toast";
-import { useContextMain } from "./../contexts/MainContext";
 
 export const notify = (type, message) => {
   const htmlTag = document.documentElement;

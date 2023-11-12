@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
-import { getData } from "../../helper/api";
 import SamplePrevArrow from "./../samplePrevArrow/SamplePrevArrow";
 import SampleNextArrow from "./../sampleNextArrow/SampleNextArrow";
 import "./HomeResponsiveSlider.css";
-import { useFetchCategories } from "../../helper/hooks/asyncFunction";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const settings = {
   dots: false,
@@ -49,24 +48,12 @@ const settings = {
   ],
 };
 
-export default function HomeResponsiveSlider() {
-  const [categories, setCategories] = useState([]);
-  const { fetchCategories } = useFetchCategories();
-
+export default function HomeResponsiveSlider({ categories }) {
   const navigate = useNavigate();
 
   function goToCategory(id) {
     navigate(`/categories/${id}`);
   }
-
-  async function getCategories() {
-    const data = await fetchCategories();
-    setCategories(data);
-  }
-
-  useEffect(() => {
-    getCategories();
-  }, []);
 
   let ui = null;
   if (categories?.length > 0) {
@@ -82,12 +69,14 @@ export default function HomeResponsiveSlider() {
                 goToCategory(_id);
               }}
             >
-              <img
-                className="w-100 object-position-center object-fit-cover"
-                // style={{ height: "230px" }}
+              <LazyLoadImage
+                effect="blur"
                 src={image}
                 alt="slider-img"
+                width="100%"
+                className="w-100 object-position-center object-fit-cover"
               />
+
               <h3 className="text-center fs-5 text-main">{name}</h3>
             </div>
           ))}

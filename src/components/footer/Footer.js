@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import appStore from "../../Assets/Images/appleAppStore.jpg";
-import googlePlay from "../../Assets/Images/googlePlay.jpg";
-import amazonPay from "../../Assets/Images/amazonPay.png";
-import PayPal from "../../Assets/Images/PayPal.png";
-import masterCard from "../../Assets/Images/masterCard.png";
+import appStore from "../../Assets/Images/appleAppStore.webp";
+import googlePlay from "../../Assets/Images/googlePlay.webp";
+import amazonPay from "../../Assets/Images/amazonPay.webp";
+import PayPal from "../../Assets/Images/PayPal.webp";
+import masterCard from "../../Assets/Images/masterCard.webp";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function Footer() {
   const [inputValue, setInputValue] = useState("");
@@ -47,14 +48,26 @@ export default function Footer() {
           <div className="col-12 col-sm-6">
             <span className="me-4 fw-bold text-secondary">payment partner</span>
             <div className="d-lg-inline-block">
-              <img
+              <LazyLoadImage
+                effect="blur"
                 width={"70px"}
                 className="me-3"
                 src={amazonPay}
                 alt="amazonPay"
               />
-              <img width={"50px"} className="me-3" src={PayPal} alt="PayPal" />
-              <img width={"30px"} src={masterCard} alt="masterCard" />
+              <LazyLoadImage
+                effect="blur"
+                width={"50px"}
+                className="me-3"
+                src={PayPal}
+                alt="PayPal"
+              />
+              <LazyLoadImage
+                effect="blur"
+                width={"30px"}
+                src={masterCard}
+                alt="masterCard"
+              />
             </div>
           </div>
           <div className="col-12 col-sm-6 mt-4 m-sm-0 text-sm-end">
@@ -62,13 +75,19 @@ export default function Footer() {
               Get deliveries with freshCart
             </span>
             <div className="d-sm-inline-block">
-              <img
+              <LazyLoadImage
+                effect="blur"
                 width={"100px"}
                 className="mx-2"
                 src={appStore}
                 alt="app-store"
               />
-              <img width={"100px"} src={googlePlay} alt="google-play" />
+              <LazyLoadImage
+                effect="blur"
+                width={"100px"}
+                src={googlePlay}
+                alt="google-play"
+              />
             </div>
           </div>
         </div>

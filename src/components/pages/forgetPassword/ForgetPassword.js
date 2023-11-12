@@ -1,6 +1,5 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { postData } from "../../../helper/api";
 import { useNavigate } from "react-router-dom";
 import { forgetPasswordValidationSchema } from "../../../validation/validation";
 import { useContextMain } from "../../../contexts/MainContext";

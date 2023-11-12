@@ -56,7 +56,6 @@ export default function MainContextProvider({ children }) {
 
   // Load token from cookies and wishlist
   useEffect(() => {
-    console.log("if token from Main conrtext", token);
     if (token) {
       getWishList(token);
     }

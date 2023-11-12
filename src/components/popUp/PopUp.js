@@ -1,5 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function PopUp({ show, handleClose, poPupBrand }) {
   return (
@@ -12,7 +13,12 @@ export default function PopUp({ show, handleClose, poPupBrand }) {
               {poPupBrand?.name}
             </div>
             <div className="col-12 col-sm-7">
-              <img className="w-100" src={poPupBrand?.image} alt="brand-img" />
+              <LazyLoadImage
+                effect="blur"
+                className="w-100"
+                src={poPupBrand?.image}
+                alt="brand-img"
+              />
             </div>
           </div>
         </Modal.Body>

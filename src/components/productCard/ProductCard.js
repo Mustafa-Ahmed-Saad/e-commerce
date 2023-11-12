@@ -3,31 +3,28 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import { postData } from "../../helper/api";
 import { useContextMain } from "../../contexts/MainContext";
-import toast from "react-hot-toast";
 import {
   useAddToCardHook,
   useHandelLoveHook,
 } from "../../helper/hooks/asyncFunction";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
-export default function ProductCard({ product, notify, index }) {
+export default function ProductCard({ product, index }) {
   const navigate = useNavigate();
-  const { token, wishList, setWishList, setProductsCounter } = useContextMain();
+  const { wishList } = useContextMain();
   const { handelLoveHook } = useHandelLoveHook();
   const { addToCardHook } = useAddToCardHook();
 
   async function addToCart(id) {
-    const data = await addToCardHook(id);
-    console.log(data); // "done"
+    await addToCardHook(id);
   }
 
   async function handelLove(id) {
-    const data = await handelLoveHook(id);
-    console.log(data); // "done"
+    await handelLoveHook(id);
   }
 
   function goToProduct(e, id) {
@@ -65,12 +62,21 @@ export default function ProductCard({ product, notify, index }) {
           data-wow-delay={wowDelay}
           data-wow-iteration="1"
         >
-          <Card.Img
-            className="object-fit-cover object-position-center"
-            style={{ height: "250px" }}
+          <LazyLoadImage
+            effect="blur"
+            className="w-100 object-fit-cover object-position-center rounded-top-2"
             variant="top"
             src={product.imageCover}
+            alt="product-img"
+            height="250px"
           />
+          {/* <Card.Img
+              className="object-fit-cover object-position-center"
+              style={{ height: "250px" }}
+              variant="top"
+              src={product.imageCover}
+            /> */}
+
           <Card.Body>
             <Card.Title className="text-main fs-6">
               <small>{product.category.name}</small>

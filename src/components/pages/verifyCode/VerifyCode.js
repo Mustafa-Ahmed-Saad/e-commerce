@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useContextMain } from "../../../contexts/MainContext";
-import { postData } from "../../../helper/api";
 import { useVerifyCodeHook } from "../../../helper/hooks/asyncFunction";
 import { codeValidationSchema } from "../../../validation/validation";
 

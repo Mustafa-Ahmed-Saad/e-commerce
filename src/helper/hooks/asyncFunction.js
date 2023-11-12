@@ -5,100 +5,13 @@ import { notify } from "../toastFire";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
-export function useFetchProducts() {
-  const { setAllAppProducts } = useContextMain();
-
-  const fetchProducts = async () => {
-    const [data, errorMessage] = await getData("/api/v1/products");
-
-    if (data?.data) {
-      setAllAppProducts(data.data);
-      return data.data;
-    } else {
-      console.error(errorMessage);
-      return [];
-    }
-  };
-
-  return {
-    fetchProducts,
-  };
-}
-
-export function useFetchBrand() {
-  const fetchBrand = async (id) => {
-    const [data, errorMessage] = await getData("/api/v1/brands/" + id);
-
-    if (data?.data) {
-      return data.data;
-    } else {
-      console.error(errorMessage);
-      return { name: "oops something went wrong" };
-    }
-  };
-
-  return {
-    fetchBrand,
-  };
-}
-
-export function useFetchCategories() {
-  const fetchCategories = async () => {
-    const [data, errorMessage] = await getData("/api/v1/categories");
-
-    if (data?.data) {
-      return data.data;
-    } else {
-      console.error(errorMessage);
-      return [];
-    }
-  };
-
-  return {
-    fetchCategories,
-  };
-}
-
-export function useFetchAllOrders() {
-  const fetchAllOrders = async (userId) => {
-    const [data, errorMessage] = await getData(`/api/v1/orders/user/${userId}`);
-
-    if (data) {
-      return data;
-    } else {
-      console.error(errorMessage);
-      return [];
-    }
-  };
-
-  return {
-    fetchAllOrders,
-  };
-}
-
-export function useFetchBrands() {
-  const fetchCategories = async () => {
-    const [data, errorMessage] = await getData("/api/v1/brands");
-
-    if (data?.data) {
-      return data.data;
-    } else {
-      console.error(errorMessage);
-      return [];
-    }
-  };
-
-  return {
-    fetchCategories,
-  };
-}
-
-export function useDeleteFromCartHook(id) {
+export function useDeleteFromCart() {
   const { token, setProductsCounter, productsQuantity, setProductsQuantity } =
     useContextMain();
 
-  const deleteFromCartHook = async (id) => {
+  const deleteFromCart = async (id) => {
     let tLoading = notify("loading", `loading...`);
     const [data, errorMessage] = await deleteData(`/api/v1/cart/${id}`, {
       headers: { token: token },
@@ -120,39 +33,7 @@ export function useDeleteFromCartHook(id) {
   };
 
   return {
-    deleteFromCartHook,
-  };
-}
-
-export function useFetchCartProducts() {
-  const { token, setProductsCounter, setUserId } = useContextMain();
-
-  const fetchCartProducts = async () => {
-    const [data, errorMessage] = await getData(`/api/v1/cart`, {
-      headers: { token: token },
-    });
-
-    if (data?.data?.products) {
-      setProductsCounter(data.data.products.length || 0);
-      setUserId(data.data.cartOwner);
-      return {
-        _id: data.data._id,
-        products: data.data.products,
-        totalCartPrice: data.data.totalCartPrice,
-      };
-    } else {
-      // TODO: show tost
-      console.error(errorMessage);
-      return {
-        _id: 0,
-        products: [],
-        totalCartPrice: 0,
-      };
-    }
-  };
-
-  return {
-    fetchCartProducts,
+    deleteFromCart,
   };
 }
 
@@ -211,27 +92,6 @@ export function useUpdateQuantity() {
 
   return {
     updateQuantity,
-  };
-}
-
-export function useFetchCategory() {
-  const { token, setProductsCounter } = useContextMain();
-
-  const fetchCategory = async (id) => {
-    const [data, errorMessage] = await getData(
-      "/api/v1/categories/" + id + "/subcategories"
-    );
-
-    if (data?.data) {
-      return data.data;
-    } else {
-      console.error(errorMessage);
-      return [];
-    }
-  };
-
-  return {
-    fetchCategory,
   };
 }
 
@@ -428,23 +288,6 @@ export function useAddToCardHook() {
   };
 }
 
-export function useFetchProduct() {
-  const fetchProduct = async (id) => {
-    const [data, errorMessage] = await getData("/api/v1/products/" + id);
-
-    if (data?.data) {
-      return data.data;
-    } else {
-      console.error(errorMessage);
-      return null;
-    }
-  };
-
-  return {
-    fetchProduct,
-  };
-}
-
 export function useVerifyCodeHook() {
   const navigate = useNavigate();
 
@@ -468,11 +311,81 @@ export function useVerifyCodeHook() {
   };
 }
 
-export function useDeleteFromWishlistHook() {
-  const { token, setWishList, productsQuantity, setProductsQuantity } =
-    useContextMain();
+// ....................................................................
 
-  const deleteFromWishlistHook = async (id) => {
+export function useGetAllOrders() {
+  const { userId, setLoading } = useContextMain();
+  const [orders, setOrders] = useState([]);
+
+  async function getAllOrders() {
+    if (userId) {
+      setLoading(true);
+
+      const [data, errorMessage] = await getData(
+        `/api/v1/orders/user/${userId}`
+      );
+      if (data) {
+        setOrders(data);
+      } else {
+        console.error(errorMessage);
+      }
+
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getAllOrders();
+  }, []);
+
+  return { orders };
+}
+
+export function useGetWishListProducts(onlyOne) {
+  const { token, wishList, setWishList, setLoading } = useContextMain();
+  const [wishListProducts, setWishListProducts] = useState([]);
+
+  async function getWishList() {
+    setLoading(true);
+
+    const [data, errorMessage] = await getData("/api/v1/wishlist/", {
+      headers: {
+        token: token,
+      },
+    });
+
+    if (data?.data) {
+      const newWishlist = data?.data.map(({ id }) => {
+        return id;
+      });
+      setWishList(newWishlist);
+      setWishListProducts(data?.data);
+    } else {
+      console.error(errorMessage);
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    if (onlyOne === "onlyOne" && wishList?.length > 0) {
+      // if token and if no wishlist
+      return;
+    }
+
+    getWishList();
+  }, []);
+
+  return {
+    wishListProducts,
+    setWishListProducts,
+  };
+}
+
+export function useDeleteFromWishList() {
+  const { token, setWishList } = useContextMain();
+
+  const deleteFromWishList = async (id) => {
     let tLoading = notify("loading", `loading...`);
     const [data, errorMessage] = await deleteData(`/api/v1/wishlist/${id}`, {
       headers: { token: token },
@@ -494,32 +407,203 @@ export function useDeleteFromWishlistHook() {
   };
 
   return {
-    deleteFromWishlistHook,
+    deleteFromWishList,
   };
 }
 
-export function useGetWishListHook() {
-  const { token, setWishList } = useContextMain();
+export function useGetCategories(withLoading) {
+  const { setLoading } = useContextMain();
+  const [categories, setCategories] = useState([]);
 
-  const getWishListHook = async () => {
-    const [data, errorMessage] = await getData("/api/v1/wishlist/", {
-      headers: {
-        token: token,
-      },
-    });
+  async function getCategories() {
+    if (withLoading === "withLoading") setLoading(true);
 
+    const [data, errorMessage] = await getData("/api/v1/categories");
     if (data?.data) {
-      const newWishlist = data?.data.map(({ id }) => {
-        return id;
-      });
-      setWishList(newWishlist);
-      return data?.data;
+      setCategories(data.data);
     } else {
       console.error(errorMessage);
+    }
+
+    if (withLoading === "withLoading") setLoading(false);
+  }
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  return {
+    categories,
+  };
+}
+
+export function useGetProducts() {
+  const { setAllAppProducts, setLoading } = useContextMain();
+  const [products, setProducts] = useState([]);
+  const [productsToShow, setProductsToShow] = useState([]);
+
+  async function getProducts() {
+    setLoading(true);
+
+    const [data, errorMessage] = await getData("/api/v1/products");
+
+    if (data?.data) {
+      setAllAppProducts(data.data);
+      setProducts(data.data);
+      setProductsToShow(data.data);
+    } else {
+      console.error(errorMessage);
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  return {
+    products,
+    productsToShow,
+    setProductsToShow,
+  };
+}
+
+export function useGetCategory(id) {
+  const { setLoading } = useContextMain();
+  const [subCategories, setSubCategories] = useState([]);
+
+  async function getSubCategory() {
+    setLoading(true);
+
+    const [data, errorMessage] = await getData(
+      "/api/v1/categories/" + id + "/subcategories"
+    );
+    if (data?.data) {
+      setSubCategories(data.data);
+    } else {
+      console.error(errorMessage);
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getSubCategory();
+  }, []);
+
+  return {
+    subCategories,
+  };
+}
+
+export function useGetBrand() {
+  const fetchBrand = async (id) => {
+    const [data, errorMessage] = await getData("/api/v1/brands/" + id);
+
+    if (data?.data) {
+      return data.data;
+    } else {
+      console.error(errorMessage);
+      return { name: "oops something went wrong" };
     }
   };
 
   return {
-    getWishListHook,
+    fetchBrand,
+  };
+}
+
+export function useGetBrands() {
+  const [brands, setBrands] = useState([]);
+  const { setLoading } = useContextMain();
+
+  async function getBrands() {
+    setLoading(true);
+
+    const [data, errorMessage] = await getData("/api/v1/brands");
+    if (data?.data) {
+      setBrands(data.data);
+    } else {
+      console.error(errorMessage);
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getBrands();
+  }, []);
+
+  return {
+    brands,
+  };
+}
+
+export function useGetCartProducts() {
+  let [cartId, setCartId] = useState(0);
+  const [allProductsInCart, setAllProductsInCart] = useState([]);
+  const [totalCartPrice, setTotalCartPrice] = useState(0);
+
+  const { token, setLoading, setProductsCounter, setUserId } = useContextMain();
+
+  async function getAllCartProducts() {
+    setLoading(true);
+
+    const [data, errorMessage] = await getData(`/api/v1/cart`, {
+      headers: { token: token },
+    });
+
+    if (data?.data?.products) {
+      setCartId(data.data._id);
+      setAllProductsInCart(data.data.products);
+      setTotalCartPrice(data.data.totalCartPrice);
+      setProductsCounter(data.data.products.length || 0);
+      setUserId(data.data.cartOwner);
+    } else {
+      // TODO: show tost
+      console.error(errorMessage);
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getAllCartProducts();
+  }, []);
+
+  return {
+    cartId,
+    allProductsInCart,
+    setAllProductsInCart,
+    totalCartPrice,
+    setTotalCartPrice,
+  };
+}
+
+export function useGetProduct(id) {
+  const { setLoading } = useContextMain();
+  const [product, setProduct] = useState(null);
+
+  async function getProduct() {
+    setLoading(true);
+
+    const [data, errorMessage] = await getData("/api/v1/products/" + id);
+
+    if (data?.data) {
+      setProduct(data.data);
+    } else {
+      console.error(errorMessage);
+    }
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getProduct();
+  }, []);
+
+  return {
+    product,
   };
 }

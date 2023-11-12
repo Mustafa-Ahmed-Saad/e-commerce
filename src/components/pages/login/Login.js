@@ -2,10 +2,7 @@ import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginValidationSchema } from "../../../validation/validation";
-import { postData } from "../../../helper/api";
 import { useContextMain } from "../../../contexts/MainContext";
-import jwt_decode from "jwt-decode";
-import Cookies from "js-cookie";
 import { useLoginHook } from "../../../helper/hooks/asyncFunction";
 
 export default function Login() {
@@ -20,8 +17,7 @@ export default function Login() {
   }, []);
 
   async function submit(values) {
-    const data = await loginHook(values);
-    console.log(data); // "done"
+    await loginHook(values);
   }
 
   function handelForgetPassword(e) {

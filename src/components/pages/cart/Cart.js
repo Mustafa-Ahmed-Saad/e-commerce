@@ -1,45 +1,40 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import React, { useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link, useNavigate } from "react-router-dom";
 import { useContextMain } from "../../../contexts/MainContext";
-import { deleteData, getData, putData } from "../../../helper/api";
 import {
   useClearAllProductsCart,
-  useDeleteFromCartHook,
-  useFetchCartProducts,
+  useDeleteFromCart,
+  useGetCartProducts,
   useUpdateQuantity,
 } from "../../../helper/hooks/asyncFunction";
 import SEO from "../../../helper/SEO";
-import { notify } from "../../../helper/toastFire";
 import Loading from "../../locading/Loading";
 
 export default function Cart() {
-  const {
-    token,
-    productsCounter,
-    setProductsCounter,
-    productsQuantity,
-    setProductsQuantity,
-    setUserId,
-  } = useContextMain();
+  const { productsCounter, productsQuantity, setProductsQuantity } =
+    useContextMain();
 
   const { clearAllProductsCart } = useClearAllProductsCart();
-
   const { updateQuantity } = useUpdateQuantity();
-
   const navigate = useNavigate();
-  const [allProductsInCart, setAllProductsInCart] = useState([]);
-  const [totalCartPrice, setTotalCartPrice] = useState(0);
-  let [cartId, setCartId] = useState(0);
-  let [reqInterval, setReqInterval] = useState(false);
-  const { loading, setLoading } = useContextMain();
-  const { deleteFromCartHook } = useDeleteFromCartHook();
-  const { fetchCartProducts } = useFetchCartProducts();
 
-  async function deleteFromCart(id, index, oldQuantity) {
-    const data = await deleteFromCartHook(id);
+  let [reqInterval, setReqInterval] = useState(false);
+
+  const { loading, setLoading } = useContextMain();
+  const { deleteFromCart } = useDeleteFromCart();
+  const {
+    cartId,
+    allProductsInCart,
+    setAllProductsInCart,
+    totalCartPrice,
+    setTotalCartPrice,
+  } = useGetCartProducts();
+
+  async function deleteProductFromCart(id, index, oldQuantity) {
+    const data = await deleteFromCart(id);
 
     setAllProductsInCart(data.products);
     setTotalCartPrice(data.totalCartPrice);
@@ -73,20 +68,9 @@ export default function Cart() {
     //     const nProducts = [...allProductsInCart];
     //     nProducts[index].count = oldQuantity;
     //     setAllProductsInCart(nProducts);
-    //     // TODO: show toast "soorry somthing rong"
+    //     // TODO: show toast "error message"
     //   }
     // }
-  }
-
-  async function getCartProducts() {
-    setLoading(true);
-
-    const data = await fetchCartProducts();
-    setCartId(data._id);
-    setAllProductsInCart(data.products);
-    setTotalCartPrice(data.totalCartPrice);
-
-    setLoading(false);
   }
 
   function handleCheckOut() {
@@ -123,7 +107,7 @@ export default function Cart() {
     setReqInterval(
       setTimeout(async () => {
         if (count <= 0) {
-          deleteFromCart(productId, index, productsQuantity[productId]);
+          deleteProductFromCart(productId, index, productsQuantity[productId]);
         } else {
           const data = await updateQuantity(productId, count);
 
@@ -146,10 +130,6 @@ export default function Cart() {
     );
   }
 
-  useEffect(() => {
-    getCartProducts();
-  }, []);
-
   //   -----------------------------------------------------------------------------------
 
   let ui = <Loading />;
@@ -157,7 +137,7 @@ export default function Cart() {
   if (!loading) {
     ui =
       allProductsInCart?.length > 0 ? (
-        <div className="container bg-body-tertiary p-5 my-5">
+        <div className="container bg-body-tertiary p-5 my-5 rounded-4">
           <div className="row mb-4 justify-content-between align-align-items-start p-3 rounded-3">
             <div className="col-12 col-sm-6">
               <h2 className="fw-bold mb-4">Cart Shop</h2>
@@ -194,7 +174,12 @@ export default function Cart() {
                 data-wow-iteration="1"
               >
                 <div className="col-12 col-md-2">
-                  <img className="w-100" src={imageCover} alt="product-img" />
+                  <LazyLoadImage
+                    effect="blur"
+                    className="w-100"
+                    src={imageCover}
+                    alt="product-img"
+                  />
                 </div>
                 <div className="col-12 col-md-10">
                   <div className="row h-100 align-items-center justify-content-between flex-column flex-sm-row">
@@ -204,7 +189,7 @@ export default function Cart() {
                       <button
                         className="btn border-0 ps-0 text-danger"
                         onClick={() => {
-                          deleteFromCart(id);
+                          deleteProductFromCart(id);
                         }}
                       >
                         <FontAwesomeIcon icon={faTrash} /> remove

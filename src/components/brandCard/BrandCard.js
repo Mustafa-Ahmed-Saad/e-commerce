@@ -1,14 +1,12 @@
-import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
-import { useFetchBrand } from "../../helper/hooks/asyncFunction";
+import { useGetBrand } from "../../helper/hooks/asyncFunction";
 
 export default function BrandCard({
   brandDetails,
   handleShow,
-  handleClose,
   setBrandCardLoading,
 }) {
-  const { fetchBrand } = useFetchBrand();
+  const { fetchBrand } = useGetBrand();
 
   async function getBrand(id) {
     setBrandCardLoading(true);

@@ -8,8 +8,6 @@ export default function SearchHome({
 }) {
   const [searchInterval, setSearchInterval] = useState(false);
 
-  console.log(products);
-
   // write code that sum two function
 
   function handelSearch(e) {
@@ -20,21 +18,20 @@ export default function SearchHome({
 
     setSearchInterval(
       setTimeout(() => {
+        let searchValue;
         const searchProducts = products.filter(({ id, title }) => {
-          let searchValue = e.target.value.toLowerCase();
+          searchValue = e.target.value.toLowerCase();
           id = id.toLowerCase();
           title = title.toLowerCase();
 
-          console.log(id.concat(title), searchValue);
           return id.concat(title).includes(searchValue);
           // id.concat(name).includes(e.target.value)
         });
 
         setProductsToShow(searchProducts);
-        // TPDONOW: uncomment toggleSearchLoading(false);
+        // TODONOW: uncomment toggleSearchLoading(false);
         toggleSearchLoading(false);
         // end loading
-        // console.log("search products", searchProducts);
         // search inproducts and if founded setProducts state with this product that match
       }, 1000)
     );
