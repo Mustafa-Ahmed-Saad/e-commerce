@@ -1,15 +1,19 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+
+import { changeMainColor } from "../../contexts/mainColor/mainColorAction";
+import { saveInLocalStorage } from "../../helper/localStorage";
 import { useContextMain } from "./../../contexts/MainContext";
 
 export default function ColorsPalette() {
-  const { mode, mainColor, setMainColor } = useContextMain();
+  // const [, setMainColorLocalStorage] = useLocalStorage("main-color", "#0dba0d");
+  const { mode, mainColor, dispatch } = useContextMain();
   const [color, setColor] = useState("#000" && mainColor);
   const [isColorsPaletteOpen, setIsColorsPaletteOpen] = useState(false);
 
   function changeMainColorOfContext(value) {
-    setMainColor(value);
+    dispatch(changeMainColor(value));
     document.documentElement.style.setProperty("--main-color", value);
   }
 

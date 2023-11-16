@@ -10,9 +10,11 @@ import PopUp from "../../popUp/PopUp";
 export default function Brands() {
   const [showPopUp, setShowPopUp] = useState(false);
   const [poPupBrand, setPoPupBrand] = useState(null);
+  // const { loading } = useContextMain();
   const { loading } = useContextMain();
   const [brandCardLoading, setBrandCardLoading] = useState(false);
   const { brands } = useGetBrands();
+  // let brands = [];
 
   const handleClose = () => {
     setShowPopUp(false);
