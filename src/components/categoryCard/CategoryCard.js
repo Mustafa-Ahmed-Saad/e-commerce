@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 
 // change this component to categoryCard and move it in component
 export default function CategoryCard({ category }) {
@@ -18,21 +17,12 @@ export default function CategoryCard({ category }) {
   return (
     <div onClick={() => goToCategory(category._id)}>
       <Card className="mainShadow">
-        <LazyLoadImage
-          effect="blur"
-          className="w-100 object-fit-cover object-position-center rounded-top-2"
-          variant="top"
-          src={category.image}
-          alt="brand-img"
-          height="300px"
-        />
-
-        {/* <Card.Img
+        <Card.Img
           className="object-fit-cover object-position-center"
           style={{ height: "300px" }}
           variant="top"
           src={category.image}
-        /> */}
+        />
         <Card.Body>
           <Card.Title className="text-center text-main fw-bold">
             {category.name}

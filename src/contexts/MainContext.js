@@ -1,15 +1,6 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { getData } from "../helper/api";
-
-import rootReducer from "./rootReducer";
-import { getFromLocalStorage } from "../helper/localStorage";
 import useLocalStorage from "use-local-storage";
 
 const MainContext = createContext();
@@ -17,16 +8,8 @@ export function useContextMain() {
   return useContext(MainContext);
 }
 
-const initialState = {
-  loading: false,
-  mainColor: getFromLocalStorage("main-color") || "#0dba0d",
-  allAppProducts: getFromLocalStorage("allAppProducts") || [],
-};
-
 export default function MainContextProvider({ children }) {
-  // ------------------------------
-  const [state, dispatch] = useReducer(rootReducer, initialState);
-  // ------------------------------
+  const [loading, setLoading] = useState(false);
 
   // start use Cookies
   const [token, setToken] = useState(
@@ -39,12 +22,16 @@ export default function MainContextProvider({ children }) {
     "productsCounter",
     0
   );
+  const [mainColor, setMainColor] = useLocalStorage("main-color", "#0dba0d");
   const [mode, setMode] = useLocalStorage("mode", false);
   const [productsQuantity, setProductsQuantity] = useLocalStorage(
     "productsQuantity",
     {}
   );
-
+  const [allAppProducts, setAllAppProducts] = useLocalStorage(
+    "allAppProducts",
+    []
+  );
   const [userId, setUserId] = useLocalStorage("userId", false);
 
   async function getWishList(token) {
@@ -78,25 +65,24 @@ export default function MainContextProvider({ children }) {
   return (
     <MainContext.Provider
       value={{
-        // loading,
-        ...state,
-        dispatch,
-        // setLoading,
-
         token,
         setToken,
-        mode,
-        setMode,
-
-        userId,
-        setUserId,
         wishList,
         setWishList,
-        productsQuantity,
-        setProductsQuantity,
-
         productsCounter,
         setProductsCounter,
+        productsQuantity,
+        setProductsQuantity,
+        userId,
+        setUserId,
+        loading,
+        setLoading,
+        allAppProducts,
+        setAllAppProducts,
+        mode,
+        setMode,
+        mainColor,
+        setMainColor,
       }}
     >
       {children}

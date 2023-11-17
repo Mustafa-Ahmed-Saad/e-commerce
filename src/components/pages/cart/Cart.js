@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link, useNavigate } from "react-router-dom";
-import { changeLoading } from "../../../contexts/loading/loadingAction";
 import { useContextMain } from "../../../contexts/MainContext";
 import {
   useClearAllProductsCart,
@@ -15,7 +14,7 @@ import SEO from "../../../helper/SEO";
 import Loading from "../../locading/Loading";
 
 export default function Cart() {
-  const { productsCounter, productsQuantity, setProductsQuantity, dispatch } =
+  const { productsCounter, productsQuantity, setProductsQuantity } =
     useContextMain();
 
   const { clearAllProductsCart } = useClearAllProductsCart();
@@ -24,7 +23,7 @@ export default function Cart() {
 
   let [reqInterval, setReqInterval] = useState(false);
 
-  const { loading } = useContextMain();
+  const { loading, setLoading } = useContextMain();
   const { deleteFromCart } = useDeleteFromCart();
   const {
     cartId,
@@ -79,8 +78,7 @@ export default function Cart() {
   }
 
   async function clearAllProductsFromCart() {
-    // setLoading(true);
-    dispatch(changeLoading(true));
+    setLoading(true);
 
     const data = await clearAllProductsCart();
 
@@ -89,8 +87,7 @@ export default function Cart() {
       setTotalCartPrice(0);
     }
 
-    dispatch(changeLoading(false));
-    // setLoading(false);
+    setLoading(false);
   }
 
   async function updateProductQuantity(productId, count, index) {

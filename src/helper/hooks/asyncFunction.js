@@ -6,11 +6,6 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { loadingType } from "../../contexts/loading/loadingType";
-import { changeLoading } from "../../contexts/loading/loadingAction";
-import { getAllAppProducts } from "../../contexts/allAppProducts/allAppProductsActions";
-import useLocalStorage from "use-local-storage";
-import { saveInLocalStorage } from "../localStorage";
 
 export function useDeleteFromCart() {
   const { token, setProductsCounter, productsQuantity, setProductsQuantity } =
@@ -319,13 +314,12 @@ export function useVerifyCodeHook() {
 // ....................................................................
 
 export function useGetAllOrders() {
-  const { userId, dispatch } = useContextMain();
+  const { userId, setLoading } = useContextMain();
   const [orders, setOrders] = useState([]);
 
   async function getAllOrders() {
     if (userId) {
-      // setLoading(true);
-      dispatch(changeLoading(true));
+      setLoading(true);
 
       const [data, errorMessage] = await getData(
         `/api/v1/orders/user/${userId}`
@@ -336,8 +330,7 @@ export function useGetAllOrders() {
         console.error(errorMessage);
       }
 
-      dispatch(changeLoading(false));
-      // setLoading(false);
+      setLoading(false);
     }
   }
 
@@ -349,11 +342,11 @@ export function useGetAllOrders() {
 }
 
 export function useGetWishListProducts(onlyOne) {
-  const { token, wishList, setWishList, dispatch } = useContextMain();
+  const { token, wishList, setWishList, setLoading } = useContextMain();
   const [wishListProducts, setWishListProducts] = useState([]);
 
   async function getWishList() {
-    dispatch(changeLoading(true));
+    setLoading(true);
 
     const [data, errorMessage] = await getData("/api/v1/wishlist/", {
       headers: {
@@ -371,7 +364,7 @@ export function useGetWishListProducts(onlyOne) {
       console.error(errorMessage);
     }
 
-    dispatch(changeLoading(false));
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -419,11 +412,11 @@ export function useDeleteFromWishList() {
 }
 
 export function useGetCategories(withLoading) {
-  const { dispatch } = useContextMain();
+  const { setLoading } = useContextMain();
   const [categories, setCategories] = useState([]);
 
   async function getCategories() {
-    if (withLoading === "withLoading") dispatch(changeLoading(true));
+    if (withLoading === "withLoading") setLoading(true);
 
     const [data, errorMessage] = await getData("/api/v1/categories");
     if (data?.data) {
@@ -432,7 +425,7 @@ export function useGetCategories(withLoading) {
       console.error(errorMessage);
     }
 
-    if (withLoading === "withLoading") dispatch(changeLoading(false));
+    if (withLoading === "withLoading") setLoading(false);
   }
 
   useEffect(() => {
@@ -445,25 +438,24 @@ export function useGetCategories(withLoading) {
 }
 
 export function useGetProducts() {
-  const { setAllAppProducts, dispatch } = useContextMain();
+  const { setAllAppProducts, setLoading } = useContextMain();
   const [products, setProducts] = useState([]);
   const [productsToShow, setProductsToShow] = useState([]);
 
   async function getProducts() {
-    dispatch(changeLoading(true));
+    setLoading(true);
 
     const [data, errorMessage] = await getData("/api/v1/products");
 
     if (data?.data) {
-      dispatch(getAllAppProducts(data.data));
-      // setAllAppProducts(data.data);
+      setAllAppProducts(data.data);
       setProducts(data.data);
       setProductsToShow(data.data);
     } else {
       console.error(errorMessage);
     }
 
-    dispatch(changeLoading(false));
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -478,11 +470,11 @@ export function useGetProducts() {
 }
 
 export function useGetCategory(id) {
-  const { dispatch } = useContextMain();
+  const { setLoading } = useContextMain();
   const [subCategories, setSubCategories] = useState([]);
 
   async function getSubCategory() {
-    dispatch(changeLoading(true));
+    setLoading(true);
 
     const [data, errorMessage] = await getData(
       "/api/v1/categories/" + id + "/subcategories"
@@ -493,7 +485,7 @@ export function useGetCategory(id) {
       console.error(errorMessage);
     }
 
-    dispatch(changeLoading(false));
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -524,11 +516,10 @@ export function useGetBrand() {
 
 export function useGetBrands() {
   const [brands, setBrands] = useState([]);
-  const { dispatch } = useContextMain();
+  const { setLoading } = useContextMain();
 
   async function getBrands() {
-    // setLoading(true);
-    dispatch(changeLoading(true));
+    setLoading(true);
 
     const [data, errorMessage] = await getData("/api/v1/brands");
     if (data?.data) {
@@ -537,8 +528,7 @@ export function useGetBrands() {
       console.error(errorMessage);
     }
 
-    dispatch(changeLoading(false));
-    // setLoading(false);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -555,10 +545,10 @@ export function useGetCartProducts() {
   const [allProductsInCart, setAllProductsInCart] = useState([]);
   const [totalCartPrice, setTotalCartPrice] = useState(0);
 
-  const { token, dispatch, setProductsCounter, setUserId } = useContextMain();
+  const { token, setLoading, setProductsCounter, setUserId } = useContextMain();
 
   async function getAllCartProducts() {
-    dispatch(changeLoading(true));
+    setLoading(true);
 
     const [data, errorMessage] = await getData(`/api/v1/cart`, {
       headers: { token: token },
@@ -575,7 +565,7 @@ export function useGetCartProducts() {
       console.error(errorMessage);
     }
 
-    dispatch(changeLoading(false));
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -592,11 +582,11 @@ export function useGetCartProducts() {
 }
 
 export function useGetProduct(id) {
-  const { dispatch } = useContextMain();
+  const { setLoading } = useContextMain();
   const [product, setProduct] = useState(null);
 
   async function getProduct() {
-    dispatch(changeLoading(true));
+    setLoading(true);
 
     const [data, errorMessage] = await getData("/api/v1/products/" + id);
 
@@ -606,7 +596,7 @@ export function useGetProduct(id) {
       console.error(errorMessage);
     }
 
-    dispatch(changeLoading(false));
+    setLoading(false);
   }
 
   useEffect(() => {

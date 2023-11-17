@@ -13,7 +13,7 @@ import ProductSlider from "../../../productSlider/ProductSlider";
 
 export default function Product() {
   const { id } = useParams();
-  const { wishList, loading } = useContextMain();
+  const { wishList, loading, setLoading } = useContextMain();
 
   const { handelLoveHook } = useHandelLoveHook();
   const { addToCardHook } = useAddToCardHook();
