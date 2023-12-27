@@ -8,14 +8,27 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import MainContextProvider from "./contexts/MainContext";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 root.render(
   // <React.StrictMode>
-  <MainContextProvider>
-    <App />
-  </MainContextProvider>
+  <QueryClientProvider client={queryClient}>
+    <MainContextProvider>
+      <App />
+    </MainContextProvider>
 
+    <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+  </QueryClientProvider>
   // </React.StrictMode>
 );
 

@@ -1,4 +1,5 @@
 import Card from "react-bootstrap/Card";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useGetBrand } from "../../helper/hooks/asyncFunction";
 
 export default function BrandCard({
@@ -24,7 +25,15 @@ export default function BrandCard({
       }}
     >
       <Card className="mainShadow">
-        <Card.Img variant="top" src={brandDetails.image} />
+        <LazyLoadImage
+          effect="blur"
+          className="w-100 object-fit-cover object-position-center rounded-top-2"
+          variant="top"
+          src={brandDetails.image}
+          alt="brand-img"
+        />
+        {/* <Card.Img variant="top" src={brandDetails.image} /> */}
+
         <Card.Body>
           <Card.Title className="text-center">{brandDetails.name}</Card.Title>
         </Card.Body>
