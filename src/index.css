@@ -8,6 +8,7 @@
 :root[data-bs-theme="light"] {
   --main-color: #0dba0d;
   --order-bg-color: #f8f9fa;
+  --arrows-color: #000;
   --loading-bg: #fff;
   --image-grayscale: 0;
   --image-opacity: 100%;
@@ -15,6 +16,7 @@
 
 :root[data-bs-theme="dark"] {
   --order-bg-color: #000;
+  --arrows-color: #fff;
   --main-color: #09a009;
   --loading-bg: #000;
   --image-grayscale: 15%;
@@ -130,6 +132,10 @@ input#forgetPassword-email:focus + label.forgetPasswordEmail {
   top: 10px !important;
   background-color: white;
   font-size: 13px;
+}
+
+.arrows-color {
+  color: var(--arrows-color) !important;
 }
 
 /* ------------------------------------------------ main slider and home responsive slider */

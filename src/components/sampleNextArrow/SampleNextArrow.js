@@ -6,7 +6,7 @@ export default function SampleNextArrow(props) {
 
   return (
     <FontAwesomeIcon
-      className={className + "slick-arrow slick-next text-dark fa-5x me-2"}
+      className={className + "slick-arrow slick-next fa-5x me-2 arrows-color"}
       style={{ ...style, display: "block" }}
       onClick={onClick}
       icon={faArrowRight}
